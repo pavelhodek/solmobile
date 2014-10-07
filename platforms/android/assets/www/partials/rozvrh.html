@@ -1,0 +1,164 @@
+﻿    <section jquery-mobile-tpl id="rozvrh" data-role="page">
+
+
+    <div data-role="popup" id="popupInfo" data-theme="a" style="min-width:210px; max-width: 400px">
+        <p><strong>Detail hodiny</strong></p>
+        <p>Zde může být celá řada dalších informací prakticky libovolně formátovaných, včetně formulářových prvků či tabulek.</p>
+    </div>
+
+
+    <div data-role="popup" id="popupMenu" data-theme="a">
+        <ul data-role="listview" data-inset="true" style="min-width:210px;">
+            <!--<li data-role="list-divider">Vyberte akci</li>-->
+            <li><a href="dochazka.html">Zapsat docházku</a></li>
+            <li><a href="hodnoceni.html">Zadat hodnocení</a></li>
+        </ul>
+    </div>
+
+
+    <!--HEADER-->
+    <header data-role="header" data-theme="b" data-position="fixed" data-add-back-btn="true" data-back-btn-text="zpět">
+        <h1>Rozvrh</h1>
+
+        <nav data-role="navbar" class="ui-bar-a">
+            <ul>
+                <li>
+                    <a href="#" onclick="addSelectedDateDays(-1); refreshSelectedDate()" class="ui-alt-icon ui-nodisc-icon" data-inline="true" data-theme="a" data-role="button" data-icon="carat-l" data-iconpos="notext"></a>
+                </li>
+                <li>
+                    <span id="selectedDate" onclick="selectDate();"></span>
+                </li>
+                <li><a href="#" onclick="addSelectedDateDays(1); refreshSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-theme="a" data-icon="carat-r" data-iconpos="notext"></a></li>
+            </ul>
+
+        </nav>
+
+    </header>
+
+
+    <!--CONTENT-->
+    <div class="content" data-role="content">
+
+
+        <ul data-role="listview">
+
+            <li>
+                <a href="#popupMenu" data-rel="popup" data-transition="flip">
+                    <div style="display:table-cell">
+                        <div style="text-align:center">1.</div>
+                        <p>08:00-08:45</p>
+                    </div>
+                    <div style="display:table-cell; padding-left: 20px">
+                        ČJL (Český jazyk a literatura)
+                        <p>UC1, 3.A</p>
+                    </div>
+                </a>
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Detail hodiny">Detail hodiny</a>
+            </li>
+
+            <li>
+                <a href="#popupMenu" data-rel="popup" data-transition="flip">
+                    <div style="display:table-cell">
+                        <div style="text-align:center">2.</div>
+                        <p>08:55-09:40</p>
+                    </div>
+                    <div style="display:table-cell; padding-left: 20px">
+                        MAT (Matematika)
+                        <p>UP105, 4.B</p>
+                    </div>
+                </a>
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Detail hodiny">Detail hodiny</a>
+            </li>
+            <li>
+                <a href="#popupMenu" data-rel="popup" data-transition="flip">
+                    <div style="display:table-cell">
+                        <div style="text-align:center">5.</div>
+                        <p>12:00-12:45</p>
+                    </div>
+                    <div style="display:table-cell; padding-left: 20px">
+                        TV (Tělesná výchova)
+                        <p>TV1, 3.A Chlapci + 3.B Chlapci</p>
+                    </div>
+                </a>
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Detail hodiny">Detail hodiny</a>
+            </li>
+            <li>
+                <a href="#popupMenu" data-rel="popup" data-transition="flip">
+                    <div style="display:table-cell">
+                        <div style="text-align:center">6.</div>
+                        <p>13:05-13:50</p>
+                    </div>
+                    <div style="display:table-cell; padding-left: 20px">
+                        TV (Tělesná výchova)
+                        <p>TV1, 3.A Chlapci + 3.B Chlapci</p>
+                    </div>
+                </a>
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Detail hodiny">Detail hodiny</a>
+            </li>
+            <li>
+                <a href="#popupMenu" data-rel="popup" data-transition="flip">
+                    <div style="display:table-cell">
+                        <div style="text-align:center">8.</div>
+                        <p>15:00-15:45</p>
+                    </div>
+                    <div style="display:table-cell; padding-left: 20px">
+                        DĚJ (Dějepis)
+                        <p>UP2, XI.A</p>
+                    </div>
+                </a>
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Detail hodiny">Detail hodiny</a>
+            </li>
+            <li>
+                <a href="#popupMenu" data-rel="popup" data-transition="flip">
+                    <div style="display:table-cell">
+                        <div style="text-align:center">9.</div>
+                        <p>16:00-16:45</p>
+                    </div>
+                    <div style="display:table-cell; padding-left: 20px">
+                        CH (Chemie)
+                        <p>LAB1, 8.A</p>
+                    </div>
+                </a>
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Detail hodiny">Detail hodiny</a>
+            </li>
+            <li>
+                <a href="#popupMenu" data-rel="popup" data-transition="flip">
+                    <div style="display:table-cell">
+                        <div style="text-align:center">10.</div>
+                        <p>16:50-17:35</p>
+                    </div>
+                    <div style="display:table-cell; padding-left: 20px">
+                        CH (Chemie)
+                        <p>LAB1, 8.A</p>
+                    </div>
+                </a>
+                <a href="#" onclick="openPopup('popupInfo')"  data-rel="popup" data-transition="pop" data-history="false" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Detail hodiny">Detail hodiny</a>
+            </li>
+        </ul>
+
+    </div>
+
+
+    <!--FOOTER-->
+    <footer data-role="footer" data-theme="b" data-position="fixed">
+        <h6>Zapsat k aktuální hodině</h6>
+        <nav data-role="navbar">
+            <ul>
+                <li><a data-role="button" data-theme="a">Docházku</a></li>
+                <li><a data-role="button" data-theme="a">Hodnocení</a></li>
+            </ul>
+        </nav>
+
+    </footer>
+
+
+
+
+
+
+</section>
+
+<script>
+    $('#rozvrh').page().css({ "display": "block" });
+
+</script>

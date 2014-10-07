@@ -1,0 +1,20 @@
+﻿/*SOL CSS DEFINICE*/
+
+.center-wrapper{
+    text-align: center !important;
+}
+.center-wrapper * {
+    margin: auto auto !important;
+}
+
+.sol-sidebar .ui-panel-inner {
+    padding-top: 0 !important;
+}
+
+.sol-subheader {
+  text-align: center;
+  margin-top: -5px;
+  margin-bottom: 6px;
+  font-size: smaller;
+  font-weight: normal;
+}

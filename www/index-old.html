@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head lang="cs">
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+    
+
+    <link rel="stylesheet" href="lib/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.css" />
+
+    <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+
+
+    <title>jQuery Mobile Application</title>
+
+    <style>
+        .content div div p {
+            background-color: #ccc;
+            height: 50px;
+            border: 1px solid #333;
+            margin: 0px;
+        }
+    </style>
+
+</head>
+<body >
+
+    <section ng-app="solApp" id="index" data-role="page" data-fullscreen="true">
+
+        <!--PANEL-->
+        <div data-role="panel" id="mainPanel" data-position="left" data-display="overlay" data-theme="a">
+
+            <a href="#" data-role="button" data-rel="close" data-theme="b" data-icon="delete" data-iconpos="left" data-inline="true">Zavřít</a>
+            <a href="nastaveni.html" data-role="button" data-icon="gear" data-iconpos="left">Nastavení</a>
+            <a href="skolni-rok.html" data-role="button" data-icon="gear" data-iconpos="left">Školní rok</a>
+
+            <a href="tabulka.html" data-role="button" data-icon="info" data-iconpos="left">Tabulka - hodnocení</a>
+
+
+            <a href="odhlaseni.html" data-role="button" data-icon="delete" data-iconpos="left">Odhlásit se</a>
+
+            <a href="napoveda.html" data-role="button" data-icon="search" data-iconpos="left">Nápověda</a>
+            <a href="o-aplikaci.html" data-role="button" data-icon="info" data-iconpos="left">O aplikaci</a>
+        </div>
+
+
+        <!--HEADER-->
+        <header id="header" data-role="header" data-theme="a" data-position="fixed">
+            <h1>Škola OnLine</h1>
+            <a href="#mainPanel" data-icon="bars">Menu</a>
+        </header>
+
+
+        <!--CONTENT-->
+        <div class="content" data-role="content">
+            <h3>Hlavní nabídka</h3>
+
+                <ul data-role="listview" class="ui-listview-inset">
+                    <li><a href="login.html">Přihlásit</a></li>
+                    <li><a href="rozvrh.html">Rozvrh</a></li>
+                    <li><a href="dochazka.html">Zapsat docházku</a></li>
+                    <li><a href="hodnoceni.html">Zadat hodnocení</a></li>
+
+                    <li data-role="divider">pokusy</li>
+                    <li><a href="neexistuje.html">neexistuje</a></li>
+                    <li><a href="main.html">různé prvky</a></li>
+                </ul>
+
+
+                <h5 id="orientation">API test: orientationchange není podporováno na daném zařízení</h5>
+
+                <p id="deviceProperties">Loading device properties...</p>
+
+
+
+
+                <input type="text" ng-model="pokus" />
+                <div>{{pokus}}</div>
+
+
+                <h4 class="list-inset">Vyberte školní rok</h4>
+
+
+                <ul ng-controller="SkolniRokyCtrl" id="skolni-roky-list2" data-role="listview" class="ui-listview-inset">
+
+                    <li class="item item-radio" ng-repeat="rok in skolniRoky">
+                        {{rok.OBDOBI_ID}} - {{rok.NAZEV}}
+                    </li>
+
+                </ul>
+
+
+</div>
+
+
+        <!--FOOTER-->
+        <footer data-role="footer" data-position="fixed"><h1>prototyp</h1></footer>
+
+    </section>
+
+
+
+    <!--<script src='lib/fastclick.js'></script>-->
+
+    
+    <!--<script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>-->
+    <script type="text/javascript" src="lib/jquery-1.11.1.min.js"></script>
+
+
+    <script>
+        var selectedDate = new Date();
+
+        //$(function () {
+        //    console.log(111);
+
+        //    FastClick.attach(document.body);
+
+        //    console.log(222);
+        //});
+
+
+
+
+    </script>
+
+    <!--<link rel="stylesheet" href="lib/jquery.ui.datepicker/jquery.ui.datepicker.mobile.css" />-->
+    <!--<script src="lib/jquery.ui.datepicker/jQuery.ui.datepicker.js"></script>-->
+    <!--<script src="lib/jquery.ui.datepicker/jquery.ui.datepicker.mobile.js"></script>-->
+    <!--<script src="lib/jquery-ui-1.11.0/jquery-ui.min.js"></script>-->
+
+
+
+    <!--<script src="lib/angular-1.2.20/angular.min.js"></script>
+    <script src="lib/angular-1.2.20/angular-route.min.js"></script>
+    <script src="lib/angular-ui-router.min.js"></script>
+    <script src="lib/angular-1.2.20/angular-resource.min.js"></script>
+    <script src="lib/angular-1.2.20/angular-touch.min.js"></script>-->
+
+    
+    <!--<script src="lib/angular-1.2.20/angular-sanitize.min.js"></script>
+    <script src="lib/angular-1.2.20/angular-cookies.min.js"></script>
+    <script src="lib/angular-1.2.20/angular-animate.min.js"></script>
+    <script src="lib/angular-1.2.20/angular-loader.min.js"></script>-->
+    
+
+    <script src="lib/base64.js"></script>
+
+    <script src="js/index.js"></script>
+
+    <!--CUSTOM SCRIPT-->
+    <script src="js/jqm-config.js"></script>
+    
+
+    <script src="js/app.js"></script>
+    
+    <!--
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>-->
+
+
+
+    
+    <script>
+        $(document)
+                .on("pagecreate", "#index", function (event, ui) {
+                    //console.log("pagecreate index", event, ui, ui.prevPage, ui.nextPage);
+                    //alert("pagecreate index");
+
+                    $(document).on("swiperight swipeleft", "#index", function (event) {
+
+                        //console.log("swiperight");
+
+                        if ($(".ui-page-active").jqmData("panel") !== "open") {
+                            if (event.type === "swiperight") {
+                                $("#mainPanel").panel("open");
+                            }
+                        }
+
+                    });
+
+                })
+                .on("pagebeforeshow", "#index", function (event, ui) {
+                    //console.log("index before show", event, ui, ui.prevPage, ui.nextPage);
+                })
+                .on("pageshow", "#index", function (event, ui) {
+                    //console.log("index show", event, ui, ui.prevPage, ui.nextPage);
+                })
+                .on("pagebeforeshow", "#second", function (event, ui) {
+                    //console.log("second before show", event, ui, ui.prevPage, ui.nextPage);
+                })
+                .on("pageshow", "#second", function (event, ui) {
+                    //console.log("second show", event, ui, ui.prevPage, ui.nextPage);
+                });
+    </script>
+
+
+
+    <script src="lib/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.js"></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+
+        window.onerror = function (x) {
+            alert(x);
+
+        }
+
+
+    </script>
+
+
+
+</body>
+
+</html>

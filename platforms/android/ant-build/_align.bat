@@ -1,1 +1,0 @@
-zipalign -v 4 SkolaOnLine-release-unsigned.apk SkolaOnLine-release-unsigned-aligned.apk

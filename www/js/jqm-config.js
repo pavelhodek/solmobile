@@ -1,6 +1,6 @@
 ﻿// musí se nahrát před jquery.mobile.js
 $(document).on("mobileinit", function () {
-    app.log("MOBILEINIT");
+    //app.log("MOBILEINIT");
 
     //// ANGULAR binding
     //$.mobile.ajaxEnabled = false;
@@ -46,7 +46,7 @@ $(document).on("mobileinit", function () {
 
 
     //$.mobile.page.prototype.options.degradeInputs.date = true;
-    app.log("MOBILEINIT - OK");
+    //app.log("MOBILEINIT - OK");
 });
 
 

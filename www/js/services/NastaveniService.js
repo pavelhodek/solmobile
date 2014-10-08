@@ -13,10 +13,10 @@
         // server: "http://172.20.2.26/SOLWebApi/api/";
 
         //me.apiURL = "http://localhost/SOLWebApi/api/";
-
+        var defaultApiUrl = "https://sol.cca.cz/SOLWebApi/api/";
 
         me.getApiURL = function () {
-            return localStorage.getItem("nastaveni.apiURL");
+            return localStorage.getItem("nastaveni.apiURL") || defaultApiUrl;
         }
 
         me.setApiURL = function (value) {

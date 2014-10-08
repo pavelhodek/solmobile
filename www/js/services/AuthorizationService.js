@@ -17,7 +17,7 @@
 
             var basicAuthHash = base64.encode(username + ":" + password); // window.btoa("ada:xx");
 
-            console.log('getAuthorizationHeader login: ' + username + " / " + password);
+            //console.log('getAuthorizationHeader login: ' + username + " / " + password);
 
             return 'Basic ' + basicAuthHash;
         }

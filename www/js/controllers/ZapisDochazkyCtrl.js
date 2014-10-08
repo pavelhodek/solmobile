@@ -1,23 +1,25 @@
-﻿; (function () {
+﻿;
+(function() {
     "use strict";
-    angular.module('sol.controllers')
+    angular.module('sol.controllers').controller('ZapisDochazkyCtrl', function ($scope, $rootScope, $log, $q, $filter, ZapisDochazkyService, RozvrhService, TridyService, ObdobiDneService) {
+        $log.debug('ZapisDochazkyCtrl');
 
-        .controller('ZapisDochazkyCtrl', function ($scope, $rootScope, $log, $q, $filter, ZapisDochazkyService, RozvrhService, TridyService, ObdobiDneService) {
-            $log.debug('ZapisDochazkyCtrl');
-
-            angular.element(document)
-                .on("pagecreate", "#dochazka", function (event, ui) {
-                    $log.debug("PAGECREATE - #DOCHAZKA");
-                })
-                .on("pageshow", "#dochazka", function (event, ui) {
+        angular.element(document)
+            .on("pagecreate", "#dochazka", function(event, ui) {
+                $log.debug("PAGECREATE - #DOCHAZKA");
+            })
+            .on("pageshow", "#dochazka", function(event, ui) {
                     $log.debug("PAGESHOW - #DOCHAZKA");
+                    $scope.reset();
                     $scope.loadData();
-                });
+                }
+            );
 
-            $scope.clearData = function () {
-                $scope.data = {};
-                $scope.isDataLoaded = false;
-            };
+        $scope.reset = function() {
+            $scope.data = {};
+            $scope.isDataLoaded = false;
+            $scope.posledniZadanyTypAbsence = null;
+        };
 
             //$scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví';
 
@@ -40,11 +42,11 @@
 
                 for (var i = 0, obdobiDneLength = obdobiDne.length; i < obdobiDneLength; i++) {
                     var typDochazky = '-';
-                    var obdobiDneID = obdobiDne[i].OBDOBI_DNE_ID;
+                    var obdobiDneId = obdobiDne[i].OBDOBI_DNE_ID;
                     for (var j = 0, dochazkyLength = dochazky.length; j < dochazkyLength; j++) {
                         var dochazka = dochazky[j];
-                        if (dochazka.OSOBA_ID == studentID && dochazka.OBDOBI_DNE_ID == obdobiDneID) {
-                            typDochazky = dochazka.TYP_DOCHAZKY;
+                        if (dochazka.OSOBA_ID == studentID && dochazka.OBDOBI_DNE_ID == obdobiDneId) {
+                            typDochazky = typDochazkyText(dochazka.TYP_DOCHAZKY);
                             break;
                         }
                     }
@@ -56,9 +58,36 @@
             }
 
 
+            function duvodAbsenceStudenta(dochazky, studentId) {
+                for (var i = 0, dochazkyLength = dochazky.length; i < dochazkyLength; i++) {
+                    var dochazka = dochazky[i];
+                    if (dochazka.OSOBA_ID == studentId) {
+                        return dochazka.POZNAMKA;
+                    }
+                }
+
+                return '';
+            }
+
+
+            function typDochazkyText(value) {
+                if (value == '') return "-";
+                if (value == "A") return "/";
+                if (value == "S") return "Š";
+                return value;
+            }
+
+            function typDochazkyValue(text) {
+                if (text == '-') return "";
+                if (text == "/") return "A";
+                if (text == "Š") return "S";
+                return text;
+            }
+
+
             function zadaneDochazky(studenti, obdobiDne) {
                 var result = [];
-                
+
                 studenti.forEach(function(student, studentIndex, studentArray) {
                     obdobiDne.forEach(function(obdobi, obdobiIndex, obdobiArray) {
                         result[result.length] = {
@@ -66,7 +95,7 @@
                             "OSOBA_ID": student.OSOBA_ID,
                             "DATUM": RozvrhService.selectedDatum,
                             "OBDOBI_DNE_ID": obdobi.OBDOBI_DNE_ID,
-                            "TYP_DOCHAZKY": student.DOCHAZKA[obdobiIndex],
+                            "TYP_DOCHAZKY": typDochazkyValue(student.DOCHAZKA[obdobiIndex]),
                             "OBDOBI_ID": obdobi.OBDOBI_ID,
                             "POZNAMKA": student.POZNAMKA,
                             "TYP_VYUKY": "T", //student.TYP_VYUKY,
@@ -80,17 +109,19 @@
             }
 
 
+            $scope.posledniZadanyTypAbsence = null;
 
-
-            $scope.prepniAbsenci = function (dochazka, index) {
-                if (dochazka[index] == '-')
-                    dochazka[index] = 'A';
-                else
+            $scope.prepniAbsenci = function(dochazka, index) {
+                if (dochazka[index] == '-') {
+                    dochazka[index] = '/'; // A / 
+                    $scope.posledniZadanyTypAbsence = '/';
+                } else {
                     dochazka[index] = '-';
-            }
+                    $scope.posledniZadanyTypAbsence = '-';
+                }
+            };
 
-
-            $scope.loadData = function () {
+            $scope.loadData = function() {
                 $log.log("ZapisDochazkyCtrl - loadData");
                 $scope.UdalostID = RozvrhService.selectedUdalostID;
                 $scope.UdalostPoradi = RozvrhService.selectedUdalostPoradi;
@@ -103,133 +134,95 @@
 
                 //$q.all([dochazky, getCountryCode(), getDevice()])
 
-                $q.all([dochazky, tridy, obdobiDne]).then(function (results) {
-                    $log.log("ZapisDochazkyCtrl - all resloved");
+                $q.all([dochazky, tridy, obdobiDne]).then(function(results) {
+                        $log.log("ZapisDochazkyCtrl - all resloved");
 
-                    var dochazky = results[0].data.Data;
-                    var tridy = results[1].data.Data;
-                    var obdobiDne = results[2].data.Data;
+                        var dochazky = results[0].data.Data;
+                        var tridy = results[1].data.Data;
+                        var obdobiDne = results[2].data.Data;
 
-                    $log.log(dochazky);
-                    $log.log(tridy);
-                    $log.log(obdobiDne);
+                        $log.log(dochazky);
+                        $log.log(tridy);
+                        $log.log(obdobiDne);
 
-                    $scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
+                        $scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
 
-                    var data = [];
-                    angular.forEach(dochazky.Studenti, function (value, key, object) {
-                        //this.push(key + ': ' + value);
-                        //$log.debug(value); // item
-                        //$log.debug(key); // 0 1 2 3
+                        //var data = [];
+                        angular.forEach(dochazky.Studenti, function(value, key, object) {
+                            //var nazevTridy = ($filter('filter')(tridy.data.Data, { SKUPINA_ID: value.SKUPINA_ID })[0]).NAZEV;
+                            $log.debug(value);
+                            //var trida = nazevTridy(tridy, value.TRIDA_ID); //TridyService.getNazev(value.TRIDA_ID);
+                            angular.extend(value, { TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID) });
+                            angular.extend(value, { DOCHAZKA: dochazkaStudenta(dochazky.Dochazky, dochazky.ObdobiDne, value.OSOBA_ID) });
+                            angular.extend(value, { POZNAMKA: duvodAbsenceStudenta(dochazky.Dochazky, value.OSOBA_ID) });
 
-                        //var nazevTridy = ($filter('filter')(tridy.data.Data, { SKUPINA_ID: value.SKUPINA_ID })[0]).NAZEV;
-                        $log.debug(value);
-                        //var trida = nazevTridy(tridy, value.TRIDA_ID); //TridyService.getNazev(value.TRIDA_ID);
-                        angular.extend(value, { TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID) });
-                        angular.extend(value, { DOCHAZKA: dochazkaStudenta(dochazky.Dochazky, dochazky.ObdobiDne, value.OSOBA_ID) });
+                            $log.debug(value);
 
-                        $log.debug(value);
+                            //this.push(value);
+                            //}, data);
+                        });
 
-                        this.push(value);
-                    }, data);
+                        //$log.debug(data);
 
-                    $log.debug(data);
+                        $scope.data = dochazky;
 
-
-
-                    //$scope.data = dochazky.data.Data;
-                    $scope.data = dochazky;
-
-                    $scope.isDataLoaded = true;
+                        $scope.isDataLoaded = true;
 
 
-                },
-                function (error) {
-                    $log.error(error);
-                });
+                    },
+                    function(error) {
+                        $log.error(error);
+                    });
 
 
-
-
-                //dochazky.then(
-                //    function (result) {
-                //        $log.log("ZapisDochazkyCtrl - loadData");
-
-                //        $scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
-
-                //        $log.debug(result);
-
-
-                //        var data = [];
-                //        angular.forEach(result.data.Data.Studenti, function (value, key, object) {
-                //            //this.push(key + ': ' + value);
-                //            //$log.debug(value); // item
-                //            //$log.debug(key); // 0 1 2 3
-                //            var nazevTridy = { TRIDA_NAZEV: "název" + key };
-                //            angular.extend(value, nazevTridy);
-                //            this.push(value);
-                //        }, data);
-
-                //        $log.debug(data);
-
-
-
-                //        $scope.data = result.data.Data;
-
-                //        $scope.isDataLoaded = true;
-                //    },
-                //    function (error) {
-                //        $log.error(error);
-                //    });
-
-
-                setTimeout(function () {
+                setTimeout(function() {
                     var table = angular.element('#dochazka-table');
                     table.table('refresh');
                     //angular.element('[type="text"]', '#hodnoceni-table').textinput();
                     //angular.element('[type="text"]', table).textinput();
                 }, 0);
-            }
-
-
-
-            /*
-            var udalostID = '';
-
-            var xx = ZapisDochazkyService.getByUdalostId(udalostID);
-
-            xx.then(
-                function (result) {
-                    //$log.log(result);
-                    $scope.data = result;
-                },
-                function (error) {
-                    $log.error(error);
-                });
-
-            */
-
-            $scope.nazevStudenta = function (student) {
-                return (student.PRIJMENI || '') + ' ' + (student.JMENO || '');
-            }
-
-
-            $scope.prednastavitDlePredchozi = function () {
-                $log.info('prednastavitDlePredchozi');
             };
 
-            $scope.ulozit = function () {
+
+            $scope.nazevStudenta = function(student) {
+                return (student.PRIJMENI || '') + ' ' + (student.JMENO || '');
+            };
+
+
+            $scope.prednastavitDlePredchozi = function() {
+                $log.info('prednastavitDlePredchozi');
+
+                angular.forEach($scope.data.Studenti, function (student) {
+                    student.DOCHAZKA.forEach(function(item, index, array) {
+                        item = $scope.posledniZadanyTypAbsence;
+                    });
+                });
+
+            };
+
+            $scope.ulozit = function() {
                 $log.info('ulozit');
                 $log.debug($scope.data);
 
-                ZapisDochazkyService.save($scope.UdalostID, $scope.UdalostPoradi, zadaneDochazky($scope.data.Studenti, $scope.data.ObdobiDne));
-            }
+                var status = ZapisDochazkyService.save($scope.UdalostID, $scope.UdalostPoradi, zadaneDochazky($scope.data.Studenti, $scope.data.ObdobiDne));
+                $log.info(status);
+                status.then(function (result) {
+                    $log.info(result);
+                    if (result.data.Code == "OK") {
+                        $("#popupDochazka").html("Uloženo.").popup("open");
+                    } 
+                    else if (result.data.Code == "ERROR")
+                    {
+                        $("#popupDochazka").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
+                    }
+                });
+            };
 
-            $scope.storno = function () {
+            $scope.storno = function() {
                 $log.info('storno');
                 //$log.debug($scope.data);
                 $.mobile.changePage('#rozvrh', 'slide', true, true);
-            }
+            };
 
         });
 })();

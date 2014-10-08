@@ -5,18 +5,18 @@
     module.factory('UdalostService', ['$http', '$q', '$log', 'NastaveniService', 'AuthorizationService', function ($http, $q, $log, NastaveniService, AuthorizationService) {
         $log.debug('UdalostService');
 
-        return {
-            getUdalostInfo: function (udalostId, udalostPoradi) {
-                $log.debug('Udalost');
-                var url = NastaveniService.getApiURL() + 'Udalost';
+        var me = {};
 
-                //$log.info(AuthorizationService.getAuthorizationHeader());
+        me.getUdalostInfo = function(udalostId, udalostPoradi) {
+            $log.debug('Udalost');
 
-                $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
+            var url = NastaveniService.getApiURL() + 'Udalosti' + '/' + udalostId + '/' + udalostPoradi;
 
-                return $http.get(url);
-            }
+            $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
+
+            return $http.get(url);
         };
-
+        
+        return me;
     }]);
 })();

@@ -416,30 +416,31 @@
         <div class="content" data-role="content">
             <h1>DOCHÁZKA</h1>
 
-            <table id="dochazka-table" data-role="table" class="ui-responsive table-stripe table-bordered ">
+            <table id="dochazka-table" data-role="table" data-mode="columntoggle" class="ui-responsive table-stripe table-bordered ">
                 <thead>
                     <tr>
-                        <th>Třída</th>
-                        <th>ČVTV</th>
+                        <th class="ui-table-priority-3">Třída</th>
+                        <th class="ui-table-priority-4">ČVTV</th>
                         <th>Příjmení a jméno</th>
                         <th ng-repeat="obdobi in data.ObdobiDne">{{obdobi.NAZEV}}. hod</th>
-                        <th>Důvod absence</th>
+                        <th class="ui-table-priority-3">Důvod absence</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="student in data.Studenti">
-                        <td>{{ student.TRIDA_NAZEV }}</td>
-                        <td>{{ student.CVTV }}</td>
+                        <td class="ui-table-priority-3">{{ student.TRIDA_NAZEV }}</td>
+                        <td class="ui-table-priority-4">{{ student.CVTV }}</td>
                         <td>{{ nazevStudenta(student) }}</td>
-                        
+
                         <td ng-repeat="obdobi in data.ObdobiDne">
                             <button class="ui-btn ui-mini ui-btn-inline" ng-click="prepniAbsenci(student.DOCHAZKA, $index)"> {{ student.DOCHAZKA[$index] }} </button>
                         </td>
 
-                        <td><input type="text" ng-model="student.POZNAMKA" /></td>
+                        <td class="ui-table-priority-3"><input type="text" ng-model="student.POZNAMKA" /></td>
                     </tr>
                 </tbody>
-            </table>            
+            </table>   
+            <div data-role="popup" id="popupDochazka"></div>         
         </div>
 
 

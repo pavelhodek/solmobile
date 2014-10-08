@@ -193,10 +193,14 @@
                 $log.info('prednastavitDlePredchozi');
 
                 angular.forEach($scope.data.Studenti, function (student) {
+                    var newDochazka = [];
                     student.DOCHAZKA.forEach(function(item, index, array) {
-                        item = $scope.posledniZadanyTypAbsence;
+                        newDochazka[newDochazka.length] = $scope.posledniZadanyTypAbsence;
                     });
+                    student.DOCHAZKA = newDochazka;
                 });
+
+                //$log.debug($scope.data.Studenti);
 
             };
 

@@ -1,4 +1,4 @@
-﻿//'use strict';
+//'use strict';
 
 // angular app
 (function () {
@@ -25,6 +25,27 @@
 
 
 
+var deviceReadyDeferred = $.Deferred();
+var jqmReadyDeferred = $.Deferred();
+
+//document.addEventListener("deviceReady", deviceReady, false);
+
+//function deviceReady() {
+//  deviceReadyDeferred.resolve();
+//}
+
+//$(document).on("mobileinit", function () {
+//  jqmReadyDeferred.resolve();
+//});
+
+//$.when(deviceReadyDeferred, jqmReadyDeferred).then(doWhenBothFrameworksLoaded);
+
+//function doWhenBothFrameworksLoaded() {
+//  // TBD
+//}
+
+
+
 var app = {
 
     //log: function (message) {
@@ -36,8 +57,8 @@ var app = {
     // APPLICATION CONSTRUCTOR
     initialize: function () {
         //this.log("initialize");
-        this.deviceReadyDeferred = $.Deferred();
-        this.jqmReadyDeferred = $.Deferred();
+        //this.deviceReadyDeferred = $.Deferred();
+        //this.jqmReadyDeferred = $.Deferred();
 
         this.bindEvents();
     },
@@ -48,15 +69,24 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function () {
         //this.log("bindEvents");
-        document.addEventListener('deviceReady', this.onDeviceReady, false);
+        //document.addEventListener('deviceReady', this.onDeviceReady, false);
+        document.addEventListener("deviceReady", this.onDeviceReady, false);
 
+
+        //$(document).on("mobileinit", function () {
+        //    //this.log("mobileinit");
+        //    this.jqmReadyDeferred.resolve();
+        //});
 
         $(document).on("mobileinit", function () {
-            //this.log("mobileinit");
-            this.jqmReadyDeferred.resolve();
+            jqmReadyDeferred.resolve();
         });
 
-        $.when(this.deviceReadyDeferred, this.jqmReadyDeferred).then(this.doWhenAllFrameworksLoaded);
+
+        //$.when(this.deviceReadyDeferred, this.jqmReadyDeferred).then(this.doWhenAllFrameworksLoaded);
+
+        $.when(deviceReadyDeferred, jqmReadyDeferred).then(this.doWhenAllFrameworksLoaded);
+
         //this.log("bindEvents - ok");
     },
 
@@ -67,7 +97,8 @@ var app = {
     onDeviceReady: function () {
         //this.log("onDeviceReady");
 
-        this.deviceReadyDeferred.resolve();
+        deviceReadyDeferred.resolve();
+        //this.deviceReadyDeferred.resolve();
 
         app.receivedEvent('deviceready');
 

@@ -132,8 +132,6 @@
 
                 var dochazky = ZapisDochazkyService.getByRozvrhovaUdalost($scope.UdalostID, $scope.UdalostPoradi);
 
-                //$q.all([dochazky, getCountryCode(), getDevice()])
-
                 $q.all([dochazky, tridy, obdobiDne]).then(function(results) {
                         $log.log("ZapisDochazkyCtrl - all resloved");
 
@@ -147,19 +145,14 @@
 
                         $scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
 
-                        //var data = [];
                         angular.forEach(dochazky.Studenti, function(value, key, object) {
-                            //var nazevTridy = ($filter('filter')(tridy.data.Data, { SKUPINA_ID: value.SKUPINA_ID })[0]).NAZEV;
                             $log.debug(value);
-                            //var trida = nazevTridy(tridy, value.TRIDA_ID); //TridyService.getNazev(value.TRIDA_ID);
                             angular.extend(value, { TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID) });
                             angular.extend(value, { DOCHAZKA: dochazkaStudenta(dochazky.Dochazky, dochazky.ObdobiDne, value.OSOBA_ID) });
                             angular.extend(value, { POZNAMKA: duvodAbsenceStudenta(dochazky.Dochazky, value.OSOBA_ID) });
 
                             $log.debug(value);
 
-                            //this.push(value);
-                            //}, data);
                         });
 
                         //$log.debug(data);

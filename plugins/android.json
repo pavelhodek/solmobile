@@ -23,13 +23,13 @@
     },
     "installed_plugins": {
         "org.apache.cordova.device": {
-            "PACKAGE_NAME": "cz.skolaonline.sol"
+            "PACKAGE_NAME": "cz.skolaonline.mobile.ucitel"
         },
         "com.plugin.datepicker": {
-            "PACKAGE_NAME": "cz.skolaonline.sol"
+            "PACKAGE_NAME": "cz.skolaonline.mobile.ucitel"
         },
         "org.apache.cordova.console": {
-            "PACKAGE_NAME": "cz.skolaonline.sol"
+            "PACKAGE_NAME": "cz.skolaonline.mobile.ucitel"
         }
     },
     "dependent_plugins": {}

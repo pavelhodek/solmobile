@@ -23,7 +23,23 @@
                 $scope.loadData();
             }
 
+
+            function pause(ms) {
+                console.log('pause: ' + ms);
+                ms += new Date().getTime();
+                while (new Date() < ms) { }
+            }
+
+
             $scope.loadData = function () {
+
+                $.mobile.loading("show", {
+                    text: "načítám...",
+                    textVisible: true,
+                    theme: "a",
+                    html: ""
+                });
+
                 var data = RozvrhService.getByDatum($scope.selectedDate);
                 /*
                 xx.then(
@@ -70,7 +86,7 @@
                             //angular.element('[type="text"]', table).textinput();
                         }, 0);
 
-
+                        $.mobile.loading("hide");
 
                     })
                     .error(function (error, status, headers, config) {
@@ -80,6 +96,9 @@
                         if (status == 401) {
                             setTimeout(function () { $.mobile.changePage('#login'); }, 0);
                         }
+
+
+                        $.mobile.loading("hide");
 
                     })
                 ;
@@ -203,6 +222,10 @@
                 SelectedDateService.decrementSelectedDate();
                 $scope.selectedDate = SelectedDateService.getSelectedDate();
 
+                $scope.data = null;
+
+
+
                 $scope.loadData();
             }
 
@@ -211,7 +234,25 @@
                 SelectedDateService.incrementSelectedDate();
                 $scope.selectedDate = SelectedDateService.getSelectedDate();
 
+                $scope.data = null;
+
+
+
+
+                setTimeout(function () {
+                    var table = angular.element('#rozvrh-table');
+                    table.listview('refresh');
+
+                    //angular.element('[type="text"]', '#hodnoceni-table').textinput();
+                    //angular.element('[type="text"]', table).textinput();
+                }, 0);
+                //pause(2000);
+
+
                 $scope.loadData();
+
+                
+
             }
 
 

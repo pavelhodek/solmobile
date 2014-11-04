@@ -1,18 +1,20 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="cz.skolaonline.mobile.ucitel" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>SkolaOnLine</name>
+    <name>Škola OnLine pro učitele</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Škola OnLine pro učitele. Rozvrh hodin, zadávání docházky a hodnocení.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
-    </author>
+    <author email="hotline@skolaonline.cz" href="http://www.skolaonline.cz/">
+        Škola OnLine, a.s.
+   </author>
     <content src="index.html" />
     <access origin="*" />
 
-    <icon src="sol.png" />
+    <!-- ICONS -->
 
-   <!-- PLATFORM SELECTION -->
+    <icon src="icon.png" />
+
+    <!-- PLATFORM SELECTION -->
 
     <gap:platform name="ios" />
     <gap:platform name="android" />
@@ -22,10 +24,16 @@
 
     <preference name="phonegap-version" value="3.3.0" />
     <preference name="orientation" value="default" />
-    <preference name="fullscreen" value="true" /> <!-- remove the upper bar on iOS and Android -->
+
+    <!-- remove the upper bar on iOS and Android -->
+    <!-- <preference name="fullscreen" value="true" /> -->
 
     <!-- iOS PREFERENCES -->
 
     <preference name="target-device" value="universal" />
+
+    <!-- PHONEGAP API FEATURES PREFERENCES -->
+
+    <preference name="permissions" value="none"/>
 
 </widget>

@@ -81,8 +81,9 @@
                 $log.info('ulozit');
             }
 
-            $scope.storno = function () {
-                $log.info('storno');
+            $scope.zpet = function () {
+                $log.info('zpet');
+                $.mobile.changePage('#rozvrh', 'slide', true, true);
             }
 
         }]);

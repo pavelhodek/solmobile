@@ -41,9 +41,9 @@
 
 
     <!--ANGULAR-->
-    <script src="lib/angular-1.2.20/angular.js"></script>
+    <script src="lib/angular-1.2.20/angular.min.js"></script>
     <script src="lib/angular-1.2.20/angular-resource.min.js"></script>
-    <script src="lib/angular-1.2.20/i18n/angular-locale_cs-cz.js"></script>
+    <script src="lib/angular-1.2.20/i18n/angular-locale_cs.js"></script>
 
 
 
@@ -64,6 +64,8 @@
     <script src="js/services/ZapisHodnoceniService.js"></script>
     <script src="js/services/ZapisDochazkyService.js"></script>
     <script src="js/services/SkolniRokyService.js"></script>
+    <script src="js/services/UdalostService.js"></script>
+    
 
     <!--CONTROLLERS-->
     <!--<script src="js/controllers.js"></script>-->
@@ -139,7 +141,7 @@
         <header data-role="header">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
             <!--<h1>Přihlášení do aplikace</h1>-->
-            <center><img src="img/skola-on-line-logo.png" /></center>
+            <div style="text-align: center;" ><img src="img/skola-on-line-logo.png" alt="logo Škola OnLine"/></div>
             <!--<a href="#index" class="ui-btn-right">Zrušit</a>-->
         </header>
 
@@ -177,7 +179,7 @@
             <!--<h1>Odhlášení z aplikace</h1>-->
         </header>
 
-        <buton id="logoutButton" style="display: hidden" ng-click="logout()"></buton>
+        <button id="logoutButton" style="display: none" ng-click="logout()"></button>
         
         <script>
 
@@ -272,12 +274,16 @@
                 <li ng-repeat="udalost in data">
                     <a ng-click="showPopupMenu($event, udalost)">
                         <div style="display:table-cell">
-                            <div style="text-align:center">{{udalost.OBDOBI_DNE_OD_NAZEV}} - {{udalost.OBDOBI_DNE_DO_NAZEV}}</div>
+                            <div style="text-align:center">
+                                {{obdobiDneNazev(udalost)}}
+                            </div>
                             <p>{{udalost.CAS_OD | date:timeFormat}} - {{udalost.CAS_DO | date:timeFormat}}</p>
                         </div>
                         <div style="display:table-cell; padding-left: 20px">
                             {{udalost.NAZEV}}
-                            <!--<p>{{radka.UdalostInfo}}</p>-->
+                            <p>
+                                {{zdrojeInfo(udalost)}}
+                            </p>
                         </div>
                     </a>
                     <a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
@@ -429,12 +435,12 @@
                         <td class="ui-table-priority-3">{{ student.TRIDA_NAZEV }}</td>
                         <td class="ui-table-priority-4">{{ student.CVTV }}</td>
                         <td>{{ nazevStudenta(student) }}</td>
-
+                        
                         <td ng-repeat="obdobi in data.ObdobiDne">
-                            <button class="ui-btn ui-mini ui-btn-inline" ng-click="prepniAbsenci(student.DOCHAZKA, $index)"> {{ student.DOCHAZKA[$index] }} </button>
+                            <button class="ui-btn ui-mini ui-btn-inline" ng-click="prepniAbsenci(student.DOCHAZKA, $index, $parent.$index)"> {{ student.DOCHAZKA[$index] }} </button>
                         </td>
 
-                        <td class="ui-table-priority-3"><input type="text" ng-model="student.POZNAMKA" /></td>
+                        <td class="ui-table-priority-3"><input type="text" ng-model="student.POZNAMKA" ng-change="editacePoznamky($index)" /></td>
                     </tr>
                 </tbody>
             </table>   
@@ -447,11 +453,11 @@
             <table style="width: 100%; text-align: center;">
                 <tr>
                     <td>&nbsp;</td>
-                    <td><a data-role="button" ng-click="prednastavitDlePredchozi()">Přednastavit dle předchozí</a></td>
+                    <td><a data-role="button" ng-click="prednastavitDlePredchozi()">Nastavit dle předchozí</a></td>
                     <td style="width: 50%">&nbsp;</td>
                     <td><a data-role="button" ng-click="ulozit()">Uložit</a></td>
                     <td style="width: 50%">&nbsp;</td>
-                    <td><a data-role="button" ng-click="storno()">Storno</a></td>
+                    <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
                     <td>&nbsp;</td>
                 </tr>
             </table>
@@ -504,11 +510,11 @@
             <table style="width: 100%; text-align: center;">
                 <tr>
                     <td>&nbsp;</td>
-                    <td><a data-role="button" ng-click="prednastavitDlePredchozi()">Přednastavit dle předchozí</a></td>
+                    <td><a data-role="button" ng-click="prednastavitDlePredchozi()">Nastavit dle předchozí</a></td>
                     <td style="width: 50%">&nbsp;</td>
                     <td><a data-role="button" ng-click="ulozit()">Uložit</a></td>
                     <td style="width: 50%">&nbsp;</td>
-                    <td><a data-role="button" ng-click="storno()">Storno</a></td>
+                    <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
                     <td>&nbsp;</td>
                 </tr>
             </table>
@@ -524,7 +530,7 @@
 
 
     <!--PROBIRANE-UCIVO-->
-    <section id="probirane-ucivo" data-role="page">
+    <section id="probirane-ucivo" data-role="page" ng-controller="ProbiraneUcivoCtrl">
 
         <!--HEADER-->
         <header data-role="header" data-position="fixed">
@@ -589,7 +595,7 @@
                     <td style="width: 50%">&nbsp;</td>
                     <td><a data-role="button" ng-click="ulozitAZadatDochazku()">Uložit a zadat docházku</a></td>
                     <td style="width: 50%">&nbsp;</td>
-                    <td><a data-role="button" ng-click="storno()">Storno</a></td>
+                    <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
                     <td>&nbsp;</td>
                 </tr>
             </table>

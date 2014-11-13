@@ -62,7 +62,7 @@
         me.selectedUdalostPoradi = null;
         me.selectedDatum = null;
 
-        me.getByDatum = function(date) {
+        me.getByDatum = function (date) {
             $log.debug('RozvrhService - getByDatum');
 
             $log.debug(date);
@@ -78,6 +78,9 @@
 
             return $http.get(url);
         };
+
+
+
 
         return me;
     }]);

@@ -5,7 +5,7 @@
     module.factory('NastaveniService', ['$http', function ($http) {
         var me = {};
 
-        me.timeFormat = "HH:mm";
+        me.timeFormat = "H:mm";
         me.dateFormat = "EEEE d.M.yyyy";
 
         // localhost: "http://localhost/SOLWebApi/api/";

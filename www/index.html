@@ -41,7 +41,7 @@
 
 
     <!--ANGULAR-->
-    <script src="lib/angular-1.2.20/angular.min.js"></script>
+    <script src="lib/angular-1.2.20/angular.js"></script>
     <script src="lib/angular-1.2.20/angular-resource.min.js"></script>
     <script src="lib/angular-1.2.20/i18n/angular-locale_cs.js"></script>
 
@@ -65,6 +65,9 @@
     <script src="js/services/ZapisDochazkyService.js"></script>
     <script src="js/services/SkolniRokyService.js"></script>
     <script src="js/services/UdalostService.js"></script>
+    <script src="js/services/StupniceHodnoceniService.js"></script>
+    <script src="js/services/ProbiraneUcivoService.js"></script>
+    
     
 
     <!--CONTROLLERS-->
@@ -103,12 +106,12 @@
         <!--CONTENT-->
         <div class="content" data-role="content">
 
-            vše je přístupné z menu v záhlaví
+            Nastavení, přihlášení, výpis rozvrhu, zadávání docházky a další funkce jsou přístupné z menu v záhlaví.
 
-            <button ng-click="redirectToLogin()">login</button>
-            <a href="#login" id="redirectToLogin" >login</a>
+            <!--<button ng-click="redirectToLogin()">login</button>
+            <a href="#login" id="redirectToLogin" >login</a>-->
 
-            <div id="deviceProperties"></div>
+            <!--<div id="deviceProperties"></div>-->
 
         </div>
 
@@ -126,8 +129,22 @@
 
         <!--CONTENT-->
         <div class="content" data-role="content">
-            <label for="apiURL">URL adresa pro komunikaci:</label>
-            <input type="url" id="apiURL" ng-model="apiURL" data-clear-btn="true" />
+            <div class="ui-field-contain">
+                <label for="apiURL">URL adresa pro komunikaci:</label><br />
+                <input type="url" id="apiURL" ng-model="apiURL" data-clear-btn="true" />
+            </div>
+            <!--<div class="ui-field-contain">
+                <label><input type="checkbox" id="remember" ng-model="remember" />Nabízet v rozvrhu sobotu / neděli</label>
+            </div>
+            <div class="ui-field-contain">
+                <label for="aktivniSkolniRok">Aktivní školní rok:</label><br />
+
+                <select name="aktivniSkolniRok" id="aktivniSkolniRok" data-native-menu="true">
+                    <option value="2013">2013/2014</option>
+                    <option value="2014">2014/2015</option>
+                    <option value="2015">2015/2016</option>
+                </select>
+            </div>-->
 
             <div data-role="popup" id="popupNastaveni"></div>
         </div>
@@ -444,7 +461,7 @@
                     </tr>
                 </tbody>
             </table>   
-            <div data-role="popup" id="popupDochazka"></div>         
+            <div data-role="popup" id="popupDochazka"></div>
         </div>
 
 
@@ -479,30 +496,119 @@
 
         <!--CONTENT-->
         <div class="content" data-role="content">
-            {{UdalostID}} - {{UdalostPoradi}}
-            <button ng-click="loadData()" class="ui-btn ui-btn-inline ui-mini">load data</button>
-            <button ng-click="clearData()" class="ui-btn ui-btn-inline ui-mini">clear data</button>
+            <!--{{UdalostID}}  {{UdalostPoradi}}-->
+            <!--<button ng-click="loadData()" class="ui-btn ui-btn-inline ui-mini">load data</button>
+            <button ng-click="clearData()" class="ui-btn ui-btn-inline ui-mini">clear data</button>-->
+            <div class="ui-field-contain">
+                <label for="hodnoceniPololeti">Započítávat do</label>
+                <select name="hodnoceniPololeti" id="hodnoceniPololeti" data-native-menu="true"
+                        ng-options="item.OBDOBI_ID as item.NAZEV for item in data.ObdobiRoku"
+                        ng-model="data.Hodnoceni.OBDOBI_ID_P"></select>
+            </div>
+            <div class="ui-field-contain">
+                <label for="hodnoceniDruh">Druh hodnocení</label>
+                <select name="hodnoceniDruh" id="hodnoceniDruh" data-native-menu="true"
+                        ng-options="item.DRUH_UDALOSTI_ID as item.NAZEV for item in data.DruhyHodnoceni"
+                        ng-model="data.Hodnoceni.DRUH_UDALOSTI_ID"></select>
+            </div>
+            <div class="ui-field-contain">
+                <label>Téma</label>
+                <input type="text" ng-model="data.Hodnoceni.NAZEV" />
+            </div>
+            <div class="ui-field-contain">
+                <label>Komentář</label>
+                <textarea rows="6" name="textarea" id="textarea" ng-model="data.Hodnoceni.POPIS"></textarea>
+            </div>
 
-            <table id="hodnoceni-table" data-role="table" class="ui-responsive table-stripe table-bordered ">
+            <hr />
+            
+            <table id="hodnoceni-table" data-role="table" data-mode="columntoggle" class="ui-responsive table-stripe table-bordered ">
                 <thead>
                     <tr>
-                        <th>ČVTV</th>
+                        <th class="ui-table-priority-3">Třída</th>
+                        <th class="ui-table-priority-4">ČVTV</th>
                         <th>Příjmení a jméno</th>
                         <th>Známka</th>
-                        <th>Slovní hodnocení</th>
+                        <th class="ui-table-priority-3">Slovní hodnocení</th>
                     </tr>
                 </thead>
                 <tbody id="znamky-table-body">
-                    <tr ng-repeat="radka in data">
-                        <td>{{ radka.cvtv }}</td>
-                        <td>{{ radka.jmeno }}</td>
-                        <td>{{ radka.znamka }}</td>
-                        <td><input type="text" ng-model="radka.slovniHodnoceni" /></td>
+                    <tr ng-repeat="student in data.Studenti">
+                        <td class="ui-table-priority-3">{{ student.TRIDA_NAZEV }}</td>
+                        <td class="ui-table-priority-4">{{ student.CVTV }}</td>
+                        <td>{{ nazevStudenta(student) }}</td>
+                        
+                        <!--<td><button class="ui-btn ui-mini ui-btn-inline" ng-click="prepniHodnoceni(student, $index)"> {{ student.VYSLEDEK }} </button></td>-->
+                        <td>
+                            <button class="ui-btn ui-mini ui-btn-inline"
+                                    ng-click="prepniHodnoceni(student, $index, $event)">
+                                {{ student.VYSLEDEK }}
+                            </button>
+                        </td>
+                        <td class="ui-table-priority-3"><input type="text" ng-model="student.VYSLEDEK_TEXT" /></td>
+                        
                         <!--<td><div class="ui-input-text ui-body-inherit"><input type="text"></div></td>-->
                     </tr>
                 </tbody>
             </table>
+            <div data-role="popup" id="hodnoceniInfoPopup"></div>
+
+            <div data-role="popup" id="hodnoceniVyberPopup" class="ui-content" data-theme="a" data-overlay-theme="a">
+                Výběr hodnocení
+                <hr />
+                <fieldset data-role="controlgroup" data-mini="true">
+                    
+                    <!--<input name="hodnoceni-vyber" id="hodnoceni-vyber-1" value="1" type="radio" ng-change="nastavHodnoceni(student, '1')">
+                    <label for="hodnoceni-vyber-1">1</label>
+
+                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-2" value="2" type="radio" ng-change="nastavHodnoceni(student, '2')">
+                    <label for="hodnoceni-vyber-2">2</label>
+
+                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-3" value="3" type="radio" ng-change="nastavHodnoceni(student, '3')">
+                    <label for="hodnoceni-vyber-3">3</label>
+
+                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-4" value="4" type="radio" ng-change="nastavHodnoceni(student, '4')">
+                    <label for="hodnoceni-vyber-4">4</label>
+
+                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-5" value="5" type="radio" ng-change="nastavHodnoceni(student, '5')">
+                    <label for="hodnoceni-vyber-5">5</label>
+                    
+                    <label><input name="hodnoceni-vyber" id="hodnoceni-vyber-nehodnocen" value="-" type="radio">nehodnocen(-)</label>
+                    <label><input name="hodnoceni-vyber" id="hodnoceni-vyber-nezadano" value="" type="radio">nezadáno</label>-->
+                    
+                    
+                    <label ng-repeat="stupen in data.StupniceHodnoceni">
+                        <input type="radio"
+                               name="hodnoceni-vyber"
+                               id="hodnoceni-vyber-{{$index + 1}}"
+                               ng-model="$parent.vybraneHodnoceni"
+                               ng-change="nastavHodnoceni('{{stupen.HODNOTA}}')"
+                               value="{{stupen.HODNOTA}}">{{stupen.HODNOTA}}
+                    </label>
+
+
+
+                        <!--<div class="ui-radio ui-mini" ng-repeat="stupen in data.StupniceHodnoceni">
+                <label for="hodnoceni-vyber-{{$index + 1}}"
+                       class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-radio-off">{{stupen.HODNOTA}}</label>
+                <input name="hodnoceni-vyber" id="hodnoceni-vyber-{{$index + 1}}" value="{{stupen.HODNOTA}}" type="radio">
+            </div>-->
+                        <!--<div class="ui-radio ui-mini">
+                <label for="hodnoceni-vyber-nehodnocen"
+                       class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-radio-off">nehodnocen (-)</label>
+                <input name="hodnoceni-vyber" id="hodnoceni-vyber-nehodnocen" value="nehodnocen" type="radio">
+            </div>
+            <div class="ui-radio ui-mini">
+                <label for="hodnoceni-vyber-nezadano"
+                       class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-radio-off">nezadáno</label>
+                <input name="hodnoceni-vyber" id="hodnoceni-vyber-nezadano" value="nezadano" type="radio">
+            </div>-->
+                </fieldset>
+                <hr />
+                <label><input type="checkbox" id="hodnoceniNastavitVsem" ng-model="hodnoceniNastavitVsem" data-mini="true" />nastavit všem</label>
+            </div>
         </div>
+        
 
 
         <!--FOOTER-->
@@ -510,21 +616,15 @@
             <table style="width: 100%; text-align: center;">
                 <tr>
                     <td>&nbsp;</td>
-                    <td><a data-role="button" ng-click="prednastavitDlePredchozi()">Nastavit dle předchozí</a></td>
-                    <td style="width: 50%">&nbsp;</td>
                     <td><a data-role="button" ng-click="ulozit()">Uložit</a></td>
+                    <td style="width: 50%">&nbsp;</td>
+                    <td><a data-role="button" ng-click="ulozitAPodobne()">Uložit a nové</a></td>
                     <td style="width: 50%">&nbsp;</td>
                     <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
                     <td>&nbsp;</td>
                 </tr>
             </table>
         </footer>
-
-        <script type="text/javascript">
-
-
-        </script>
-
     </section>
 
 
@@ -536,53 +636,43 @@
         <header data-role="header" data-position="fixed">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
             <h1>Probírané učivo</h1>
-
-            <p class="sol-subheader">27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace</p>
+            <p class="sol-subheader">{{popisHodiny}}</p>
         </header>
 
         <!--CONTENT-->
         <div class="content" data-role="content">
-            <!--<div data-role="fieldcontain">-->
 
-            <form>
+            <div class="ui-field-contain">
+                <label for="trida">Třída</label>
 
-                <div class="ui-field-contain">
-                    <label for="select-native-1">Třída</label>
-                    <!---->
-                    <select name="trida" id="trida"
-                            data-native-menu="false"
-                            multiple="multiple">
-                        <!--<option>Vyberte třídu</option>-->
-                        <option value="1A">1.A</option>
-                        <option value="2A">2.A</option>
-                        <option value="3A">3.A</option>
-                        <option value="4A">4.A</option>
-                    </select>
+                <select name="trida" id="trida"
+                        data-native-menu="false">
+                        <!--multiple="multiple"-->
+                    <!--<option>Vyberte třídu</option>-->
+                    <option value="1A">1.A</option>
+                    <option value="2A">2.A</option>
+                    <option value="3A">3.A</option>
+                    <option value="4A">4.A</option>
+                </select>
 
-                </div>
+            </div>
 
+            <div class="ui-field-contain">
+                <label for="cisloHodiny">Číslo hodiny</label>
+                <input name="cisloHodiny" id="cisloHodiny" value="" type="text">
+            </div>
 
+            <div class="ui-field-contain">
+                <label for="probiraneUcivo">Probírané učivo</label>
+                <input name="probiraneUcivo" id="probiraneUcivo" value="" type="text">
+            </div>
 
+            <div class="ui-field-contain">
+                <label for="poznamka">Poznámka</label>
+                <textarea name="poznamka" id="poznamka" rows="8">nějaký text</textarea>
+            </div>
 
-                <div class="ui-field-contain">
-                    <label for="cisloHodiny">Číslo hodiny</label>
-                    <input name="cisloHodiny" id="cisloHodiny" value="" type="text">
-                </div>
-
-                <div class="ui-field-contain">
-                    <label for="probiraneUcivo">Probírané učivo</label>
-                    <input name="probiraneUcivo" id="probiraneUcivo" value="" type="text">
-                </div>
-
-                <div class="ui-field-contain">
-                    <label for="poznamka">Poznámka</label>
-                    <textarea name="poznamka" id="poznamka" rows="8">nějaký text</textarea>
-                </div>
-
-                <label><input type="checkbox" name="rememberLogin" id="rememberLogin" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
-
-
-            </form>
+            <label><input type="checkbox" name="rememberLogin" id="rememberLogin" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
         </div>
 
 

@@ -20,20 +20,16 @@
         me.getNazev = function (id) {
             //$log.debug(id);
             me.all().then(function (result) {
-                $log.debug(result.data.Data.length);
+                //$log.debug(result.data.Data.length);
                 for (var i = 0, len = result.data.Data.length; i < len; i++) {
                     if (result.data.Data[i].SKUPINA_ID == id) {
-                        $log.debug(result.data.Data[i].NAZEV);
+                        //$log.debug(result.data.Data[i].NAZEV);
                         return result.data.Data[i].NAZEV;
                     }
                 }
 
                 return '';
             });
-
-            //var item = $filter('filter')(me.all(), function (d) { return d.Data.SKUPINA_ID === id; })[0];
-            //return item.NAZEV;
-
 
         }
 

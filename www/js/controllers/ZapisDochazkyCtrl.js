@@ -1,5 +1,4 @@
-﻿;
-(function () {
+﻿; (function () {
     "use strict";
     angular.module('sol.controllers').controller('ZapisDochazkyCtrl', function ($scope, $rootScope, $log, $q, $filter, ZapisDochazkyService, RozvrhService, TridyService, ObdobiDneService, UdalostService) {
         $log.debug('ZapisDochazkyCtrl');
@@ -12,8 +11,7 @@
                 $log.debug("PAGESHOW - #DOCHAZKA");
                 $scope.reset();
                 $scope.loadData();
-            }
-            );
+            });
 
         $scope.reset = function () {
             $scope.data = {};
@@ -23,23 +21,54 @@
             $scope.posledniEditovanyStudentIndex = null;
         };
 
-        //$scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví';
 
-
-        function nazevTridy(tridy, id) {
+        function findTridaById(tridy, id) {
             for (var i = 0, len = tridy.length; i < len; i++) {
                 if (tridy[i].SKUPINA_ID == id) {
-                    $log.debug(tridy[i].NAZEV);
-                    return tridy[i].NAZEV;
+                    //$log.debug(tridy[i]);
+                    return tridy[i];
                 }
             }
 
-            return '';
+            return null;
         }
+
+        //function getTridaNazev(tridy, id) {
+        //    var trida = findTridaById(tridy, id);
+        //    if (trida != null)
+        //        return trida.NAZEV;
+        //    else
+        //        return '';
+        //}
+
+        //function getTridaPoradi(tridy, id) {
+        //    var trida = findTridaById(tridy, id);
+        //    if (trida != null)
+        //        return trida.PORADI;
+        //    else
+        //        return 0;
+        //}
+
+
+        function getTridaNazev(trida) {
+            if (trida != null)
+                return trida.NAZEV;
+            else
+                return '';
+        }
+
+        function getTridaPoradi(trida) {
+            if (trida != null)
+                return trida.PORADI;
+            else
+                return 0;
+        }
+
+
 
         function dochazkaStudenta(dochazky, obdobiDne, studentID) {
             var result = [];
-            $log.debug(dochazky);
+            //$log.debug(dochazky);
 
 
             for (var i = 0, obdobiDneLength = obdobiDne.length; i < obdobiDneLength; i++) {
@@ -133,6 +162,7 @@
 
         $scope.loadData = function () {
             $log.log("ZapisDochazkyCtrl - loadData");
+
             $scope.UdalostID = RozvrhService.selectedUdalostID;
             $scope.UdalostPoradi = RozvrhService.selectedUdalostPoradi;
 
@@ -142,32 +172,79 @@
 
             var dochazky = ZapisDochazkyService.getByRozvrhovaUdalost($scope.UdalostID, $scope.UdalostPoradi);
             // pockam na vsechny promise
-            $q.all([dochazky, tridy, obdobiDne]).then(function (results) {
+            $q.all([dochazky, tridy, obdobiDne]).then(function(results) {
                 $log.log("ZapisDochazkyCtrl - all resloved");
 
                 var dochazky = results[0].data.Data;
                 var tridy = results[1].data.Data;
                 var obdobiDne = results[2].data.Data;
 
-                $log.log(dochazky);
-                $log.log(tridy);
-                $log.log(obdobiDne);
+                //$log.log(dochazky);
+                //$log.log(tridy);
+                //$log.log(obdobiDne);
 
-                // $scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
                 UdalostService.getPopisHodiny($scope.UdalostID, $scope.UdalostPoradi).then(
-                    function (result) { $scope.popisHodiny = result.data; $log.debug(result); },
-                    function (error) { $scope.popisHodiny = ''; $log.error(error); }
-                    );
+                    function(result) {
+                        $scope.popisHodiny = result.data;
+                        //$log.debug(result);
+                    },
+                    function(error) {
+                        $scope.popisHodiny = '';
+                        //$log.error(error);
+                    }
+                );
 
 
-                angular.forEach(dochazky.Studenti, function (value, key, object) {
-                    $log.debug(value);
-                    angular.extend(value, { TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID) });
+                angular.forEach(dochazky.Studenti, function(value, key, object) {
+                    //$log.debug(value);
+                    var trida = findTridaById(tridy, value.TRIDA_ID);
+                    var tridaNazev = getTridaNazev(trida);
+                    var tridaPoradi = getTridaPoradi(trida);
+
+                    angular.extend(value, { TRIDA_NAZEV: tridaNazev, TRIDA_PORADI: tridaPoradi });
                     angular.extend(value, { DOCHAZKA: dochazkaStudenta(dochazky.Dochazky, dochazky.ObdobiDne, value.OSOBA_ID) });
                     angular.extend(value, { POZNAMKA: duvodAbsenceStudenta(dochazky.Dochazky, value.OSOBA_ID) });
 
-                    $log.debug(value);
+                    //$log.debug(value);
 
+                });
+
+
+                dochazky.Studenti.sort(function (a, b) {
+                    //$log.debug(a.TRIDA_PORADI);
+                    //$log.debug(a.TRIDA_NAZEV);
+                    //$log.debug(a.PRIJMENI);
+                    //$log.debug(a.JMENO);
+                    //$log.debug(a.CVTV);
+
+                    var order = (a.TRIDA_PORADI || 0) - (b.TRIDA_PORADI || 0);
+                    //$log.debug(order);
+
+                    if (order != 0) {
+                        return order;
+                    }
+
+                    order = (a.TRIDA_NAZEV || "").localeCompare(b.TRIDA_NAZEV || "");
+                    if (order != 0) {
+                        return order;
+                    }
+
+                    order = (a.PRIJMENI || "").localeCompare(b.PRIJMENI || "");
+                    if (order != 0) {
+                        return order;
+                    }
+
+                    order = (a.JMENO || "").localeCompare(b.JMENO || "");
+                    if (order != 0) {
+                        return order;
+                    }
+
+                    order = (a.CVTV || 0) - (b.CVTV || 0);
+                    if (order != 0) {
+                        return order;
+                    }
+
+                    return order;
                 });
 
                 //$log.debug(data);
@@ -176,19 +253,18 @@
 
                 $scope.isDataLoaded = true;
 
+                setTimeout(function () {
+                    //var table = angular.element('#dochazka-table');
+                    var table = $('#dochazka-table');
+                    table.table('refresh');
+                    $('[type="text"]', table).textinput();
+                }, 0);
 
             },
-                function (error) {
-                    $log.error(error);
-                });
+            function (error) {
+                $log.error(error);
+            });
 
-
-            setTimeout(function () {
-                var table = angular.element('#dochazka-table');
-                table.table('refresh');
-                //angular.element('[type="text"]', '#hodnoceni-table').textinput();
-                //angular.element('[type="text"]', table).textinput();
-            }, 0);
         };
 
 
@@ -224,12 +300,12 @@
 
         $scope.ulozit = function () {
             $log.info('ulozit');
-            $log.debug($scope.data);
+            //$log.debug($scope.data);
 
             var status = ZapisDochazkyService.save($scope.UdalostID, $scope.UdalostPoradi, zadaneDochazky($scope.data.Studenti, $scope.data.ObdobiDne));
-            $log.info(status);
+            //$log.info(status);
             status.then(function (result) {
-                $log.info(result);
+                //$log.info(result);
                 if (result.data.Code == "OK") {
                     $("#popupDochazka").html("Uloženo.").popup("open");
                 }

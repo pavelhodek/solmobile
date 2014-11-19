@@ -45,9 +45,9 @@
                 var obdobiDne = results[1].data.Data;
                 var predmety = results[2].data.Data;
 
-                $log.debug(udalost);
-                $log.debug(obdobiDne);
-                $log.debug(predmety);
+                //$log.debug(udalost);
+                //$log.debug(obdobiDne);
+                //$log.debug(predmety);
 
                 //udalost.cas
 
@@ -63,18 +63,22 @@
 
                 if (udalost.OBDOBI_DNE_OD_ID != udalost.OBDOBI_DNE_DO_ID) {
                     var obdobiDneDo = findInCollection(obdobiDne, function (x) { return x.OBDOBI_DNE_ID == udalost.OBDOBI_DNE_DO_ID; });
-                    nazevObdobi = nazevObdobi + ' - ' + obdobiDneOd.NAZEV;
+                    nazevObdobi = nazevObdobi + ' - ' + obdobiDneDo.NAZEV;
                 }
 
-                var predmet = findInCollection(predmety, function (x) { return x.REALIZACE_ID == udalost.REALIZACE_ID; });
-
-                var nazevPredmetu = predmet.NAZEV;
-                if (predmet.ZKRATKA != null) {
-                    nazevPredmetu = predmet.ZKRATKA + ' (' + nazevPredmetu + ')';
-                }
-
-                var popisHodiny = datum + ' (' + nazevObdobi + '): ' + nazevPredmetu;
+                var nazevUdalosti = udalost.NAZEV;
                 
+                if (udalost.TYP_UDALOSTI_ID == 'ROZVRH') {
+                    var predmet = findInCollection(predmety, function (x) { return x.REALIZACE_ID == udalost.REALIZACE_ID; });
+                    if (predmet) {
+                        nazevUdalosti = predmet.NAZEV;
+                        if (predmet.ZKRATKA != null) {
+                            nazevUdalosti = predmet.ZKRATKA + ' (' + nazevUdalosti + ')';
+                        }
+                    }
+                }
+
+                var popisHodiny = datum + ' (' + nazevObdobi + '): ' + nazevUdalosti;
 
                 deferred.resolve({ data: popisHodiny });
             });

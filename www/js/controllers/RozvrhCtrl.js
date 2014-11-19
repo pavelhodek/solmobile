@@ -24,11 +24,11 @@
             }
 
 
-            function pause(ms) {
-                console.log('pause: ' + ms);
-                ms += new Date().getTime();
-                while (new Date() < ms) { }
-            }
+            //function pause(ms) {
+            //    console.log('pause: ' + ms);
+            //    ms += new Date().getTime();
+            //    while (new Date() < ms) { }
+            //}
 
 
             // obdobiDneNazev(udalost){{udalost.OBDOBI_DNE_OD_NAZEV}} - {{udalost.OBDOBI_DNE_DO_NAZEV}}
@@ -90,33 +90,12 @@
                 });
 
                 var data = RozvrhService.getByDatum($scope.selectedDate);
-                /*
-                xx.then(
-                    function (result) {
-                        $log.log("RozvrhCtrl - loadData");
-
-                        //$scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
-
-                        $scope.data = result;
-
-                        $scope.isDataLoaded = true;
-                    },
-                    function (error) {
-                        $log.error(error);
-                    });
-                */
-
-
 
                 data
                     .success(function (result, status, headers, config) {
                         $log.log("RozvrhCtrl - loadData");
 
-                        //$scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
-
-                        $log.log(result);
-
-
+                        //$log.log(result);
 
                         if (result.Status.Code != "OK") {
                             $scope.data = null;

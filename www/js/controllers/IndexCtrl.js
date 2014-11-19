@@ -16,18 +16,18 @@
             if (isLoginRemember) {
 
                 var credentials = AuthorizationService.getStoredCredentials();
-                $log.debug("credentials", credentials);
+                //$log.debug("credentials", credentials);
                 if (credentials != null) {
                     //var username = AuthorizationService.getUsername();
                     //var password = AuthorizationService.getPassword();
 
                     //var result = AuthorizationService.checkAuthorizationIsValid(username, password);
                     var result = AuthorizationService.checkAuthorizationIsValid();
-                    $log.debug(result);
+                    //$log.debug(result);
 
                     result.success(function (data, status, headers, config) {
-                        $log.debug("data: ", data);
-                        $log.debug("status: ", status);
+                        //$log.debug("data: ", data);
+                        //$log.debug("status: ", status);
 
                         if (data.Data) {
                             //$.mobile.changePage('#rozvrh');

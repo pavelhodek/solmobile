@@ -56,12 +56,12 @@
             me.selectedUdalostPoradi = poradi;
 
             $log.debug('ZapisHodnoceniService - getByRozvrhovaUdalost');
-            $log.debug(udalostID, poradi);
+            //$log.debug(udalostID, poradi);
 
 
             var url = NastaveniService.getApiURL() + 'ZapisyHodnoceni' + '/' + udalostID + '/' + poradi;
 
-            $log.debug(url);
+            //$log.debug(url);
             $log.info(AuthorizationService.getAuthorizationHeader());
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();

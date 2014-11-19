@@ -1,4 +1,4 @@
-﻿; (function () {
+; (function () {
     "use strict";
     angular.module('sol.controllers')
         .controller('ProbiraneUcivoCtrl', function ($scope, $rootScope, $log, $q, $filter, ProbiraneUcivoService, RozvrhService, TridyService, ObdobiDneService, UdalostService) {
@@ -68,10 +68,7 @@
             };
 
 
-
-
-
-
+            /*
             var xx = ProbiraneUcivoService.getByRozvrhovaUdalost($scope.UdalostID, $scope.UdalostPoradi);
 
             xx.then(
@@ -82,7 +79,7 @@
                 function (error) {
                     $log.error(error);
                 });
-
+            */
 
             $scope.ulozit = function () {
                 $log.info('ulozit');

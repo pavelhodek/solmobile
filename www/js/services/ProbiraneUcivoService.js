@@ -13,13 +13,13 @@
             me.selectedUdalostPoradi = poradi;
 
             $log.debug('ProbiraneUcivoService - getByRozvrhovaUdalost');
-            $log.debug(udalostId, poradi);
+            //$log.debug(udalostId, poradi);
 
 
             var url = NastaveniService.getApiURL() + 'Dochazky' + '/' + udalostId + '/' + poradi;
 
-            $log.debug(url);
-            $log.info(AuthorizationService.getAuthorizationHeader());
+            //$log.debug(url);
+            //$log.info(AuthorizationService.getAuthorizationHeader());
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
@@ -31,11 +31,11 @@
 
             var url = NastaveniService.getApiURL() + 'Dochazky' + '/' + udalostId + '/' + poradi;
 
-            $log.debug(url);
-            $log.info(AuthorizationService.getAuthorizationHeader());
+            //$log.debug(url);
+            //$log.info(AuthorizationService.getAuthorizationHeader());
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
-            $log.debug(data);
+            //$log.debug(data);
             return $http.put(url, data);
         };
 

@@ -20,8 +20,12 @@
     font-weight: normal;
 }
 
-
+/* column toggle nefungovalo - proto skryjeme */
 a[href='#dochazka-table-popup'] {
     display: none;
 }
 
+/* column toggle nefungovalo - proto skryjeme */
+a[href='#hodnoceni-table-popup'] {
+    display: none;
+}

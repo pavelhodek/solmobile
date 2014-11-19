@@ -65,14 +65,14 @@
         me.getByDatum = function (date) {
             $log.debug('RozvrhService - getByDatum');
 
-            $log.debug(date);
-            $log.debug(dateToIsoString(date));
+            //$log.debug(date);
+            //$log.debug(dateToIsoString(date));
 
 
             var url = NastaveniService.getApiURL() + 'RozvrhoveUdalosti' + '/' + dateToIsoString(date);
 
-            $log.debug(url);
-            $log.info(AuthorizationService.getAuthorizationHeader());
+            //$log.debug(url);
+            //$log.info(AuthorizationService.getAuthorizationHeader());
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

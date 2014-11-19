@@ -556,7 +556,7 @@
             <div data-role="popup" id="hodnoceniVyberPopup" class="ui-content" data-theme="a" data-overlay-theme="a">
                 Výběr hodnocení
                 <hr />
-                <fieldset data-role="controlgroup" data-mini="true">
+                <fieldset data-role="controlgroup" data-mini="false">
                     
                     <!--<input name="hodnoceni-vyber" id="hodnoceni-vyber-1" value="1" type="radio" ng-change="nastavHodnoceni(student, '1')">
                     <label for="hodnoceni-vyber-1">1</label>
@@ -583,10 +583,23 @@
                                id="hodnoceni-vyber-{{$index + 1}}"
                                ng-model="$parent.vybraneHodnoceni"
                                ng-change="nastavHodnoceni('{{stupen.HODNOTA}}')"
-                               value="{{stupen.HODNOTA}}">{{stupen.HODNOTA}}
+                               value="{{stupen.HODNOTA}}">{{stupenHodnoceniText(stupen.HODNOTA)}}
                     </label>
 
-
+                    <!--<label>
+                        <input type="radio" name="hodnoceni-vyber" 
+                               id="hodnoceni-vyber-nehodnocen"
+                               ng-model="$parent.vybraneHodnoceni"
+                               ng-change="nastavHodnoceni('-')"
+                               value="-">nehodnocen (-)
+                    </label>
+                    <label>
+                        <input type="radio" name="hodnoceni-vyber" 
+                               id="hodnoceni-vyber-nehodnocen"
+                               ng-model="$parent.vybraneHodnoceni"
+                               ng-change="nastavHodnoceni('')"
+                               value="">nezadáno
+                    </label>-->
 
                         <!--<div class="ui-radio ui-mini" ng-repeat="stupen in data.StupniceHodnoceni">
                 <label for="hodnoceni-vyber-{{$index + 1}}"

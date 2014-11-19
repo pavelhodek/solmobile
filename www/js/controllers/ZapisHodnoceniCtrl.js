@@ -27,20 +27,22 @@
             $scope.UdalostID = RozvrhService.selectedUdalostID;
             $scope.UdalostPoradi = RozvrhService.selectedUdalostPoradi;
 
+            /*
             ObdobiRokuService.getByDate(RozvrhService.selectedDatum).then(
                 // {data: Object, status: 200, headers: function, config: Object, statusText: "OK"}
                 function (result) {
                     $log.info(result);
-                    $scope.OBDOBI_ID_P = result.OBDOBI_ID;
+                    $scope.data.Hodnoceni.OBDOBI_ID_P = result.OBDOBI_ID;
                     setTimeout(function() {
                         $('#hodnoceniPololeti').selectmenu('refresh');
+                        $log.debug("hodnoceniPololeti - REFRESH 1");
                     }, 0);
                 },
                 function (err) {
-                    $scope.OBDOBI_ID_P = null;
+                    $scope.data.Hodnoceni = {}.OBDOBI_ID_P = null;
                     $log.error(err);
                 });
-
+            */
 
             var hodnoceni = ZapisHodnoceniService.getByRozvrhovaUdalost($scope.UdalostID, $scope.UdalostPoradi);
             var druhyHodnoceni = DruhyHodnoceniService.all();
@@ -59,6 +61,10 @@
                 var tridy = results[2].data.Data;
                 var obdobiRoku = results[3].data.Data;
                 var stupniceHodnoceni = results[4].data.Data;
+
+
+
+
 
                 //var obdobiDne = results[2].data.Data;
 
@@ -81,7 +87,10 @@
 
                 angular.forEach(hodnoceni.Studenti, function (value, key, object) {
                     //$log.debug(value);
-                    angular.extend(value, { TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID) });
+                    angular.extend(value, {
+                        TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID),
+                        VYSLEDEK: ''
+                    });
                     //angular.extend(value, { DOCHAZKA: dochazkaStudenta(dochazky.Dochazky, dochazky.ObdobiDne, value.OSOBA_ID) });
                     //angular.extend(value, { POZNAMKA: duvodAbsenceStudenta(dochazky.Dochazky, value.OSOBA_ID) });
 
@@ -128,11 +137,17 @@
                 });
 
 
+                stupniceHodnoceni.push({ HODNOTA: "-" });
+                stupniceHodnoceni.push({ HODNOTA: "" });
+
 
                 //$log.debug(data);
                 hodnoceni.DruhyHodnoceni = druhyHodnoceni;
                 hodnoceni.ObdobiRoku = obdobiRoku;
                 hodnoceni.StupniceHodnoceni = stupniceHodnoceni;
+
+                hodnoceni.Hodnoceni = {};
+                hodnoceni.Hodnoceni.OBDOBI_ID_P = findObdobiRokuByDate(obdobiRoku, RozvrhService.selectedDatum).OBDOBI_ID;
 
                 $scope.data = hodnoceni;
 
@@ -146,6 +161,12 @@
                     angular.element('[type="text"]', table).textinput();
                 }, 0);
 
+                setTimeout(function () {
+                    var ddlPololeti  = angular.element('#hodnoceniPololeti');
+                    ddlPololeti.selectmenu('refresh');
+                    $log.debug("hodnoceniPololeti - REFRESH 2");
+                }, 0);
+
             },
             function (error) {
                 $log.error(error);
@@ -153,6 +174,15 @@
 
         };
 
+        $scope.stupenHodnoceniText = function(hodnota) {
+            if (hodnota == null || hodnota == '') {
+                return 'nezadáno';
+            } else if (hodnota == '-') {
+                return 'nehodnocen (-)';
+            } else {
+                return hodnota;
+            }
+        }
 
         $scope.nazevStudenta = function (student) {
             return (student.PRIJMENI || '') + ' ' + (student.JMENO || '');
@@ -182,6 +212,22 @@
             }
 
             return '';
+        }
+
+
+        function findObdobiRokuByDate(obdobiRoku, date) {
+            for (var i = 0, len = obdobiRoku.length; i < len; i++) {
+                if (obdobiRoku[i].DATUM_OD <= date && obdobiRoku[i].DATUM_DO >= date) {
+                    return obdobiRoku[i];
+                }
+            }
+
+            if (obdobiRoku.length > 0) {
+                if (date < obdobiRoku[0].DATUM_OD) return obdobiRoku[0];
+                if (date > obdobiRoku[obdobiRoku.length - 1].DATUM_DO) return obdobiRoku[obdobiRoku.length - 1];
+            }
+
+            return null;
         }
 
 

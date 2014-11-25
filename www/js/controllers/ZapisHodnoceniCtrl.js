@@ -1,6 +1,6 @@
 ﻿; (function () {
     "use strict";
-    angular.module('sol.controllers').controller('ZapisHodnoceniCtrl', function ($scope, $rootScope, $log, $q, ZapisHodnoceniService, DruhyHodnoceniService, RozvrhService, TridyService, ObdobiDneService, UdalostService, ObdobiRokuService, StupniceHodnoceniService) {
+    angular.module('sol.controllers').controller('ZapisHodnoceniCtrl', function ($scope, $rootScope, $log, $q, ZapisHodnoceniService, DruhyHodnoceniService, RozvrhService, TridyService, ObdobiDneService, UdalostService, ObdobiRokuService, StupniceHodnoceniService, ParametryService) {
         $log.debug('ZapisHodnoceniCtrl');
 
         angular.element(document)
@@ -18,6 +18,15 @@
             $scope.data = {};
             $scope.isDataLoaded = false;
             $scope.posledniEditovanyStudentIndex = null;
+            $scope.isHodnoceniProcenty = false;
+            $scope.isHodnoceniZnamkami = true;
+            $scope.isHodnoceniProcenty = false;
+            $scope.isHodnoceniDruhVysledkuVyber = false;
+            $scope.druhVysledku = "Z";
+            $scope.submitted = false;
+            $scope.hodnoceniForm.$setPristine();
+            $('#hodnoceniDruh').selectmenu('refresh');
+
         };
 
 
@@ -49,11 +58,12 @@
             var tridy = TridyService.all();
             var obdobiRoku = ObdobiRokuService.all();
             var stupniceHodnoceni = StupniceHodnoceniService.all();
+            var parametrHodnoceni = ParametryService.getStringById("ZPUSOB_HODNOCENI");
 
             //var obdobiDne = ObdobiDneService.all();            
 
             // pockam na vsechny promise
-            $q.all([hodnoceni, druhyHodnoceni, tridy, obdobiRoku, stupniceHodnoceni]).then(function (results) {
+            $q.all([hodnoceni, druhyHodnoceni, tridy, obdobiRoku, stupniceHodnoceni, parametrHodnoceni]).then(function (results) {
                 $log.log("ZapisHodnoceniCtrl - all resloved");
 
                 var hodnoceni = results[0].data.Data;
@@ -61,10 +71,13 @@
                 var tridy = results[2].data.Data;
                 var obdobiRoku = results[3].data.Data;
                 var stupniceHodnoceni = results[4].data.Data;
+                var parametrHodnoceni = results[5].data.Data;
 
-
-
-
+                    $scope.isHodnoceniZnamkami = (parametrHodnoceni == "ZNAMKA");
+                    $scope.isHodnoceniProcenty = (parametrHodnoceni == "PROCENTA");
+                    $scope.isHodnoceniDruhVysledkuVyber = (parametrHodnoceni == "ZNAMKAPROCENTA");
+                    $scope.druhVysledku = "Z";
+                    
 
                 //var obdobiDne = results[2].data.Data;
 
@@ -89,7 +102,8 @@
                     //$log.debug(value);
                     angular.extend(value, {
                         TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID),
-                        VYSLEDEK: ''
+                        VYSLEDEK_ZNAMKA: '',
+                        VYSLEDEK_PROCENTA: null
                     });
                     //angular.extend(value, { DOCHAZKA: dochazkaStudenta(dochazky.Dochazky, dochazky.ObdobiDne, value.OSOBA_ID) });
                     //angular.extend(value, { POZNAMKA: duvodAbsenceStudenta(dochazky.Dochazky, value.OSOBA_ID) });
@@ -161,11 +175,24 @@
                     angular.element('[type="text"]', table).textinput();
                 }, 0);
 
+
+                setTimeout(function () {
+                    angular.element('[type="number"]').textinput();
+                }, 0);
+
                 setTimeout(function () {
                     var ddlPololeti  = angular.element('#hodnoceniPololeti');
                     ddlPololeti.selectmenu('refresh');
                     $log.debug("hodnoceniPololeti - REFRESH 2");
                 }, 0);
+
+                setTimeout(function () {
+                    //var table = angular.element('#hodnoceni-table');
+                    //table.table('refresh');
+                    angular.element('[type="radio"]').checkboxradio();
+                    angular.element('[type="radio"]').checkboxradio("refresh");
+                }, 0);
+
 
             },
             function (error) {
@@ -188,9 +215,99 @@
             return (student.PRIJMENI || '') + ' ' + (student.JMENO || '');
         };
 
-        $scope.ulozit = function () {
+
+        //scope.$on('show-errors-check-validity', function () {
+        //    el.toggleClass('has-error', formCtrl[inputName].$invalid);
+        //});
+
+
+        $scope.ulozit = function() {
             $log.info('ulozit');
+
+            $scope.submitted = true;
+
+            //$scope.$broadcast('show-errors-check-validity');
+
+            if ($scope.hodnoceniForm.$invalid) {
+                $("#hodnoceniInfoPopup").html("Zadání není validní.").popup("open");
+                $log.warn('nebylo uloženo');
+                $log.debug($scope.hodnoceniForm);
+                return;
+            }
+
+            //$scope.UdalostID, $scope.UdalostPoradi
+
+            var status = ZapisHodnoceniService.save(zadaneHodnoceni());
+
+
+            //$log.info(status);
+            status.then(function(result) {
+                //$log.info(result);
+                if (result.data.Code == "OK") {
+                    $log.info('ZapisHodnoceni - SAVED');
+                    $("#hodnoceniInfoPopup").html("Uloženo.").popup("open");
+                } else if (result.data.Code == "ERROR") {
+                    $log.error("ZapisHodnoceni - ERROR: " + result.data.Message);
+                    $("#hodnoceniInfoPopup").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
+                }
+            });
+        };
+
+        //{
+        //    Udalost: {
+        //        "NAZEV": "čmárání 2",
+        //        "POPIS": "malování na tabuli",
+        //        "REALIZACE_ID": "137",
+        //        "DRUH_UDALOSTI_ID": "P",
+        //        "OBDOBI_ID_R": "561",
+        //        "OBDOBI_ID_P": "562",
+        //        "DATUM": "2014-11-18T00:00:00",
+        //        "OBDOBI_DNE_ID": "4"
+        //    },
+        //    Hodnoceni: [
+        //      {
+        //          "OSOBA_ID": "S141",
+        //          "DRUH_VYSLEDKU": "P",
+        //          "VYSLEDEK": "20",
+        //          "VYSLEDEK_TEXT": "",
+        //      },
+        //      {
+        //          "OSOBA_ID": "A641",
+        //          "DRUH_VYSLEDKU": "P",
+        //          "VYSLEDEK": "40",
+        //          "VYSLEDEK_TEXT": ""
+        //      }
+        //    ]
+        //}
+
+
+        function zadaneHodnoceni() {
+            var result = {};
+            result.Udalost = {
+                NAZEV: $scope.data.Hodnoceni.NAZEV,
+                POPIS: $scope.data.Hodnoceni.POPIS,
+                REALIZACE_ID: "137", //$scope.data.Udalost.REALIZACE_ID,
+                DRUH_UDALOSTI_ID: $scope.data.Hodnoceni.DRUH_UDALOSTI_ID,
+                OBDOBI_ID_R: $scope.data.Hodnoceni.OBDOBI_ID_R,
+                OBDOBI_ID_P: $scope.data.Hodnoceni.OBDOBI_ID_P,
+                DATUM: RozvrhService.selectedDatum,
+                OBDOBI_DNE_ID: "4", //$scope.data.Hodnoceni.OBDOBI_DNE_ID
+            };
+
+            result.Hodnoceni = [];
+
+            $scope.data.Studenti.forEach(function (student, studentIndex, studentArray) {
+                result.Hodnoceni[result.Hodnoceni.length] = {
+                    "OSOBA_ID": student.OSOBA_ID,
+                    "DRUH_VYSLEDKU": $scope.druhVysledku,
+                    "VYSLEDEK": ($scope.druhVysledku == "Z") ? student.VYSLEDEK_ZNAMKA : student.VYSLEDEK_PROCENTA,
+                    "VYSLEDEK_TEXT": student.VYSLEDEK_TEXT
+                };
+            });
+
+            return result;
         }
+
 
         $scope.ulozitAPodobne = function () {
             $log.info('ulozitAPodobne');
@@ -233,7 +350,7 @@
 
         $scope.posledniEditovanyStudentIndex = null;
         $scope.hodnoceniNastavitVsem = false;
-        $scope.vybraneHodnoceni = null;
+        $scope.vybranaZnamka = null;
 
         $scope.prepniHodnoceni = function (student, indexStudenta, event) {
             $log.debug('prepniHodnoceni');
@@ -243,7 +360,7 @@
                 $("#hodnoceniNastavitVsem").checkboxradio("refresh");
             }, 0);
 
-            $scope.vybraneHodnoceni = student.VYSLEDEK;
+            $scope.vybranaZnamka = student.VYSLEDEK_ZNAMKA;
 
             $("#hodnoceniVyberPopup").popup("open", {
                 transition: "pop",
@@ -266,10 +383,29 @@
         $scope.nastavHodnoceni = function (vysledek) {
             $log.info('nastavHodnoceni');
 
-            var student = $scope.data.Studenti[$scope.posledniEditovanyStudentIndex];
+            if ($scope.hodnoceniNastavitVsem) {
+                for (var i = 0, len = $scope.data.Studenti.length; i < len; i++) {
+                    $scope.data.Studenti[i].VYSLEDEK_ZNAMKA = vysledek;
+                }
+            } else {
+                var student = $scope.data.Studenti[$scope.posledniEditovanyStudentIndex];
+                student.VYSLEDEK_ZNAMKA = vysledek;
+            }
 
-            student.VYSLEDEK = vysledek;
+            
             $("#hodnoceniVyberPopup").popup("close");
+        };
+
+
+        $scope.nastavDruhVysledku = function (druh) {
+            $log.debug("nastavDruhVysledku");
+
+            // prepnuti druhu musi smazat doposud zadana data
+            for (var i = 0, len = $scope.data.Studenti.length; i < len; i++) {
+                $scope.data.Studenti[i].VYSLEDEK_ZNAMKA = '';
+                $scope.data.Studenti[i].VYSLEDEK_PROCENTA = null;
+            }
+
         };
 
     });

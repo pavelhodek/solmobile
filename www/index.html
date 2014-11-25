@@ -24,11 +24,6 @@
     <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
     <!--<script type="text/javascript" src="lib/jquery-1.11.1.min.js"></script>-->
 
-
-
-
-
-
     <!--JQUERY MOBILE-->
     <script src="lib/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.js"></script>
 
@@ -38,7 +33,9 @@
     <!--UTILS-->
     <script src="lib/base64.js"></script>
     <script src="js/helpers/date-helper.js"></script>
-
+    
+    <!--JQUERY VALIDATION-->
+    <script src="lib/jquery-validation-1.13.1/jquery.validate.min.js"></script>
 
     <!--ANGULAR-->
     <script src="lib/angular-1.2.20/angular.js"></script>
@@ -67,6 +64,7 @@
     <script src="js/services/UdalostService.js"></script>
     <script src="js/services/StupniceHodnoceniService.js"></script>
     <script src="js/services/ProbiraneUcivoService.js"></script>
+    <script src="js/services/ParametryService.js"></script>
     
     
 
@@ -242,7 +240,7 @@
             <h1>Rozvrh</h1>
             <style>
                 /*#rozvrh-header button{height:35px;width:200px;}*/
-            </style>
+                </style>
 
             <nav data-role="navbar" class="ui-bar-a">
                 <ul>
@@ -486,158 +484,226 @@
 
     <!--HODNOCENI-->
     <section id="hodnoceni" data-role="page" ng-controller="ZapisHodnoceniCtrl">
+        <form id="hodnoceniForm" name="hodnoceniForm" novalidate >
+            <!--HEADER-->
+            <header data-role="header" data-position="fixed">
+                <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+                <h1>Zápis hodnocení</h1>
+                <p class="sol-subheader">{{popisHodiny}}</p>
+            </header>
 
-        <!--HEADER-->
-        <header data-role="header" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
-            <h1>Zápis hodnocení</h1>
-            <p class="sol-subheader">{{popisHodiny}}</p>
-        </header>
-
-        <!--CONTENT-->
-        <div class="content" data-role="content">
-            <!--{{UdalostID}}  {{UdalostPoradi}}-->
-            <!--<button ng-click="loadData()" class="ui-btn ui-btn-inline ui-mini">load data</button>
+            <!--CONTENT-->
+            <div class="content" data-role="content">
+                <!--{{UdalostID}}  {{UdalostPoradi}}-->
+                <!--<button ng-click="loadData()" class="ui-btn ui-btn-inline ui-mini">load data</button>
             <button ng-click="clearData()" class="ui-btn ui-btn-inline ui-mini">clear data</button>-->
-            <div class="ui-field-contain">
-                <label for="hodnoceniPololeti">Započítávat do</label>
-                <select name="hodnoceniPololeti" id="hodnoceniPololeti" data-native-menu="true"
-                        ng-options="item.OBDOBI_ID as item.NAZEV for item in data.ObdobiRoku"
-                        ng-model="data.Hodnoceni.OBDOBI_ID_P"></select>
-            </div>
-            <div class="ui-field-contain">
-                <label for="hodnoceniDruh">Druh hodnocení</label>
-                <select name="hodnoceniDruh" id="hodnoceniDruh" data-native-menu="true"
-                        ng-options="item.DRUH_UDALOSTI_ID as item.NAZEV for item in data.DruhyHodnoceni"
-                        ng-model="data.Hodnoceni.DRUH_UDALOSTI_ID"></select>
-            </div>
-            <div class="ui-field-contain">
-                <label>Téma</label>
-                <input type="text" ng-model="data.Hodnoceni.NAZEV" />
-            </div>
-            <div class="ui-field-contain">
-                <label>Komentář</label>
-                <textarea rows="6" name="textarea" id="textarea" ng-model="data.Hodnoceni.POPIS"></textarea>
-            </div>
-
-            <hr />
-            
-            <table id="hodnoceni-table" data-role="table" data-mode="columntoggle" class="ui-responsive table-stripe table-bordered ">
-                <thead>
-                    <tr>
-                        <th class="ui-table-priority-3">Třída</th>
-                        <th class="ui-table-priority-4">ČVTV</th>
-                        <th>Příjmení a jméno</th>
-                        <th>Známka</th>
-                        <th class="ui-table-priority-3">Slovní hodnocení</th>
-                    </tr>
-                </thead>
-                <tbody id="znamky-table-body">
-                    <tr ng-repeat="student in data.Studenti">
-                        <td class="ui-table-priority-3">{{ student.TRIDA_NAZEV }}</td>
-                        <td class="ui-table-priority-4">{{ student.CVTV }}</td>
-                        <td>{{ nazevStudenta(student) }}</td>
-                        
-                        <!--<td><button class="ui-btn ui-mini ui-btn-inline" ng-click="prepniHodnoceni(student, $index)"> {{ student.VYSLEDEK }} </button></td>-->
-                        <td>
-                            <button class="ui-btn ui-mini ui-btn-inline"
-                                    ng-click="prepniHodnoceni(student, $index, $event)">
-                                {{ student.VYSLEDEK }}
-                            </button>
-                        </td>
-                        <td class="ui-table-priority-3"><input type="text" ng-model="student.VYSLEDEK_TEXT" /></td>
-                        
-                        <!--<td><div class="ui-input-text ui-body-inherit"><input type="text"></div></td>-->
-                    </tr>
-                </tbody>
-            </table>
-            <div data-role="popup" id="hodnoceniInfoPopup"></div>
-
-            <div data-role="popup" id="hodnoceniVyberPopup" class="ui-content" data-theme="a" data-overlay-theme="a">
-                Výběr hodnocení
-                <hr />
-                <fieldset data-role="controlgroup" data-mini="false">
-                    
-                    <!--<input name="hodnoceni-vyber" id="hodnoceni-vyber-1" value="1" type="radio" ng-change="nastavHodnoceni(student, '1')">
-                    <label for="hodnoceni-vyber-1">1</label>
-
-                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-2" value="2" type="radio" ng-change="nastavHodnoceni(student, '2')">
-                    <label for="hodnoceni-vyber-2">2</label>
-
-                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-3" value="3" type="radio" ng-change="nastavHodnoceni(student, '3')">
-                    <label for="hodnoceni-vyber-3">3</label>
-
-                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-4" value="4" type="radio" ng-change="nastavHodnoceni(student, '4')">
-                    <label for="hodnoceni-vyber-4">4</label>
-
-                    <input name="hodnoceni-vyber" id="hodnoceni-vyber-5" value="5" type="radio" ng-change="nastavHodnoceni(student, '5')">
-                    <label for="hodnoceni-vyber-5">5</label>
-                    
-                    <label><input name="hodnoceni-vyber" id="hodnoceni-vyber-nehodnocen" value="-" type="radio">nehodnocen(-)</label>
-                    <label><input name="hodnoceni-vyber" id="hodnoceni-vyber-nezadano" value="" type="radio">nezadáno</label>-->
-                    
-                    
-                    <label ng-repeat="stupen in data.StupniceHodnoceni">
-                        <input type="radio"
-                               name="hodnoceni-vyber"
-                               id="hodnoceni-vyber-{{$index + 1}}"
-                               ng-model="$parent.vybraneHodnoceni"
-                               ng-change="nastavHodnoceni('{{stupen.HODNOTA}}')"
-                               value="{{stupen.HODNOTA}}">{{stupenHodnoceniText(stupen.HODNOTA)}}
+                <div class="ui-field-contain">
+                    <label for="hodnoceniPololeti">Započítávat do</label>
+                    <select name="hodnoceniPololeti" id="hodnoceniPololeti" data-native-menu="true"
+                            ng-options="item.OBDOBI_ID as item.NAZEV for item in data.ObdobiRoku"
+                            ng-model="data.Hodnoceni.OBDOBI_ID_P"></select>
+                </div>
+                
+                <div class="ui-field-contain">
+                    <label for="hodnoceniDruh">
+                        <em>*</em>
+                        Druh hodnocení
+                        <label class="error" ng-show="(hodnoceniForm.hodnoceniDruh.$dirty || submitted) && hodnoceniForm.hodnoceniDruh.$error.required">(povinné pole)</label>
                     </label>
+                    <select name="hodnoceniDruh" id="hodnoceniDruh" data-native-menu="true" required
+                            ng-options="item.DRUH_UDALOSTI_ID as item.NAZEV for item in data.DruhyHodnoceni"
+                            ng-model="data.Hodnoceni.DRUH_UDALOSTI_ID">
+                        <option value=""></option>
+                    </select>
+                </div>
 
-                    <!--<label>
-                        <input type="radio" name="hodnoceni-vyber" 
-                               id="hodnoceni-vyber-nehodnocen"
-                               ng-model="$parent.vybraneHodnoceni"
-                               ng-change="nastavHodnoceni('-')"
-                               value="-">nehodnocen (-)
+                <div class="ui-field-contain">
+                    <label for="hodnoceniTema">
+                        <em>*</em>
+                        Téma
+                        <label class="error" ng-show="(hodnoceniForm.hodnoceniTema.$dirty || submitted) && hodnoceniForm.hodnoceniTema.$error.required">
+                            (povinné pole)
+                        </label>
+                    </label>
+                    <input id="hodnoceniTema" name="hodnoceniTema" type="text" ng-model="data.Hodnoceni.NAZEV" data-clear-btn="true" required ng-maxlength="100" />
+
+                </div>
+                <div class="ui-field-contain">
+                    <label>Komentář</label>
+                    <textarea rows="6" name="textarea" id="textarea" ng-model="data.Hodnoceni.POPIS" maxlength="2000"></textarea>
+                </div>
+
+                <style>
+                    .controlgroup-textinput {
+                        padding-top: .22em;
+                        padding-bottom: .22em;
+                    }
+
+                    #hodnoceni-tema-container {
+                        width: 100% !important;
+                    }
+
+                        #hodnoceni-tema-container > div > div {
+                            width: 100% !important;
+                        }
+
+
+                            #hodnoceni-tema-container > div > div > div {
+                                width: -moz-calc(100% - 82px) !important;
+                                width: -webkit-calc(100% - 82px) !important;
+                                width: calc(100% - 82px) !important;
+                            }
+                </style>
+
+
+                <!--<div class="ui-field-contain" style="width: 100%" id="hodnoceni-tema-container">
+                    <label>xxx</label>
+
+                    <div data-role="controlgroup" data-type="horizontal">
+                        <input id="textbox-button" data-wrapper-class="controlgroup-textinput ui-btn" type="text">
+                        <button>...</button>
+                    </div>
+                </div>-->
+
+                <hr />
+
+                <fieldset ng-show="isHodnoceniDruhVysledkuVyber" data-role="controlgroup" data-type="horizontal">
+                    <label>
+                        <input type="radio"
+                               name="hodnoceniDruhVysledku"
+                               id="hodnoceniDruhVysledkuZnamka"
+                               ng-model="druhVysledku"
+                               ng-change="nastavDruhVysledku('Z')"
+                               value="Z">Známky
                     </label>
                     <label>
-                        <input type="radio" name="hodnoceni-vyber" 
-                               id="hodnoceni-vyber-nehodnocen"
-                               ng-model="$parent.vybraneHodnoceni"
-                               ng-change="nastavHodnoceni('')"
-                               value="">nezadáno
-                    </label>-->
-
-                        <!--<div class="ui-radio ui-mini" ng-repeat="stupen in data.StupniceHodnoceni">
-                <label for="hodnoceni-vyber-{{$index + 1}}"
-                       class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-radio-off">{{stupen.HODNOTA}}</label>
-                <input name="hodnoceni-vyber" id="hodnoceni-vyber-{{$index + 1}}" value="{{stupen.HODNOTA}}" type="radio">
-            </div>-->
-                        <!--<div class="ui-radio ui-mini">
-                <label for="hodnoceni-vyber-nehodnocen"
-                       class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-radio-off">nehodnocen (-)</label>
-                <input name="hodnoceni-vyber" id="hodnoceni-vyber-nehodnocen" value="nehodnocen" type="radio">
-            </div>
-            <div class="ui-radio ui-mini">
-                <label for="hodnoceni-vyber-nezadano"
-                       class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-radio-off">nezadáno</label>
-                <input name="hodnoceni-vyber" id="hodnoceni-vyber-nezadano" value="nezadano" type="radio">
-            </div>-->
+                        <input type="radio"
+                               name="hodnoceniDruhVysledku"
+                               id="hodnoceniDruhVysledkuProcenta"
+                               ng-model="druhVysledku"
+                               ng-change="nastavDruhVysledku('P')"
+                               value="P">Procenta
+                    </label>
                 </fieldset>
-                <hr />
-                <label><input type="checkbox" id="hodnoceniNastavitVsem" ng-model="hodnoceniNastavitVsem" data-mini="true" />nastavit všem</label>
+                
+                
+                <!--{{hodnoceniForm}}-->
+                
+
+                <table id="hodnoceni-table" data-role="table" data-mode="columntoggle" class="ui-responsive table-stripe table-bordered ">
+                    <thead>
+                        <tr>
+                            <th class="ui-table-priority-3">Třída</th>
+                            <th class="ui-table-priority-4">ČVTV</th>
+                            <th>Příjmení a jméno</th>
+                            <th ng-show='isHodnoceniZnamkami || druhVysledku == "Z"'>Známka</th>
+                            <th ng-show='isHodnoceniProcenty || druhVysledku == "P"'>Procenta</th>
+                            <th class="ui-table-priority-3">Slovní hodnocení</th>
+                        </tr>
+                    </thead>
+                    <tbody id="znamky-table-body">
+                        <tr ng-repeat="student in data.Studenti">
+                            <td class="ui-table-priority-3">{{ student.TRIDA_NAZEV }}</td>
+                            <td class="ui-table-priority-4">{{ student.CVTV }}</td>
+                            <td>{{ nazevStudenta(student) }}</td>
+
+                            <td ng-show='isHodnoceniZnamkami || druhVysledku == "Z"'>
+                                <button class="ui-btn ui-mini ui-btn-inline"
+                                        ng-click="prepniHodnoceni(student, $index, $event)">
+                                    {{ student.VYSLEDEK_ZNAMKA }}
+                                </button>
+                            </td>
+                            <td ng-show='isHodnoceniProcenty || druhVysledku == "P"'>
+                                <ng-form name="hodnoceniProcentaForm">
+                                    <input type="number" pattern="\d*" min="0" max="100" step="1" size="4" name="procenta" ng-model="student.VYSLEDEK_PROCENTA" />
+                                    <label class="error" ng-show="(hodnoceniForm.hodnoceniTema.$dirty || submitted) && (hodnoceniProcentaForm.procenta.$error.number || hodnoceniProcentaForm.procenta.$error.max || hodnoceniProcentaForm.procenta.$error.min) ">
+                                        <!--{{hodnoceniProcentaForm.procenta.$error}}-->
+                                        neplatná hodnota
+                                    </label>
+                                </ng-form>
+                            </td>
+                            <td class="ui-table-priority-3"><input type="text" ng-model="student.VYSLEDEK_TEXT" /></td>
+
+                            <!--<td><div class="ui-input-text ui-body-inherit"><input type="text"></div></td>-->
+                        </tr>
+                    </tbody>
+                </table>
+                <div data-role="popup" id="hodnoceniInfoPopup"></div>
+
+                <div data-role="popup" id="hodnoceniVyberPopup" class="ui-content" data-theme="a" data-overlay-theme="a">
+                    Výběr hodnocení
+                    <hr />
+                    <fieldset data-role="controlgroup" data-mini="false">
+                        <label ng-repeat="stupen in data.StupniceHodnoceni">
+                            <input type="radio"
+                                   name="hodnoceni-vyber"
+                                   id="hodnoceni-vyber-{{$index + 1}}"
+                                   ng-model="$parent.vybranaZnamka"
+                                   ng-change="nastavHodnoceni('{{stupen.HODNOTA}}')"
+                                   value="{{stupen.HODNOTA}}">{{stupenHodnoceniText(stupen.HODNOTA)}}
+                        </label>
+                    </fieldset>
+                    <hr />
+                    <label><input type="checkbox" id="hodnoceniNastavitVsem" ng-model="hodnoceniNastavitVsem" data-mini="false" />nastavit všem</label>
+                </div>
+
+                <!--Click me to toggle: <input type="checkbox" ng-model="checked" ng-change=""><br />
+            <input type="submit" ng-model="button" ng-disabled="checked" value="xxxx" />
+            <button ng-model="button" ng-disabled="checked">Button</button>
+            <input type="button" ng-model="button" ng-disabled="checked" value="xxxx" />
+            <a data-role="button" ng-disabled="checked">Uložit a nové</a>-->
+
             </div>
-        </div>
+
+            <!--FOOTER-->
+            <footer data-role="footer" data-theme="a" data-position="fixed">
+                <table style="width: 100%; text-align: center;">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <!--<input type="submit" ng-click="ulozit()" value=" submit" />-->
+                            <a data-role="button" ng-click="ulozit()">Uložit</a>
+                        </td>
+                        <td style="width: 50%">&nbsp;</td>
+                        <td><a data-role="button" ng-click="ulozitAPodobne()">Uložit a nové</a></td>
+                        <td style="width: 50%">&nbsp;</td>
+                        <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </footer>
+        </form>
+        
+        <script>
+            //$("hodnoceniForm").validate({
+            //    messages: {
+            //        "hodnoceniTema": "Téma je povinné.",
+            //        hodnoceniDruh: {
+            //            required: "Druh je povinný."
+            //        }
+            //    },
+            //    focusInvalid: false
+            //});
+
+
+            //$("#hodnoceniForm").validate({
+            //    submitHandler: function (form, x) {
+            //        $log.info("submit + validate");
+            //        $log.debug(form);
+            //        $log.debug(x);
+            //    },
+            //        messages: {
+            //            "hodnoceniTema": "Téma je povinné.",
+            //            hodnoceniDruh: {
+            //                required: "Druh je povinný."
+            //            }
+            //        }
+            //});
+
+
+        </script>        
         
 
-
-        <!--FOOTER-->
-        <footer data-role="footer" data-theme="a" data-position="fixed">
-            <table style="width: 100%; text-align: center;">
-                <tr>
-                    <td>&nbsp;</td>
-                    <td><a data-role="button" ng-click="ulozit()">Uložit</a></td>
-                    <td style="width: 50%">&nbsp;</td>
-                    <td><a data-role="button" ng-click="ulozitAPodobne()">Uložit a nové</a></td>
-                    <td style="width: 50%">&nbsp;</td>
-                    <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
-        </footer>
     </section>
 
 

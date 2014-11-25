@@ -29,3 +29,58 @@ a[href='#dochazka-table-popup'] {
 a[href='#hodnoceni-table-popup'] {
     display: none;
 }
+
+input[type=number]:invalid {
+     /*background-color: red !important;*/
+}
+
+
+/*.error {
+    color:red;
+}*/
+
+/*label.error {
+    float: none; 
+    color: red; 
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    width: 100%;
+    display: block;
+    margin-left: 22%;
+}*/
+
+
+label.error {
+    color: red;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    width: 100%;
+    float: none;
+}
+ 
+@media screen and (orientation: portrait){
+    label.error {
+         margin-left: 0; display: block;
+    }
+}
+ 
+@media screen and (orientation: landscape){
+    label.error { 
+        display: inline-block; 
+        /*margin-left: 22%;*/ 
+    }
+}
+ 
+em { color: red; font-weight: bold; padding-right: .25em; } 
+
+/*
+.ng-pristine { border:1px solid Gold; }
+.ng-dirty.ng-valid { border:1px solid Green; }
+.ng-dirty.ng-valid ~ span.ok { color:green; display:inline; }
+.ng-dirty.ng-invalid { border:1px solid Red; }
+.ng-dirty.ng-invalid ~ span.ko { color:red; display:inline; }
+*/

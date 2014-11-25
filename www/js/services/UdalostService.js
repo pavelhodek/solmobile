@@ -13,7 +13,7 @@
         me.getUdalostInfo = function (udalostId, udalostPoradi) {
             $log.debug('getUdalostInfo');
 
-            var url = NastaveniService.getApiURL() + 'Udalosti' + '/' + udalostId + '/' + udalostPoradi;
+            var url = NastaveniService.getApiURL() + 'Udalosti/' + udalostId + '/' + udalostPoradi;
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

@@ -150,9 +150,9 @@
 
 
                             if (data.Status.Code == "ACCOUNT_LOCKED") {
-                                $("#popupLogin").html("Účet je uzamčen.").popup("open");
+                                $("#loginNotifier").html("Účet je uzamčen.").popup("open");
                             } else {
-                                $("#popupLogin").html("Neplatné přihlášení.").popup("open");
+                                $("#loginNotifier").html("Neplatné přihlášení.").popup("open");
                             }
 
                             

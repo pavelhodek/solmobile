@@ -19,19 +19,14 @@
 
             $scope.selectedDate = SelectedDateService.getSelectedDate();
 
+            $scope.reset = function() {
+                $scope.data = {};
+            }
+
             $scope.init = function () {
                 $scope.loadData();
             }
 
-
-            //function pause(ms) {
-            //    console.log('pause: ' + ms);
-            //    ms += new Date().getTime();
-            //    while (new Date() < ms) { }
-            //}
-
-
-            // obdobiDneNazev(udalost){{udalost.OBDOBI_DNE_OD_NAZEV}} - {{udalost.OBDOBI_DNE_DO_NAZEV}}
 
             $scope.obdobiDneNazev = function (udalost) {
                 if (udalost.OBDOBI_DNE_OD_NAZEV == udalost.OBDOBI_DNE_DO_NAZEV)
@@ -95,11 +90,11 @@
                     .success(function (result, status, headers, config) {
                         $log.log("RozvrhCtrl - loadData");
 
-                        //$log.log(result);
+                        $log.log(result);
 
                         if (result.Status.Code != "OK") {
                             $scope.data = null;
-                            $("#popupRozvrh").html(result.Status.Message).popup("open");
+                            $("#rozvrhNotifier").html(result.Status.Message).popup("open");
                         } else {
                             $scope.data = result.Data.UDALOSTI;
 
@@ -132,7 +127,17 @@
                 ;
             };
 
-            //$scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví';
+            $scope.navigateTo = function(pageIdToChange) {
+                $.mobile.pageContainer.pagecontainer('change', pageIdToChange, {
+                    transition: 'none', // 
+                    reload: true,
+                    changeHash: true,
+                    reverse: false,
+                    showLoadMsg: true
+                });
+
+                $scope.reset();
+            }
 
             $scope.showPopupMenu = function (event, udalost, x) {
                 $log.info('popupMenu');
@@ -144,13 +149,6 @@
                 RozvrhService.selectedUdalostID = udalost.UDALOST_ID;
                 RozvrhService.selectedUdalostPoradi = udalost.PORADI;
                 RozvrhService.selectedDatum = udalost.DATUM;
-
-
-                //ZapisHodnoceniService.selectedUdalostID = udalost.UDALOST_ID;
-                //ZapisHodnoceniService.selectedUdalostPoradi = udalost.PORADI;
-
-                //ZapisDochazkyService.selectedUdalostID = udalost.UDALOST_ID;
-                //ZapisDochazkyService.selectedUdalostPoradi = udalost.PORADI;
 
                 $('#popupMenu').popup('open', {
                     transition: 'pop',
@@ -171,7 +169,6 @@
                 $log.debug(id);
                 $log.debug(x);
 
-                //alert(x);
 
                 $('#popupInfo').popup('open', {
                     transition: 'pop',
@@ -195,54 +192,63 @@
             }
 
 
-            $scope.zapsatProbiraneUcivo = function (changePage) {
-                //$.mobile.changePage(changePage, { options });
-                //$(":mobile-pagecontainer").pagecontainer("change", "target", { options });
-                //$.mobile.pageContainer.pagecontainer("change", "target", { options });
-                //$("body").pagecontainer("change", "target", { options });
+            function getUdalostWithinTime(time) {
+                for (var i = 0, len = $scope.data.length; i < len; i++) {
+                    var udalost = $scope.data[i];
+                    $log.debug(SelectedDateService.getLocalDateFromIsoString(udalost.CAS_OD), SelectedDateService.getLocalDateFromIsoString(udalost.CAS_DO));
+                    if (SelectedDateService.getLocalDateFromIsoString(udalost.CAS_OD) <= time && SelectedDateService.getLocalDateFromIsoString(udalost.CAS_DO) >= time) {
+                        return udalost;
+                    }
+                }
 
-                $.mobile.pageContainer.pagecontainer('change', changePage, {
-                    transition: 'none',
-                    reload: true,
-                    changeHash: true,
-                    reverse: false,
-                    showLoadMsg: true
-                });
+                return null;
+            }
+
+
+            $scope.zapsatProbiraneUcivo = function(changePage) {
+                var now = new Date();
+
+                var udalost = getUdalostWithinTime(now);
+                if (udalost) {
+                    RozvrhService.selectedUdalostID = udalost.UDALOST_ID;
+                    RozvrhService.selectedUdalostPoradi = udalost.PORADI;
+                    RozvrhService.selectedDatum = udalost.DATUM;
+
+                    $scope.navigateTo(changePage);
+                } else {
+                    $("#rozvrhNotifier").html("Nepodařilo se nalézt aktuálně probíhající událost.").popup("open");
+                }
             };
 
             $scope.zapsatDochazku = function (changePage) {
-                $.mobile.pageContainer.pagecontainer('change', changePage, {
-                    transition: 'none', // 
-                    reload: true,
-                    changeHash: true,
-                    reverse: false,
-                    showLoadMsg: true
-                });
+                var now = new Date();
+
+                var udalost = getUdalostWithinTime(now);
+                if (udalost) {
+                    RozvrhService.selectedUdalostID = udalost.UDALOST_ID;
+                    RozvrhService.selectedUdalostPoradi = udalost.PORADI;
+                    RozvrhService.selectedDatum = udalost.DATUM;
+
+                    $scope.navigateTo(changePage);
+                } else {
+                    $("#rozvrhNotifier").html("Nepodařilo se nalézt aktuálně probíhající událost.").popup("open");
+                }
             };
 
             $scope.zapsatHodnoceni = function (changePage) {
-                $.mobile.pageContainer.pagecontainer('change', changePage, {
-                    transition: 'none',
-                    reload: true,
-                    changeHash: true,
-                    reverse: false,
-                    showLoadMsg: true
-                });
+                var now = new Date();
+
+                var udalost = getUdalostWithinTime(now);
+                if (udalost) {
+                    RozvrhService.selectedUdalostID = udalost.UDALOST_ID;
+                    RozvrhService.selectedUdalostPoradi = udalost.PORADI;
+                    RozvrhService.selectedDatum = udalost.DATUM;
+
+                    $scope.navigateTo(changePage);
+                } else {
+                    $("#rozvrhNotifier").html("Nepodařilo se nalézt aktuálně probíhající událost.").popup("open");
+                }
             };
-
-
-            $scope.prednastavitDlePredchozi = function () {
-                $log.info('prednastavitDlePredchozi');
-            };
-
-            $scope.ulozit = function () {
-                $log.info('ulozit');
-            }
-
-            $scope.storno = function () {
-                $log.info('storno');
-            }
-
 
 
             $scope.decrementSelectedDate = function () {
@@ -250,9 +256,7 @@
                 SelectedDateService.decrementSelectedDate();
                 $scope.selectedDate = SelectedDateService.getSelectedDate();
 
-                $scope.data = null;
-
-
+                $scope.data = {};
 
                 $scope.loadData();
             }
@@ -262,10 +266,7 @@
                 SelectedDateService.incrementSelectedDate();
                 $scope.selectedDate = SelectedDateService.getSelectedDate();
 
-                $scope.data = null;
-
-
-
+                $scope.data = {};
 
                 setTimeout(function () {
                     var table = angular.element('#rozvrh-table');
@@ -274,8 +275,6 @@
                     //angular.element('[type="text"]', '#hodnoceni-table').textinput();
                     //angular.element('[type="text"]', table).textinput();
                 }, 0);
-                //pause(2000);
-
 
                 $scope.loadData();
 

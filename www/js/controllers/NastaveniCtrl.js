@@ -24,7 +24,7 @@
                     //,headers: headers
                     }).
                    success(function (data, status, headers, config) {
-                       $("#popupNastaveni").html("Nastavení uloženo. <br>Zadané URL je platné.").popup("open");
+                       $("#nastaveniNotifier").html("Nastavení uloženo. <br>Zadané URL je platné.").popup("open");
 
                    }).
                    error(function (data, status, headers, config) {
@@ -32,7 +32,7 @@
                        $log.debug(status);
                        $log.debug(headers);
                        $log.debug(config);
-                       $("#popupNastaveni").html("Nastavení uloženo. <br>Nepopdařilo se však ověřit platnost URL.").popup("open");
+                       $("#nastaveniNotifier").html("Nastavení uloženo. <br>Nepopdařilo se však ověřit platnost URL.").popup("open");
                    });
 
 

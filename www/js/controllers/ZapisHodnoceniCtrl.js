@@ -25,8 +25,8 @@
             $scope.druhVysledku = "Z";
             $scope.submitted = false;
             $scope.hodnoceniForm.$setPristine();
-            $('#hodnoceniDruh').selectmenu('refresh');
 
+            $('#hodnoceniDruh').selectmenu('refresh');
         };
 
 
@@ -181,9 +181,15 @@
                 }, 0);
 
                 setTimeout(function () {
-                    var ddlPololeti  = angular.element('#hodnoceniPololeti');
-                    ddlPololeti.selectmenu('refresh');
+                    var hodnoceniPololeti = angular.element('#hodnoceniPololeti');
+                    hodnoceniPololeti.selectmenu('refresh');
                     $log.debug("hodnoceniPololeti - REFRESH 2");
+                }, 0);
+
+                setTimeout(function () {
+                    var hodnoceniDruh = angular.element('#hodnoceniDruh');
+                    hodnoceniDruh.selectmenu('refresh');
+                    $log.debug("hodnoceniDruh - REFRESH 2");
                 }, 0);
 
                 setTimeout(function () {
@@ -215,11 +221,22 @@
             return (student.PRIJMENI || '') + ' ' + (student.JMENO || '');
         };
 
+        $scope.nazevDruhuHodnoceni = function (druhHodnoceni) {
+            //$log.debug(druhHodnoceni);
+            return DruhyHodnoceniService.formatNazevVaha(druhHodnoceni);
+        };
+
 
         //scope.$on('show-errors-check-validity', function () {
         //    el.toggleClass('has-error', formCtrl[inputName].$invalid);
         //});
 
+
+
+        $scope.zpet = function () {
+            $log.info('zpet');
+            navigateToRozvrh();
+        }
 
         $scope.ulozit = function() {
             $log.info('ulozit');
@@ -229,7 +246,7 @@
             //$scope.$broadcast('show-errors-check-validity');
 
             if ($scope.hodnoceniForm.$invalid) {
-                $("#hodnoceniInfoPopup").html("Zadání není validní.").popup("open");
+                $("#hodnoceniNotifier").html("Zadání není validní.").popup("open");
                 $log.warn('nebylo uloženo');
                 $log.debug($scope.hodnoceniForm);
                 return;
@@ -245,40 +262,59 @@
                 //$log.info(result);
                 if (result.data.Code == "OK") {
                     $log.info('ZapisHodnoceni - SAVED');
-                    $("#hodnoceniInfoPopup").html("Uloženo.").popup("open");
+                    navigateToRozvrh();
+                    $("#rozvrhNotifier").html("Hodnocení uloženo.").popup("open");
                 } else if (result.data.Code == "ERROR") {
                     $log.error("ZapisHodnoceni - ERROR: " + result.data.Message);
-                    $("#hodnoceniInfoPopup").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
+                    $("#hodnoceniNotifier").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
                 }
             });
         };
 
-        //{
-        //    Udalost: {
-        //        "NAZEV": "čmárání 2",
-        //        "POPIS": "malování na tabuli",
-        //        "REALIZACE_ID": "137",
-        //        "DRUH_UDALOSTI_ID": "P",
-        //        "OBDOBI_ID_R": "561",
-        //        "OBDOBI_ID_P": "562",
-        //        "DATUM": "2014-11-18T00:00:00",
-        //        "OBDOBI_DNE_ID": "4"
-        //    },
-        //    Hodnoceni: [
-        //      {
-        //          "OSOBA_ID": "S141",
-        //          "DRUH_VYSLEDKU": "P",
-        //          "VYSLEDEK": "20",
-        //          "VYSLEDEK_TEXT": "",
-        //      },
-        //      {
-        //          "OSOBA_ID": "A641",
-        //          "DRUH_VYSLEDKU": "P",
-        //          "VYSLEDEK": "40",
-        //          "VYSLEDEK_TEXT": ""
-        //      }
-        //    ]
-        //}
+        $scope.ulozitAPodobne = function () {
+            $log.info('ulozitAPodobne');
+
+            $scope.submitted = true;
+
+            //$scope.$broadcast('show-errors-check-validity');
+
+            if ($scope.hodnoceniForm.$invalid) {
+                $("#hodnoceniNotifier").html("Zadání není validní.").popup("open");
+                $log.warn('nebylo uloženo');
+                $log.debug($scope.hodnoceniForm);
+                return;
+            }
+
+            //$scope.UdalostID, $scope.UdalostPoradi
+
+            var status = ZapisHodnoceniService.save(zadaneHodnoceni());
+
+            //$log.info(status);
+            status.then(function (result) {
+                //$log.info(result);
+                if (result.data.Code == "OK") {
+                    $log.info('ZapisHodnoceni - SAVED');
+                    $("#hodnoceniNotifier").html("Hodnocení uloženo.").popup("open");
+
+                    //$scope.reset();
+                    clearVysledek();
+                    $scope.data.Hodnoceni.NAZEV = null;
+                    $scope.data.Hodnoceni.POPIS = null;
+                    $scope.submitted = false;
+                    $scope.hodnoceniForm.$setPristine();
+
+                } else if (result.data.Code == "ERROR") {
+                    $log.error("ZapisHodnoceni - ERROR: " + result.data.Message);
+                    $("#hodnoceniNotifier").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
+                }
+            });
+        };
+
+
+        function navigateToRozvrh() {
+            $.mobile.changePage('#rozvrh', 'slide', true, true);
+            $scope.reset();
+        }
 
 
         function zadaneHodnoceni() {
@@ -286,12 +322,12 @@
             result.Udalost = {
                 NAZEV: $scope.data.Hodnoceni.NAZEV,
                 POPIS: $scope.data.Hodnoceni.POPIS,
-                REALIZACE_ID: "137", //$scope.data.Udalost.REALIZACE_ID,
                 DRUH_UDALOSTI_ID: $scope.data.Hodnoceni.DRUH_UDALOSTI_ID,
-                OBDOBI_ID_R: $scope.data.Hodnoceni.OBDOBI_ID_R,
-                OBDOBI_ID_P: $scope.data.Hodnoceni.OBDOBI_ID_P,
-                DATUM: RozvrhService.selectedDatum,
-                OBDOBI_DNE_ID: "4", //$scope.data.Hodnoceni.OBDOBI_DNE_ID
+                REALIZACE_ID: $scope.data.Udalost.REALIZACE_ID,
+                OBDOBI_ID_R: $scope.data.Udalost.OBDOBI_ID_R,
+                OBDOBI_ID_P: $scope.data.Udalost.OBDOBI_ID_P,
+                DATUM: $scope.data.Udalost.DATUM,
+                OBDOBI_DNE_ID: $scope.data.Udalost.OBDOBI_DNE_ID
             };
 
             result.Hodnoceni = [];
@@ -309,14 +345,6 @@
         }
 
 
-        $scope.ulozitAPodobne = function () {
-            $log.info('ulozitAPodobne');
-        };
-
-        $scope.zpet = function () {
-            $log.info('zpet');
-            $.mobile.changePage('#rozvrh', 'slide', true, true);
-        }
 
         // ------------------
 
@@ -401,12 +429,17 @@
             $log.debug("nastavDruhVysledku");
 
             // prepnuti druhu musi smazat doposud zadana data
+            clearVysledek();
+        };
+
+
+        function clearVysledek() {
             for (var i = 0, len = $scope.data.Studenti.length; i < len; i++) {
                 $scope.data.Studenti[i].VYSLEDEK_ZNAMKA = '';
                 $scope.data.Studenti[i].VYSLEDEK_PROCENTA = null;
+                $scope.data.Studenti[i].VYSLEDEK_TEXT = null;
             }
-
-        };
+        }
 
     });
 

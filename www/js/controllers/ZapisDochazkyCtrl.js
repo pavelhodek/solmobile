@@ -307,10 +307,10 @@
             status.then(function (result) {
                 //$log.info(result);
                 if (result.data.Code == "OK") {
-                    $("#popupDochazka").html("Uloženo.").popup("open");
+                    $("#dochazkaNotifier").html("Uloženo.").popup("open");
                 }
                 else if (result.data.Code == "ERROR") {
-                    $("#popupDochazka").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
+                    $("#dochazkaNotifier").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
                 }
             });
         };

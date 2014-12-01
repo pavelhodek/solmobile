@@ -2,8 +2,8 @@
     "use strict";
     var module = angular.module('sol.services');
 
-    module.factory('ProbiraneUcivoService', ['$http', '$q', '$log', 'NastaveniService', 'AuthorizationService', 'RozvrhService', function ($http, $q, $log, NastaveniService, AuthorizationService, RozvrhService) {
-        $log.debug('ProbiraneUcivoService');
+    module.factory('ZapisProbiranehoUcivaService', ['$http', '$q', '$log', 'NastaveniService', 'AuthorizationService', 'RozvrhService', function ($http, $q, $log, NastaveniService, AuthorizationService, RozvrhService) {
+        $log.debug('ZapisProbiranehoUcivaService');
         
         
         var me = {};
@@ -12,11 +12,11 @@
             me.selectedUdalostID = udalostId;
             me.selectedUdalostPoradi = poradi;
 
-            $log.debug('ProbiraneUcivoService - getByRozvrhovaUdalost');
+            $log.debug('ZapisProbiranehoUcivaService - getByRozvrhovaUdalost');
             //$log.debug(udalostId, poradi);
 
 
-            var url = NastaveniService.getApiURL() + 'Dochazky' + '/' + udalostId + '/' + poradi;
+            var url = NastaveniService.getApiURL() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
 
             //$log.debug(url);
             //$log.info(AuthorizationService.getAuthorizationHeader());
@@ -29,7 +29,7 @@
 
         me.save = function (udalostId, poradi, data) {
 
-            var url = NastaveniService.getApiURL() + 'Dochazky' + '/' + udalostId + '/' + poradi;
+            var url = NastaveniService.getApiURL() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
 
             //$log.debug(url);
             //$log.info(AuthorizationService.getAuthorizationHeader());

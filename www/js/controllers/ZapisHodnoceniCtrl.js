@@ -36,23 +36,6 @@
             $scope.UdalostID = RozvrhService.selectedUdalostID;
             $scope.UdalostPoradi = RozvrhService.selectedUdalostPoradi;
 
-            /*
-            ObdobiRokuService.getByDate(RozvrhService.selectedDatum).then(
-                // {data: Object, status: 200, headers: function, config: Object, statusText: "OK"}
-                function (result) {
-                    $log.info(result);
-                    $scope.data.Hodnoceni.OBDOBI_ID_P = result.OBDOBI_ID;
-                    setTimeout(function() {
-                        $('#hodnoceniPololeti').selectmenu('refresh');
-                        $log.debug("hodnoceniPololeti - REFRESH 1");
-                    }, 0);
-                },
-                function (err) {
-                    $scope.data.Hodnoceni = {}.OBDOBI_ID_P = null;
-                    $log.error(err);
-                });
-            */
-
             var hodnoceni = ZapisHodnoceniService.getByRozvrhovaUdalost($scope.UdalostID, $scope.UdalostPoradi);
             var druhyHodnoceni = DruhyHodnoceniService.all();
             var tridy = TridyService.all();
@@ -327,7 +310,7 @@
                 OBDOBI_ID_R: $scope.data.Udalost.OBDOBI_ID_R,
                 OBDOBI_ID_P: $scope.data.Udalost.OBDOBI_ID_P,
                 DATUM: $scope.data.Udalost.DATUM,
-                OBDOBI_DNE_ID: $scope.data.Udalost.OBDOBI_DNE_ID
+                OBDOBI_DNE_OD_ID: $scope.data.Udalost.OBDOBI_DNE_OD_ID
             };
 
             result.Hodnoceni = [];

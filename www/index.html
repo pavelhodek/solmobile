@@ -31,6 +31,7 @@
     <script type="text/javascript" src="cordova.js"></script>
 
     <!--UTILS-->
+    <script src="lib/lodash-2.4.1/lodash.min.js"></script>
     <script src="lib/base64.js"></script>
     <script src="js/helpers/date-helper.js"></script>
     
@@ -63,7 +64,7 @@
     <script src="js/services/SkolniRokyService.js"></script>
     <script src="js/services/UdalostService.js"></script>
     <script src="js/services/StupniceHodnoceniService.js"></script>
-    <script src="js/services/ProbiraneUcivoService.js"></script>
+    <script src="js/services/ZapisProbiranehoUcivaService.js"></script>
     <script src="js/services/ParametryService.js"></script>
     
     
@@ -76,7 +77,7 @@
     <script src="js/controllers/LogoutCtrl.js"></script>
     <script src="js/controllers/NastaveniCtrl.js"></script>
     
-    <script src="js/controllers/ProbiraneUcivoCtrl.js"></script>
+    <script src="js/controllers/ZapisProbiranehoUcivaCtrl.js"></script>
     <script src="js/controllers/RozvrhCtrl.js"></script>
     <script src="js/controllers/SkolniRokyCtrl.js"></script>
     <script src="js/controllers/ZapisDochazkyCtrl.js"></script>
@@ -711,67 +712,68 @@
 
 
     <!--PROBIRANE-UCIVO-->
-    <section id="probirane-ucivo" data-role="page" ng-controller="ProbiraneUcivoCtrl">
+    <section id="probirane-ucivo" data-role="page" ng-controller="ZapisProbiranehoUcivaCtrl">
+        <form id="probiraneUcivoForm" name="probiraneUcivoForm" novalidate>
+            <!--HEADER-->
+            <header data-role="header" data-position="fixed">
+                <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+                <h1>Probírané učivo</h1>
+                <p class="sol-subheader">{{popisHodiny}}</p>
+            </header>
 
-        <!--HEADER-->
-        <header data-role="header" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
-            <h1>Probírané učivo</h1>
-            <p class="sol-subheader">{{popisHodiny}}</p>
-        </header>
+            <!--CONTENT-->
+            <div class="content" data-role="content">
+                <div data-role="popup" id="probiraneUcivoNotifier"></div>
 
-        <!--CONTENT-->
-        <div class="content" data-role="content">
+                <div class="ui-field-contain">
+                    <label for="probiraneUcivoTrida">Třída</label>
 
-            <div class="ui-field-contain">
-                <label for="trida">Třída</label>
+                    <select name="probiraneUcivoTrida" id="probiraneUcivoTrida" data-native-menu="true" ng-change="enhanceFields()"
+                            ng-options="item.TRIDA_ID as item.TRIDA_NAZEV for item in data.Tridy"
+                            ng-model="selectedTrida"></select>
+                    <input name="seznamTrid" id="seznamTrid" type="text" ng-disabled="true" ng-model="seznamTrid"  />
+                </div>
 
-                <select name="trida" id="trida"
-                        data-native-menu="false">
-                        <!--multiple="multiple"-->
-                    <!--<option>Vyberte třídu</option>-->
-                    <option value="1A">1.A</option>
-                    <option value="2A">2.A</option>
-                    <option value="3A">3.A</option>
-                    <option value="4A">4.A</option>
-                </select>
+                <div ng-repeat="ucivo in data.ProbiraneUcivo | filter:{ SKUPINA_ID: selectedTrida } | limitTo:limitToTrida">
+                    období dne: {{ucivo.OBDOBI_DNE_ID}}; třída: {{ucivo.SKUPINA_ID}}; skupiny: {{ucivo.SKUPINY_ID}}<br />
+                    <div class="ui-field-contain">
+                        <label for="cisloHodiny">Číslo hodiny</label>
+                        <input name="cisloHodiny" id="cisloHodiny" type="number" pattern="\d*" min="0" max="100" step="1" size="4" ng-model="ucivo.POCET_ODUCENYCH_HODIN">
+                        <label class="error" ng-show="(hodnoceniForm.hodnoceniTema.$dirty || submitted) && (hodnoceniProcentaForm.procenta.$error.number || hodnoceniProcentaForm.procenta.$error.max || hodnoceniProcentaForm.procenta.$error.min) ">
+                            <!--{{hodnoceniProcentaForm.procenta.$error}}-->
+                            neplatná hodnota
+                        </label>
+                    </div>
 
+                    <div class="ui-field-contain">
+                        <label for="probiraneUcivo">Probírané učivo</label>
+                        <input name="probiraneUcivo" id="probiraneUcivo" type="text" ng-model="ucivo.PROBRANE_UCIVO">
+                    </div>
+
+                    <div class="ui-field-contain">
+                        <label for="poznamka">Poznámka</label>
+                        <textarea name="poznamka" id="poznamka" rows="2" ng-model="ucivo.POZNAMKA"></textarea>
+                    </div>
+                </div>
+                <label><input type="checkbox" name="zapsatVsemTridam" id="zapsatVsemTridam" ng-model="zapsatVsemTridam" ng-change="setVisibilityTrida()" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
             </div>
 
-            <div class="ui-field-contain">
-                <label for="cisloHodiny">Číslo hodiny</label>
-                <input name="cisloHodiny" id="cisloHodiny" value="" type="text">
-            </div>
 
-            <div class="ui-field-contain">
-                <label for="probiraneUcivo">Probírané učivo</label>
-                <input name="probiraneUcivo" id="probiraneUcivo" value="" type="text">
-            </div>
-
-            <div class="ui-field-contain">
-                <label for="poznamka">Poznámka</label>
-                <textarea name="poznamka" id="poznamka" rows="8">nějaký text</textarea>
-            </div>
-
-            <label><input type="checkbox" name="rememberLogin" id="rememberLogin" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
-        </div>
-
-
-        <!--FOOTER-->
-        <footer data-role="footer" data-theme="a" data-position="fixed">
-            <table style="width: 100%; text-align: center;">
-                <tr>
-                    <td>&nbsp;</td>
-                    <td><a data-role="button" ng-click="ulozit()">Uložit</a></td>
-                    <td style="width: 50%">&nbsp;</td>
-                    <td><a data-role="button" ng-click="ulozitAZadatDochazku()">Uložit a zadat docházku</a></td>
-                    <td style="width: 50%">&nbsp;</td>
-                    <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
-
-        </footer>
+            <!--FOOTER-->
+            <footer data-role="footer" data-theme="a" data-position="fixed">
+                <table style="width: 100%; text-align: center;">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><a data-role="button" ng-click="ulozit()">Uložit</a></td>
+                        <td style="width: 50%">&nbsp;</td>
+                        <td><a data-role="button" ng-click="ulozitAZadatDochazku()">Uložit a zadat docházku</a></td>
+                        <td style="width: 50%">&nbsp;</td>
+                        <td><a data-role="button" ng-click="zpet()">Zpět</a></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </footer>
+        </form>
 
     </section>
 

@@ -20,6 +20,9 @@
         }
 
         me.setApiURL = function (value) {
+            if (value && value.slice(-1) != "/")
+                value = value + "/";
+
             return localStorage.setItem("nastaveni.apiURL", value);
         }
 

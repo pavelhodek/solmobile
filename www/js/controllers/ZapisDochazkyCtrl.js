@@ -307,9 +307,12 @@
             status.then(function (result) {
                 //$log.info(result);
                 if (result.data.Code == "OK") {
-                    $("#dochazkaNotifier").html("Uloženo.").popup("open");
+                    //$("#dochazkaNotifier").html("Uloženo.").popup("open");
+                    navigateToRozvrh();
+                    $("#rozvrhNotifier").html("Docházka uložena.").popup("open");
                 }
                 else if (result.data.Code == "ERROR") {
+                    $log.error("ZapisDochazky - ERROR: " + result.data.Message);
                     $("#dochazkaNotifier").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
                 }
             });
@@ -319,6 +322,12 @@
             $log.info('zpet');
             $.mobile.changePage('#rozvrh', 'slide', true, true);
         };
+
+
+        function navigateToRozvrh() {
+            $.mobile.changePage('#rozvrh', 'slide', true, true);
+            $scope.reset();
+        }
 
     });
 })();

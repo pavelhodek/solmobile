@@ -24,13 +24,13 @@
                 //$scope.isHodnoceniProcenty = false;
                 //$scope.isHodnoceniDruhVysledkuVyber = false;
                 //$scope.druhVysledku = "Z";
-                //$scope.submitted = false;
+                $scope.submitted = false;
                 //$scope.hodnoceniForm.$setPristine();
 
                 //$('#hodnoceniDruh').selectmenu('refresh');
-                $scope.zapsatVsemTridam = false;
+                $scope.limitToTrida = 1000000;
+                $scope.zapsatVsemTridam = true;
                 setTimeout(function () {
-                    $("#zapsatVsemTridam").checkboxradio("refresh");
                     $("#zapsatVsemTridam").checkboxradio("refresh");
                     $scope.setVisibilityTrida();
                 }, 0);
@@ -95,6 +95,7 @@
 
 
                     $scope.seznamTrid = _($scope.data.Tridy).pluck("TRIDA_NAZEV").reduce(function (acc, item) { return acc + ', ' + item; });
+                    $scope.selectedTrida = _.chain($scope.data.Tridy).pluck("TRIDA_ID").first().value();
 
                     //$scope.setVisibilityTrida();
 
@@ -155,7 +156,35 @@
         $scope.ulozitAZadatDochazku = function() {
             $log.info('ulozit');
             //$.mobile.changePage('#dochazka');
-            navigateToDochazka();
+
+            $scope.submitted = true;
+
+            //$scope.$broadcast('show-errors-check-validity');
+
+            if ($scope.probiraneUcivoForm.$invalid) {
+                $("#probiraneUcivoNotifier").html("Zadání není validní.").popup("open");
+                $log.warn('nebylo uloženo');
+                $log.debug($scope.probiraneUcivoForm);
+                return;
+            }
+
+            var status = ZapisProbiranehoUcivaService.save($scope.UdalostID, $scope.UdalostPoradi, zadaneUcivo($scope.data));
+
+            //$log.info(status);
+            status.then(function (result) {
+                //$log.info(result);
+                if (result.data.Code == "OK") {
+                    $log.info('ZapisProbiranehoUciva - SAVED');
+                    navigateToDochazka();
+                    $("#dochazkaNotifier").html("Probírané učivo uloženo.").popup("open");
+                } else if (result.data.Code == "ERROR") {
+                    $log.error("ZapisProbiranehoUciva - ERROR: " + result.data.Message);
+                    $("#probiraneUcivoNotifier").html("Nepodařilo se uložit. <br>" + result.data.Message).popup("open");
+                }
+            });
+
+
+            
         };
 
 
@@ -190,24 +219,28 @@
                 $log.debug('showTextBox');
 
                 //$scope.selectedTrida = null;
-                $scope.limitToTrida = 1;
+                //$scope.limitToTrida = 1;
+                $scope.selectedTrida = _.chain($scope.data.Tridy).pluck("TRIDA_ID").first().value();
 
                 $scope.hideSelecMenu($('#probiraneUcivoTrida'));
                 $scope.showTextBox($('#seznamTrid'));
             } else {
                 $log.debug('showSelecMenu');
 
-                $scope.limitToTrida = 1000000;
+                //$scope.limitToTrida = 1000000;
+                $scope.selectedTrida = _.chain($scope.data.Tridy).pluck("TRIDA_ID").first().value();
 
                 $scope.hideTextBox($('#seznamTrid'));
                 $scope.showSelecMenu($('#probiraneUcivoTrida'));
-                $scope.enhanceFields();
             }
+
+            $scope.enhanceFields();
         };
 
         $scope.enhanceFields = function () {
             setTimeout(function () {
                 angular.element('[type="number"],[type="text"],textarea').textinput();
+                angular.element('#probiraneUcivoTrida').selectmenu('refresh');
             }, 0);
         };
         

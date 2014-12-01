@@ -136,6 +136,22 @@ var app = {
 };
 
 
+//<ul data-role="listview" data-inset="true"> \
+//    <li data-icon="home"><a href="#index">Hlavní stránka</a></li> \
+//    <li data-icon="calendar"><a href="#rozvrh" >Rozvrh</a></li> \
+//    <li data-icon="bullets"><a href="#probirane-ucivo" >Probírané učivo</a></li> \
+//    <li data-icon="check"><a href="#dochazka" >Docházka</a></li> \
+//    <li data-icon="grid"><a href="#hodnoceni" >Hodnocení</a></li> \
+//    <li data-icon="false"><a href="#skolni-rok" data-icon="gear" data-iconpos="left">Školní rok</a></li> \
+//    <li data-role="list-divider"></li> \
+//    <li data-icon="user"><a href="#login" >Přihlášení</a></li> \
+//    <li data-icon="delete" ><a href="#logout" >Odhlášení</a></li> \
+//    <li data-icon="gear"><a href="#nastaveni" >Nastavení</a></li> \
+//    <li data-icon="search"><a href="#napoveda" >Nápověda</a></li> \
+//    <li data-icon="info"><a href="#o-aplikaci" >O aplikaci</a></li> \
+//</ul> \
+
+
 var solSidePanel = '\
 <div data-role="panel" id="solSidePanel" data-position="left" data-display="push" data-theme="a" class="sol-sidebar" > \
     <div data-role="header"> \
@@ -145,16 +161,10 @@ var solSidePanel = '\
     <ul data-role="listview" data-inset="true"> \
         <li data-icon="home"><a href="#index">Hlavní stránka</a></li> \
         <li data-icon="calendar"><a href="#rozvrh" >Rozvrh</a></li> \
-        <li data-icon="bullets"><a href="#probirane-ucivo" >Probírané učivo</a></li> \
-        <li data-icon="check"><a href="#dochazka" >Docházka</a></li> \
-        <li data-icon="grid"><a href="#hodnoceni" >Hodnocení</a></li> \
-        <li data-icon="false"><a href="#skolni-rok" data-icon="gear" data-iconpos="left">Školní rok</a></li> \
         <li data-role="list-divider"></li> \
         <li data-icon="user"><a href="#login" >Přihlášení</a></li> \
         <li data-icon="delete" ><a href="#logout" >Odhlášení</a></li> \
         <li data-icon="gear"><a href="#nastaveni" >Nastavení</a></li> \
-        <li data-icon="search"><a href="#napoveda" >Nápověda</a></li> \
-        <li data-icon="info"><a href="#o-aplikaci" >O aplikaci</a></li> \
     </ul> \
 </div>';
 

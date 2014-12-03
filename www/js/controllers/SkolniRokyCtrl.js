@@ -3,18 +3,18 @@
     angular.module('sol.controllers')
 
         .controller('SkolniRokyCtrl', function ($scope, $log, SkolniRokyService) {
-            $log.debug('SkolniRokyCtrl');
+            //$log.debug('SkolniRokyCtrl');
 
             angular.element(document)
                 .on("pagecreate", "#skolni-rok", function (event, ui) {
-                    $log.debug("PAGECREATE - #skolni-rok");
+                    //$log.debug("PAGECREATE - #skolni-rok");
                 })
                 .on("pageshow", "#skolni-rok", function (event, ui) {
-                    $log.debug("PAGESHOW - #skolni-rok");
+                    //$log.debug("PAGESHOW - #skolni-rok");
 
                     //$scope.$apply(function () {
-                        $scope.loadData();
-                        $log.debug("PAGESHOW - #skolni-rok - init ");
+                    $scope.loadData();
+                    //$log.debug("PAGESHOW - #skolni-rok - init ");
                     //});
                 });
 
@@ -24,29 +24,11 @@
             //}
 
             $scope.loadData = function () {
-                $log.debug('SkolniRokyCtrl - LOAD DATA');
-
-                //var data = SkolniRokyService.all();
-                //$log.debug(data);
-                //data
-                //    .success(function (result) {
-                //        $log.log(result);
-                //        $scope.statusMessage = result.Status.Message;
-                //        $scope.statusCode = result.Status.Code;
-                //        $scope.skolniRoky = result.Data;
-
-                //        // refresh (kvůli jqm extenzi)
-                //        setTimeout(function () {
-                //            $("#skolni-roky-list").listview("refresh");
-                //        }, 0);
-                //    })
-                //    .error(function (error) {
-                //        $log.error(error);
-                //    });
+                //$log.debug('SkolniRokyCtrl - LOAD DATA');
 
                 SkolniRokyService.all()
                     .then(function (result) {
-                        $log.log(result);
+                        //$log.log(result);
                         $scope.statusMessage = result.Status.Message;
                         $scope.statusCode = result.Status.Code;
                         $scope.skolniRoky = result.Data;
@@ -55,7 +37,7 @@
                         setTimeout(function () {
                             $("#skolni-roky-list").listview("refresh");
                         }, 0);
-                    },function (error) {
+                    }, function (error) {
                         $log.error(error);
                     });
 

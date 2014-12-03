@@ -3,8 +3,6 @@
     var module = angular.module('sol.services');
 
     module.factory('ZapisProbiranehoUcivaService', ['$http', '$q', '$log', 'NastaveniService', 'AuthorizationService', 'RozvrhService', function ($http, $q, $log, NastaveniService, AuthorizationService, RozvrhService) {
-        $log.debug('ZapisProbiranehoUcivaService');
-        
         
         var me = {};
 
@@ -12,15 +10,7 @@
             me.selectedUdalostID = udalostId;
             me.selectedUdalostPoradi = poradi;
 
-            $log.debug('ZapisProbiranehoUcivaService - getByRozvrhovaUdalost');
-            //$log.debug(udalostId, poradi);
-
-
             var url = NastaveniService.getApiURL() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
-
-            //$log.debug(url);
-            //$log.info(AuthorizationService.getAuthorizationHeader());
-
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
             return $http.get(url);
@@ -28,14 +18,9 @@
 
 
         me.save = function (udalostId, poradi, data) {
-
             var url = NastaveniService.getApiURL() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
-
-            //$log.debug(url);
-            //$log.info(AuthorizationService.getAuthorizationHeader());
-
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
-            //$log.debug(data);
+
             return $http.put(url, data);
         };
 

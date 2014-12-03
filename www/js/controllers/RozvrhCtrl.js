@@ -3,14 +3,14 @@
     angular.module('sol.controllers')
 
         .controller('RozvrhCtrl', function ($scope, $rootScope, $log, NastaveniService, SelectedDateService, RozvrhService, ZapisHodnoceniService) {
-            $log.debug('RozvrhCtrl');
+            //$log.debug('RozvrhCtrl');
 
             angular.element(document)
                 .on("pagecreate", "#rozvrh", function (event, ui) {
-                    $log.debug("PAGECREATE - #ROZVRH");
+                    //$log.debug("PAGECREATE - #ROZVRH");
                 })
                 .on("pageshow", "#rozvrh", function (event, ui) {
-                    $log.debug("PAGESHOW - #ROZVRH");
+                    //$log.debug("PAGESHOW - #ROZVRH");
                     $scope.init();
                 });
 
@@ -19,7 +19,7 @@
 
             $scope.selectedDate = SelectedDateService.getSelectedDate();
 
-            $scope.reset = function() {
+            $scope.reset = function () {
                 $scope.data = {};
             }
 
@@ -35,7 +35,7 @@
                     return udalost.OBDOBI_DNE_OD_NAZEV + ' - ' + udalost.OBDOBI_DNE_DO_NAZEV;
             };
 
-            $scope.zdrojeInfo = function(udalost) {
+            $scope.zdrojeInfo = function (udalost) {
                 var nazvySkupin = [];
 
                 var skupiny = udalost.SKUPINY_UDALOSTI;
@@ -68,9 +68,9 @@
                     result += ', ';
 
                 if (nazvyMistnosti.length > 0)
-                    result +=  nazvyMistnosti.join(" + ");
+                    result += nazvyMistnosti.join(" + ");
 
-                return result; 
+                return result;
             };
 
 
@@ -88,9 +88,9 @@
 
                 data
                     .success(function (result, status, headers, config) {
-                        $log.log("RozvrhCtrl - loadData");
+                        //$log.log("RozvrhCtrl - loadData");
 
-                        $log.log(result);
+                        //$log.log(result);
 
                         if (result.Status.Code != "OK") {
                             $scope.data = null;
@@ -123,11 +123,10 @@
 
                         $.mobile.loading("hide");
 
-                    })
-                ;
+                    });
             };
 
-            $scope.navigateTo = function(pageIdToChange) {
+            $scope.navigateTo = function (pageIdToChange) {
                 $.mobile.pageContainer.pagecontainer('change', pageIdToChange, {
                     transition: 'none', // 
                     reload: true,
@@ -140,11 +139,10 @@
             }
 
             $scope.showPopupMenu = function (event, udalost, x) {
-                $log.info('popupMenu');
-                $log.debug(event);
-                $log.debug(udalost.UDALOST_ID, udalost.PORADI);
-                $log.debug(x);
-
+                //$log.info('popupMenu');
+                //$log.debug(event);
+                //$log.debug(udalost.UDALOST_ID, udalost.PORADI);
+                //$log.debug(x);
 
                 RozvrhService.selectedUdalostID = udalost.UDALOST_ID;
                 RozvrhService.selectedUdalostPoradi = udalost.PORADI;
@@ -164,10 +162,10 @@
 
 
             $scope.showPopupInfo = function (event, id, x) {
-                $log.info('popupInfo');
-                $log.debug(event);
-                $log.debug(id);
-                $log.debug(x);
+                //$log.info('popupInfo');
+                //$log.debug(event);
+                //$log.debug(id);
+                //$log.debug(x);
 
 
                 $('#popupInfo').popup('open', {
@@ -179,23 +177,13 @@
                     x: event.pageX,
                     y: event.pageY
                 });
-
-
-
-                //<p><strong>Detail hodiny</strong></p>
-                //<p>Zde může být celá řada dalších informací prakticky libovolně formátovaných, včetně formulářových prvků či tabulek.</p>
-
-
-                //$('#about').popup('open', {
-                //    transition: 'pop'
-                //});
-            }
+            };
 
 
             function getUdalostWithinTime(time) {
                 for (var i = 0, len = $scope.data.length; i < len; i++) {
                     var udalost = $scope.data[i];
-                    $log.debug(SelectedDateService.getLocalDateFromIsoString(udalost.CAS_OD), SelectedDateService.getLocalDateFromIsoString(udalost.CAS_DO));
+                    //$log.debug(SelectedDateService.getLocalDateFromIsoString(udalost.CAS_OD), SelectedDateService.getLocalDateFromIsoString(udalost.CAS_DO));
                     if (SelectedDateService.getLocalDateFromIsoString(udalost.CAS_OD) <= time && SelectedDateService.getLocalDateFromIsoString(udalost.CAS_DO) >= time) {
                         return udalost;
                     }
@@ -205,7 +193,7 @@
             }
 
 
-            $scope.zapsatProbiraneUcivo = function(changePage) {
+            $scope.zapsatProbiraneUcivo = function (changePage) {
                 var now = new Date();
 
                 var udalost = getUdalostWithinTime(now);
@@ -252,7 +240,7 @@
 
 
             $scope.decrementSelectedDate = function () {
-                $log.info('decrementSelectedDate');
+                //$log.info('decrementSelectedDate');
                 SelectedDateService.decrementSelectedDate();
                 $scope.selectedDate = SelectedDateService.getSelectedDate();
 
@@ -262,7 +250,7 @@
             }
 
             $scope.incrementSelectedDate = function () {
-                $log.info('incrementSelectedDate');
+                //$log.info('incrementSelectedDate');
                 SelectedDateService.incrementSelectedDate();
                 $scope.selectedDate = SelectedDateService.getSelectedDate();
 
@@ -278,10 +266,7 @@
 
                 $scope.loadData();
 
-
-
             }
-
 
         });
 

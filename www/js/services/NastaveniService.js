@@ -10,9 +10,9 @@
 
         // localhost: "http://localhost/SOLWebApi/api/";
         // localhost (cordova): "http://10.0.2.2/SOLWebApi/api/";
-        // server: "http://172.20.2.26/SOLWebApi/api/";
+        // prod server: "http://172.20.2.26/SOLWebApi/api/";
+        // test server: "https://sol.cca.cz/SOLWebApi/api/";
 
-        //me.apiURL = "http://localhost/SOLWebApi/api/";
         var defaultApiUrl = "https://sol.cca.cz/SOLWebApi/api/";
 
         me.getApiURL = function () {

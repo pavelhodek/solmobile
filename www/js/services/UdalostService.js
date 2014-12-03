@@ -6,12 +6,12 @@
     ['$http', '$q', '$log', '$filter', 'NastaveniService', 'AuthorizationService', 'TridyService', 'ObdobiDneService', 'PredmetyService',
     function ($http, $q, $log, $filter, NastaveniService, AuthorizationService, TridyService, ObdobiDneService, PredmetyService) {
 
-        $log.debug('UdalostService');
+        //$log.debug('UdalostService');
 
         var me = {};
 
         me.getUdalostInfo = function (udalostId, udalostPoradi) {
-            $log.debug('getUdalostInfo');
+            //$log.debug('getUdalostInfo');
 
             var url = NastaveniService.getApiURL() + 'Udalosti/' + udalostId + '/' + udalostPoradi;
 
@@ -39,24 +39,14 @@
 
             // pockam na vsechny promise
             $q.all([udalost, obdobiDne, predmety]).then(function (results) {
-                $log.log("getPopisHodiny - all resloved");
+                //$log.log("getPopisHodiny - all resloved");
 
                 var udalost = results[0].data.Data;
                 var obdobiDne = results[1].data.Data;
                 var predmety = results[2].data.Data;
 
-                //$log.debug(udalost);
-                //$log.debug(obdobiDne);
-                //$log.debug(predmety);
-
-                //udalost.cas
-
                 var datum = $filter('date')(udalost.CAS_OD, 'd.M.yyyy');
 
-                var obdobiDneIdOd = udalost.OBDOBI_DNE_OD_ID;
-                var obdobiDneIdDo = udalost.OBDOBI_DNE_DO_ID;
-
-                
                 var obdobiDneOd = findInCollection(obdobiDne, function (x) { return x.OBDOBI_DNE_ID == udalost.OBDOBI_DNE_OD_ID; });
 
                 var nazevObdobi = obdobiDneOd.NAZEV;
@@ -67,7 +57,7 @@
                 }
 
                 var nazevUdalosti = udalost.NAZEV;
-                
+
                 if (udalost.TYP_UDALOSTI_ID == 'ROZVRH') {
                     var predmet = findInCollection(predmety, function (x) { return x.REALIZACE_ID == udalost.REALIZACE_ID; });
                     if (predmet) {

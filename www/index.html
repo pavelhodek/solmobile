@@ -10,8 +10,7 @@
     <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
 
     <link rel="stylesheet" href="lib/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.css" />
-    
-    <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+
     <link rel="stylesheet" type="text/css" href="css/app.css" />
 
     <meta name="msapplication-tap-highlight" content="no" />
@@ -19,10 +18,8 @@
 
     <title>Škola OnLine pro učitele</title>
 
-
     <!--JQUERY-->
     <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
-    <!--<script type="text/javascript" src="lib/jquery-1.11.1.min.js"></script>-->
 
     <!--JQUERY MOBILE-->
     <script src="lib/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.js"></script>
@@ -34,7 +31,7 @@
     <script src="lib/lodash-2.4.1/lodash.min.js"></script>
     <script src="lib/base64.js"></script>
     <script src="js/helpers/date-helper.js"></script>
-    
+
     <!--JQUERY VALIDATION-->
     <script src="lib/jquery-validation-1.13.1/jquery.validate.min.js"></script>
 
@@ -44,12 +41,11 @@
     <script src="lib/angular-1.2.20/i18n/angular-locale_cs.js"></script>
 
 
-
     <!--APP-->
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/jqm-config.js"></script>
+
     <!--SERVICES-->
-    <!--<script src="js/services.js"></script>-->
     <script src="js/services/TridyService.js"></script>
     <script src="js/services/ObdobiDneService.js"></script>
     <script src="js/services/ObdobiRokuService.js"></script>
@@ -66,36 +62,26 @@
     <script src="js/services/StupniceHodnoceniService.js"></script>
     <script src="js/services/ZapisProbiranehoUcivaService.js"></script>
     <script src="js/services/ParametryService.js"></script>
-    
-    
 
     <!--CONTROLLERS-->
-    <!--<script src="js/controllers.js"></script>-->
-    <script src="js/controllers/GlobalCtrl.js"></script>
     <script src="js/controllers/IndexCtrl.js"></script>
     <script src="js/controllers/LoginCtrl.js"></script>
     <script src="js/controllers/LogoutCtrl.js"></script>
     <script src="js/controllers/NastaveniCtrl.js"></script>
-    
     <script src="js/controllers/ZapisProbiranehoUcivaCtrl.js"></script>
     <script src="js/controllers/RozvrhCtrl.js"></script>
     <script src="js/controllers/SkolniRokyCtrl.js"></script>
     <script src="js/controllers/ZapisDochazkyCtrl.js"></script>
     <script src="js/controllers/ZapisHodnoceniCtrl.js"></script>
 
-
-
-    <script src="js/directives.js"></script>
-    <script src="js/filters.js"></script>
-
-
 </head>
 <body ng-app="sol">
 
 
+
+
     <!--INDEX-->
     <section id="index" data-role="page" data-fullscreen="true" ng-controller="IndexCtrl">
-
         <!--HEADER-->
         <header id="header" data-role="header" data-theme="a" data-position="fixed">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
@@ -104,17 +90,18 @@
 
         <!--CONTENT-->
         <div class="content" data-role="content">
-
-            Nastavení, přihlášení, výpis rozvrhu, zadávání docházky a další funkce jsou přístupné z menu v záhlaví.
-
-            <!--<button ng-click="redirectToLogin()">login</button>
-            <a href="#login" id="redirectToLogin" >login</a>-->
+            <!--Nastavení, přihlášení, výpis rozvrhu, zadávání docházky a další funkce jsou přístupné z menu v záhlaví.-->
 
             <!--<div id="deviceProperties"></div>-->
-
         </div>
-
     </section>
+
+
+
+
+
+
+
 
     <!--NASTAVENI-->
     <section id="nastaveni" data-role="page" ng-controller="NastaveniCtrl">
@@ -147,8 +134,14 @@
                     </select>
                 </div>-->
         </div>
-
     </section>
+
+
+
+
+
+
+
 
     <!--LOGIN-->
     <section id="login" data-role="page" ng-controller="LoginCtrl">
@@ -156,8 +149,8 @@
         <!--HEADER-->
         <header data-role="header">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
-            <!--<h1>Přihlášení do aplikace</h1>-->
-            <div style="text-align: center;" ><img src="img/skola-on-line-logo.png" alt="logo Škola OnLine"/></div>
+            <h1>Přihlášení do aplikace</h1>
+            <!--<div style="text-align: center;"><img src="img/skola-on-line-logo.png" alt="logo Škola OnLine" /></div>-->
             <!--<a href="#index" class="ui-btn-right">Zrušit</a>-->
         </header>
 
@@ -167,27 +160,23 @@
 
             <h4>Přihlašovací údaje do Školy OnLine:</h4>
 
-            <!--<label for="username">Uživatelské jméno:</label>-->
             <input type="text" name="username" id="username" ng-model="username" placeholder="Uživatelské jméno" maxlength="50" data-clear-btn="true" />
-
-            <!--<input type="text" id="test1" ng-model="username" placeholder="test1" data-role="none" />
-                <input type="text" id="test2" ng-model="password" placeholder="test2" data-role="none" />-->
-
-            <!--<br />:{{username}}-->
-            <!--<label for="password">Heslo:</label>-->
             <input type="password" id="password" ng-model="password" placeholder="Heslo" maxlength="50" data-clear-btn="true" />
-            <!--<br />:{{password}}-->
             <label><input type="checkbox" id="remember" ng-model="remember" />Zapamatovat heslo</label>
 
             <input id="submitLogin" type="submit" ng-click="login()" value="Přihlásit" data-role="button" data-inline="false" data-theme="b" />
-
-            <!--<input id="init" type="submit" ng-click="init()" value="init" data-role="button" data-inline="false"  />-->
-
         </div>
     </section>
 
+
+
+
+
+
+
+
     <!--LOGOUT-->
-    <section id="logout" data-role="page" ng-controller="LogoutCtrl" >
+    <section id="logout" data-role="page" ng-controller="LogoutCtrl">
         <!--HEADER-->
         <header data-role="header">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
@@ -195,27 +184,23 @@
         </header>
 
         <button id="logoutButton" style="display: none" ng-click="logout()"></button>
-        
-        <script>
 
+        <script>
             $("#logout").on("pageshow", function (e) {
-                //$("#status").html("<p>Ran at "+ new Date() + "</p>"); 
                 $("#logoutButton").click();
             });
-
-            //$("#logoutButton").one("click", function () {
-            //    alert("This will be displayed only once.");
-
-            //});
-
-
-
         </script>
     </section>
 
+
+
+
+
+
+
+
     <!--ROZVRH-->
     <section id="rozvrh" data-role="page" ng-controller="RozvrhCtrl">
-
 
         <div data-role="popup" id="popupInfo" data-theme="a" style="min-width:210px; max-width: 400px">
             <p><strong>Detail hodiny</strong></p>
@@ -225,7 +210,6 @@
 
         <div data-role="popup" id="popupMenu" data-theme="a">
             <ul data-role="listview" data-inset="true" style="min-width:210px;">
-                <!--<li data-role="list-divider">Vyberte akci</li>-->
                 <li><a href="#" ng-click="navigateTo('#probirane-ucivo')">Zadat probírané učivo</a></li>
                 <li><a href="#" ng-click="navigateTo('#dochazka')">Zadat docházku</a></li>
                 <li><a href="#" ng-click="navigateTo('#hodnoceni')">Nové hodnocení</a></li>
@@ -238,46 +222,22 @@
         <header id="rozvrh-header" data-role="header" data-theme="a" data-position="fixed">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
             <h1>Rozvrh</h1>
-            <style>
-                /*#rozvrh-header button{height:35px;width:200px;}*/
-                </style>
 
             <nav data-role="navbar" class="ui-bar-a">
                 <ul>
                     <li>
-                        <!--onclick="addSelectedDateDays(-1); refreshSelectedDate()"-->
                         <a href="#" ng-click="decrementSelectedDate()" class="ui-alt-icon ui-nodisc-icon" data-icon="arrow-l" data-iconpos="notext"></a>
-                        <!--<button ng-click="decrementSelectedDate()" class="ui-alt-icon ui-nodisc-icon ui-btn-left" data-icon="arrow-l" data-iconpos="notext"></button>-->
                     </li>
                     <li>
                         <div class="center-wrapper">
                             <div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div>
                         </div>
-
-
-                        <!--<div class="center-wrapper">
-                                <div id="selectedDate"  onclick="selectDate();"></div>
-                            </div>-->
-
                     </li>
-                    <!--onclick="addSelectedDateDays(1); refreshSelectedDate()"-->
                     <li>
                         <a href="#" ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r" data-iconpos="notext"></a>
-                        <!--<button ng-click="incrementSelectedDate()" class="ui-alt-icon ui-nodisc-icon ui-btn-right" style="text-align: right" data-icon="arrow-r" data-iconpos="notext"></button>-->
                     </li>
                 </ul>
-
             </nav>
-
-
-            <!--<nav data-role="navbar" class="ui-bar-a">
-                <a href="#" data-theme="a" data-role="button" data-position="left" data-icon="carat-l" data-iconpos="notext"> << </a>
-                <a href="#" >čtvrtek 10.07.2014</a>
-
-                <a href="#" class="ui-nodisc-icon" data-icon="carat-r" data-iconpos="notext"> >> </a>
-                <a href="#mainPanel" class="ui-nodisc-icon" data-iconpos="notext" data-icon="bars">Menu</a>
-            </nav>-->
-
         </header>
 
 
@@ -302,8 +262,8 @@
                         </div>
                     </a>
                     <!--<a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
-                       class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
-                       title="Detail hodiny">Detail hodiny</a>-->
+                           class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
+                           title="Detail hodiny">Detail hodiny</a>-->
                 </li>
             </ul>
         </div>
@@ -315,111 +275,19 @@
             <nav data-role="navbar">
                 <ul>
                     <li><a ng-click="zapsatProbiraneUcivo('#probirane-ucivo', data)" data-role="button" data-theme="a">Učivo</a></li>
-                    <li><a ng-click="zapsatDochazku('#dochazka', data)" data-role="button" data-theme="b">Docházku</a></li>
+                    <li><a ng-click="zapsatDochazku('#dochazka', data)" data-role="button" data-theme="a">Docházku</a></li>
                     <li><a ng-click="zapsatHodnoceni('#hodnoceni', data)" data-role="button" data-theme="a">Hodnocení</a></li>
                 </ul>
             </nav>
-
         </footer>
 
-
-        <script src="js/rozvrh.js"></script>
-
-        <!--<script>
-            // every time scripts
-
-            function selectDate() {
-                var options = {
-                    date: selectedDate, //new Date(),
-                    mode: 'date'
-                };
-
-                datePicker.show(options, function (date) {
-                    //alert(date);
-                    //alert(date.getTime());
-
-                    if (isNaN(date.getTime())) {
-                        selectedDate = date;
-                    }
-
-
-                    refreshSelectedDate();
-                });
-            }
-
-
-
-            function dateToString(date) {
-                var temp = date || new Date();
-
-                var dateStr = getDayName(temp) + " " + padStr(temp.getDate()) + "." + padStr(1 + temp.getMonth()) + "." + padStr(temp.getFullYear());
-
-                return dateStr;
-                //debug(dateStr);
-            }
-
-            function padStr(i) {
-                //return (i < 10) ? "0" + i : "" + i;
-                return i;
-            }
-
-
-            function addSelectedDateDays(numberOfDaysToAdd) {
-                selectedDate.setDate(selectedDate.getDate() + numberOfDaysToAdd);
-                //console.log(selectedDate);
-            }
-
-            function refreshSelectedDate() {
-                $("#selectedDate").text(dateToString(selectedDate));
-                //console.log("refreshSelectedDate");
-            }
-
-
-            function addDays(someDate, numberOfDaysToAdd) {
-                someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
-            }
-
-
-            function getMonthName(someDate) {
-                //var m = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-                //'August', 'September', 'October', 'November', 'December'];
-                var m = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-                'August', 'September', 'October', 'November', 'December'];
-
-                return m[someDate.getMonth()];
-            }
-
-            function getDayName(someDate) {
-                //var d = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-                var names = ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'];
-                return names[someDate.getDay()];
-            }
-
-
-
-            function setSelectedDate(date) {
-                selectedDate = date;
-
-                //console.log(selectedDate);
-                //console.log(dateToString(selectedDate));
-
-                $("#selectedDate").val(dateToString(selectedDate));
-            }
-
-
-            //console.log(selectedDate);
-            //console.log(selectedDate.getDate());
-            //console.log(dateToString(selectedDate));
-            $("#selectedDate").text(dateToString(selectedDate));
-
-
-
-        </script>-->
-
-
-
     </section>
+
+
+
+
+
+
 
 
     <!--DOCHAZKA-->
@@ -429,7 +297,6 @@
         <header data-role="header" data-position="fixed">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
             <h1>Evidence docházky</h1>
-
             <p class="sol-subheader">{{popisHodiny}}</p>
         </header>
 
@@ -452,7 +319,7 @@
                         <td class="ui-table-priority-3">{{ student.TRIDA_NAZEV }}</td>
                         <td class="ui-table-priority-4">{{ student.CVTV }}</td>
                         <td>{{ nazevStudenta(student) }}</td>
-                        
+
                         <td ng-repeat="obdobi in data.ObdobiDne">
                             <button class="ui-btn ui-mini ui-btn-inline" ng-click="prepniAbsenci(student.DOCHAZKA, $index, $parent.$index)"> {{ student.DOCHAZKA[$index] }} </button>
                         </td>
@@ -460,10 +327,8 @@
                         <td class="ui-table-priority-3"><input type="text" ng-model="student.POZNAMKA" ng-change="editacePoznamky($index)" /></td>
                     </tr>
                 </tbody>
-            </table>   
-            
+            </table>
         </div>
-
 
         <!--FOOTER-->
         <footer data-role="footer" data-theme="a" data-position="fixed">
@@ -478,15 +343,21 @@
                     <td>&nbsp;</td>
                 </tr>
             </table>
-
         </footer>
 
     </section>
 
 
+
+
+
+
+
+
     <!--HODNOCENI-->
     <section id="hodnoceni" data-role="page" ng-controller="ZapisHodnoceniCtrl">
-        <form id="hodnoceniForm" name="hodnoceniForm" novalidate >
+        <form id="hodnoceniForm" name="hodnoceniForm" novalidate>
+
             <!--HEADER-->
             <header data-role="header" data-position="fixed">
                 <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
@@ -498,16 +369,13 @@
             <div class="content" data-role="content">
                 <div data-role="popup" id="hodnoceniNotifier"></div>
 
-                <!--{{UdalostID}}  {{UdalostPoradi}}-->
-                <!--<button ng-click="loadData()" class="ui-btn ui-btn-inline ui-mini">load data</button>
-                    <button ng-click="clearData()" class="ui-btn ui-btn-inline ui-mini">clear data</button>-->
                 <div class="ui-field-contain">
                     <label for="hodnoceniPololeti">Započítávat do</label>
                     <select name="hodnoceniPololeti" id="hodnoceniPololeti" data-native-menu="true"
                             ng-options="item.OBDOBI_ID as item.NAZEV for item in data.ObdobiRoku"
                             ng-model="data.Hodnoceni.OBDOBI_ID_P"></select>
                 </div>
-                
+
                 <div class="ui-field-contain">
                     <label for="hodnoceniDruh">
                         <em>*</em>
@@ -537,7 +405,8 @@
                     <textarea rows="6" name="textarea" id="textarea" ng-model="data.Hodnoceni.POPIS" maxlength="2000"></textarea>
                 </div>
 
-                <style>
+                <!--
+                    <style>
                     .controlgroup-textinput {
                         padding-top: .22em;
                         padding-bottom: .22em;
@@ -551,7 +420,6 @@
                         width: 100% !important;
                     }
 
-
                     #hodnoceni-tema-container > div > div > div {
                         width: -moz-calc(100% - 82px) !important;
                         width: -webkit-calc(100% - 82px) !important;
@@ -560,14 +428,15 @@
                 </style>
 
 
-                <!--<div class="ui-field-contain" style="width: 100%" id="hodnoceni-tema-container">
+                    <div class="ui-field-contain" style="width: 100%" id="hodnoceni-tema-container">
                         <label>xxx</label>
 
                         <div data-role="controlgroup" data-type="horizontal">
                             <input id="textbox-button" data-wrapper-class="controlgroup-textinput ui-btn" type="text">
                             <button>...</button>
                         </div>
-                    </div>-->
+                    </div>
+                    -->
 
                 <hr />
 
@@ -589,10 +458,6 @@
                                value="P">Procenta
                     </label>
                 </fieldset>
-                
-                
-                <!--{{hodnoceniForm}}-->
-                
 
                 <table id="hodnoceni-table" data-role="table" data-mode="columntoggle" class="ui-responsive table-stripe table-bordered ">
                     <thead>
@@ -627,8 +492,6 @@
                                 </ng-form>
                             </td>
                             <td class="ui-table-priority-3"><input type="text" ng-model="student.VYSLEDEK_TEXT" /></td>
-
-                            <!--<td><div class="ui-input-text ui-body-inherit"><input type="text"></div></td>-->
                         </tr>
                     </tbody>
                 </table>
@@ -650,12 +513,6 @@
                     <label><input type="checkbox" id="hodnoceniNastavitVsem" ng-model="hodnoceniNastavitVsem" data-mini="false" />nastavit všem</label>
                 </div>
 
-                <!--Click me to toggle: <input type="checkbox" ng-model="checked" ng-change=""><br />
-                    <input type="submit" ng-model="button" ng-disabled="checked" value="xxxx" />
-                    <button ng-model="button" ng-disabled="checked">Button</button>
-                    <input type="button" ng-model="button" ng-disabled="checked" value="xxxx" />
-                    <a data-role="button" ng-disabled="checked">Uložit a nové</a>-->
-
             </div>
 
             <!--FOOTER-->
@@ -664,7 +521,6 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <!--<input type="submit" ng-click="ulozit()" value=" submit" />-->
                             <a data-role="button" ng-click="ulozit()">Uložit</a>
                         </td>
                         <td style="width: 50%">&nbsp;</td>
@@ -676,7 +532,7 @@
                 </table>
             </footer>
         </form>
-        
+
         <script>
             //$("hodnoceniForm").validate({
             //    messages: {
@@ -702,18 +558,21 @@
             //            }
             //        }
             //});
-
-
-        </script>        
-        
+        </script>
 
     </section>
+
+
+
+
+
 
 
 
     <!--PROBIRANE-UCIVO-->
     <section id="probirane-ucivo" data-role="page" ng-controller="ZapisProbiranehoUcivaCtrl">
         <form id="probiraneUcivoForm" name="probiraneUcivoForm" novalidate>
+
             <!--HEADER-->
             <header data-role="header" data-position="fixed">
                 <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
@@ -731,9 +590,9 @@
                     <select name="probiraneUcivoTrida" id="probiraneUcivoTrida" data-native-menu="true" ng-change="probiraneUcivoTridaChanged()"
                             ng-options="item.TRIDA_ID as item.TRIDA_NAZEV for item in data.Tridy"
                             ng-model="selectedTrida"></select>
-                    <input name="seznamTrid" id="seznamTrid" type="text" ng-disabled="true" ng-model="seznamTrid"  />
+                    <input name="seznamTrid" id="seznamTrid" type="text" ng-disabled="true" ng-model="seznamTrid" />
                 </div>
-                
+
                 počet tříd: {{pocetTrid}}; počet hodin: {{pocetHodin}}
                 <!--<div ng-repeat="ucivo in data.ProbiraneUcivo | filter:{ SKUPINA_ID: selectedTrida } | limitTo:limitToTrida">-->
 
@@ -758,9 +617,9 @@
                         <textarea name="poznamka" id="poznamka" rows="2" ng-model="ucivo.POZNAMKA"></textarea>
                     </div>
                 </div>
-                    <label><input type="checkbox" name="zapsatVsemTridam" id="zapsatVsemTridam" ng-model="zapsatVsemTridam" ng-change="zapsatVsemTridamChanged()" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
-                    <label><input type="checkbox" name="zapsatHodinyZvlast" id="zapsatHodinyZvlast" ng-model="zapsatHodinyZvlast" ng-change="zapsatHodinyZvlastChanged()" />Zapsat každou hodinu zvlášť</label>
-                </div>
+                <label><input type="checkbox" name="zapsatVsemTridam" id="zapsatVsemTridam" ng-model="zapsatVsemTridam" ng-change="zapsatVsemTridamChanged()" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
+                <label><input type="checkbox" name="zapsatHodinyZvlast" id="zapsatHodinyZvlast" ng-model="zapsatHodinyZvlast" ng-change="zapsatHodinyZvlastChanged()" />Zapsat každou hodinu zvlášť</label>
+            </div>
 
 
             <!--FOOTER-->
@@ -782,6 +641,11 @@
     </section>
 
 
+
+
+
+
+
     <!--NAPOVEDA-->
     <section id="napoveda" data-role="page">
 
@@ -796,6 +660,11 @@
             <h1>NÁPOVĚDA</h1>
         </div>
     </section>
+
+
+
+
+
 
 
     <!--O-APLIKACI-->
@@ -813,6 +682,9 @@
         </div>
 
     </section>
+
+
+
 
 
 
@@ -843,81 +715,7 @@
 
 
         <!--FOOTER-->
-        <footer data-role="footer"><h1>hod</h1></footer>
-
-
-        <script>
-
-
-            //var isPhoneGap = document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
-            //if (isPhoneGap) {
-            //    // PhoneGap application
-            //    //var serviceURL = "http://10.0.2.2/SOLWebApi/api/";
-            //    var serviceURL = "http://172.20.2.26/SOLWebApi/api/";
-            //} else {
-            //    // Web page
-            //    var serviceURL = "http://localhost/SOLWebApi/api/";
-            //}
-
-            /*
-            //var serviceURL = "http://172.20.2.26/SOLWebApi/api/"
-            var serviceURL = "http://localhost/SOLWebApi/api/";
-
-            var username = localStorage.getItem("username");
-            var password = localStorage.getItem("password");
-
-
-            var basicAuthHash = base64.encode(username + ":" + password); // window.btoa("ada:xx");
-            */
-
-            //CryptoJS.enc.Base64.stringify("ada:ada");
-
-            //var basicAuthHash = CryptoJS.MD5("ada:ada");
-            //alert(basicAuthHash);
-            /*
-            $.ajaxSetup({
-                headers: {
-                    'Authorization': 'Basic ' + basicAuthHash
-                },
-                statusCode: {
-                    401: function (jqXHR, textStatus, errorThrown) {
-                        //self.location = '/Account/Login/';
-                        //location.href = "./login.cfm";
-                        //alert('přesměrování na přihlášení');
-                        $.mobile.changePage('#login', 'slide', true, true);
-                    }
-                }
-            });
-            */
-
-            //$.getJSON(serviceURL + 'SkolniRoky', function (data) {
-            //    var items = [];
-            //    //console.log(data);
-
-            //    $.each(data.Data, function (index, item) {
-            //        items.push('<li id="' + item.OBDOBI_ID + '">' + item.NAZEV + '</li>');
-            //    });
-
-            //    $('#skolni-roky-list').append(items.join(""));
-
-            //    //$('#skolni-roky-list').listview('refresh');
-            //});
-
-
-
-
-
-
-
-
-            //$('#movie-list').append('<li><a href="" data-id="' + row.id + '"><img src="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w185'+row.poster_path+'"/><h3>' + row.title + '</h3><p>' + row.vote_average + '/10</p></a></li>'); });
-
-            //$('#movie-list').listview('refresh');
-
-
-        </script>
-
-
+        <footer data-role="footer"><h1></h1></footer>
     </section>
 
 
@@ -926,28 +724,6 @@
 
 
     <script type="text/javascript">
-
-        //var deviceReadyDeferred = $.Deferred();
-        //var jqmReadyDeferred = $.Deferred();
-
-        //document.addEventListener("deviceReady", deviceReady, false);
-
-        //function deviceReady() {
-        //    deviceReadyDeferred.resolve();
-        //}
-
-        //$(document).on("mobileinit", function () {
-        //    console.log('mobileinit');
-
-        //    jqmReadyDeferred.resolve();
-        //});
-
-        //$.when(deviceReadyDeferred, jqmReadyDeferred).then(doWhenBothFrameworksLoaded);
-
-        //function doWhenBothFrameworksLoaded() {
-        //    // TBD
-        //}
-
         app.initialize();
 
         window.onerror = function (x) {
@@ -957,10 +733,5 @@
     </script>
 
 
-
 </body>
-
-
-
-
 </html>

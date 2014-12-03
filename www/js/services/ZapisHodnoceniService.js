@@ -4,51 +4,34 @@
 
     module.factory('ZapisHodnoceniService', ['$http', '$q', '$log', 'NastaveniService', 'AuthorizationService',
         function ($http, $q, $log, NastaveniService, AuthorizationService) {
-        $log.debug('ZapisHodnoceniService');
+            //$log.debug('ZapisHodnoceniService');
 
-        var me = {};
+            var me = {};
 
-        me.selectedUdalostID = null;
-        me.selectedUdalostPoradi = null;
+            me.selectedUdalostID = null;
+            me.selectedUdalostPoradi = null;
 
-        //me.getByUdalostId = function () {
-        //    $log.debug('ZapisHodnoceniService - getByUdalostId');
-        //    return deferred.promise;
-        //};
+            me.getByRozvrhovaUdalost = function (udalostID, poradi) {
+                me.selectedUdalostID = udalostID;
+                me.selectedUdalostPoradi = poradi;
 
-        me.getByRozvrhovaUdalost = function (udalostID, poradi) {
-            me.selectedUdalostID = udalostID;
-            me.selectedUdalostPoradi = poradi;
-
-            $log.debug('ZapisHodnoceniService - getByRozvrhovaUdalost');
-            //$log.debug(udalostID, poradi);
+                //$log.debug('ZapisHodnoceniService - getByRozvrhovaUdalost');
 
 
-            var url = NastaveniService.getApiURL() + 'ZapisHodnoceni/' + udalostID + '/' + poradi;
+                var url = NastaveniService.getApiURL() + 'ZapisHodnoceni/' + udalostID + '/' + poradi;
+                $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
-            //$log.debug(url);
-            $log.info(AuthorizationService.getAuthorizationHeader());
+                return $http.get(url);
+            };
 
-            $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
+            me.save = function (data) {
+                var url = NastaveniService.getApiURL() + 'ZapisHodnoceni/';
+                $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
-            return $http.get(url);
-        };
+                return $http.post(url, data);
+            };
 
-        me.save = function (data) {
-
-            var url = NastaveniService.getApiURL() + 'ZapisHodnoceni/';
-
-            //$log.debug(url);
-            $log.info(AuthorizationService.getAuthorizationHeader());
-
-            $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
-            //$log.debug(data);
-            return $http.post(url, data);
-        };
-
-
-
-        return me;
-    }]);
+            return me;
+        }]);
 })();
 

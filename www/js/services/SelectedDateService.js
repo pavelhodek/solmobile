@@ -23,7 +23,7 @@
 
 
             //new Date('2014', '11' - 1, '27', '12', '30', '00')
-            getLocalDateFromIsoString: function(iso) {
+            getLocalDateFromIsoString: function (iso) {
                 // 2014-11-27T12:30:00 
                 var split = iso.split('T');
                 var date = split[0];

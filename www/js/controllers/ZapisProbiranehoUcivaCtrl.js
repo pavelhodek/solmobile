@@ -2,14 +2,14 @@
     "use strict";
     angular.module('sol.controllers')
         .controller('ZapisProbiranehoUcivaCtrl', function($scope, $rootScope, $log, $q, $filter, ZapisProbiranehoUcivaService, RozvrhService, TridyService, ObdobiDneService, UdalostService) {
-        $log.debug('ZapisProbiranehoUcivaCtrl');
+        //$log.debug('ZapisProbiranehoUcivaCtrl');
 
         angular.element(document)
             .on("pagecreate", "#probirane-ucivo", function(event, ui) {
-                $log.debug("PAGECREATE - #PROBIRANE-UCIVO");
+                //$log.debug("PAGECREATE - #PROBIRANE-UCIVO");
             })
             .on("pageshow", "#probirane-ucivo", function(event, ui) {
-                $log.debug("PAGESHOW - #PROBIRANE-UCIVO");
+                //$log.debug("PAGESHOW - #PROBIRANE-UCIVO");
                 $scope.reset();
                 $scope.loadData();
             });
@@ -52,7 +52,7 @@
 
 
         $scope.loadData = function() {
-            $log.log("ZapisProbiranehoUcivaCtrl - loadData");
+            //$log.log("ZapisProbiranehoUcivaCtrl - loadData");
             $scope.UdalostID = RozvrhService.selectedUdalostID;
             $scope.UdalostPoradi = RozvrhService.selectedUdalostPoradi;
 
@@ -64,21 +64,16 @@
 
             // pockam na vsechny promise
             $q.all([probiraneUcivo]).then(function(results) {
-                    $log.log("ZapisProbiranehoUcivaCtrl - all resloved");
+                    //$log.log("ZapisProbiranehoUcivaCtrl - all resloved");
 
                     var probiraneUcivo = results[0].data.Data;
-                    //var tridy = results[1].data.Data;
-                    //var obdobiDne = results[2].data.Data;
 
-                    $log.log(probiraneUcivo);
-                    //$log.log(tridy);
-                    //$log.log(obdobiDne);
+                    //$log.log(probiraneUcivo);
 
-                    // $scope.popisHodiny = '27.7.2014 (3.): ČJL (Český jazyk a literatura) - prostě nějaká rozumně dlouhá informace do záhlaví.';
                     UdalostService.getPopisHodiny($scope.UdalostID, $scope.UdalostPoradi).then(
                         function(result) {
                             $scope.popisHodiny = result.data;
-                            $log.debug(result);
+                            //$log.debug(result);
                         },
                         function(error) {
                             $scope.popisHodiny = '';
@@ -86,16 +81,6 @@
                         }
                     );
 
-
-                    //angular.forEach(dochazky.Studenti, function (value, key, object) {
-                    //    $log.debug(value);
-                    //    angular.extend(value, { TRIDA_NAZEV: nazevTridy(tridy, value.TRIDA_ID) });
-                    //    angular.extend(value, { DOCHAZKA: dochazkaStudenta(dochazky.Dochazky, dochazky.ObdobiDne, value.OSOBA_ID) });
-                    //    angular.extend(value, { POZNAMKA: duvodAbsenceStudenta(dochazky.Dochazky, value.OSOBA_ID) });
-
-                    //    $log.debug(value);
-
-                    //});
                     probiraneUcivo.Tridy = _(probiraneUcivo.StudijniSkupiny)
                         .map(function(x) { return { TRIDA_ID: x.TRIDA_ID, TRIDA_NAZEV: x.TRIDA_NAZEV, TRIDA_PORADI_ZOBRAZENI: x.TRIDA_PORADI_ZOBRAZENI }; })
                         .uniq(function(x) { return x.TRIDA_ID; })
@@ -106,10 +91,6 @@
 
                     $scope.data = probiraneUcivo;
 
-                    //_.chain($scope.data.StudijniSkupiny) .pluck("genre").uniq().sortBy().value();
-
-                    //$log.debug(_($scope.data.StudijniSkupiny).map(function(skupina) { return { skupina.TRIDA_ID, skupina.TRIDA_NAZEV } }));
-
                     $scope.pocetTrid = _.size($scope.data.Tridy);
                     $scope.pocetHodin = _.size($scope.data.ObdobiDne);
 
@@ -119,7 +100,7 @@
                     if ($scope.pocetTrid > 1) $scope.showCheckBox($('#zapsatVsemTridam'));
                     if ($scope.pocetHodin > 1) $scope.showCheckBox($('#zapsatHodinyZvlast'));
 
-                    //$scope.setVisibilityTrida();
+
                     var pocetProbiraneUcivoView = 1;
                     if ($scope.zapsatHodinyZvlast) {
                         pocetProbiraneUcivoView = $scope.pocetHodin;
@@ -177,26 +158,22 @@
 
 
         $scope.ulozit = function() {
-            $log.info('ulozit');
+            //$log.info('ulozit');
 
             $scope.submitted = true;
 
-            //$scope.$broadcast('show-errors-check-validity');
-
             if ($scope.probiraneUcivoForm.$invalid) {
                 $("#probiraneUcivoNotifier").html("Zadání není validní.").popup("open");
-                $log.warn('nebylo uloženo');
-                $log.debug($scope.probiraneUcivoForm);
+                //$log.warn('nebylo uloženo');
+                //$log.debug($scope.probiraneUcivoForm);
                 return;
             }
 
             var status = ZapisProbiranehoUcivaService.save($scope.UdalostID, $scope.UdalostPoradi, zadaneUcivo($scope.data));
 
-            //$log.info(status);
             status.then(function(result) {
-                //$log.info(result);
                 if (result.data.Code == "OK") {
-                    $log.info('ZapisProbiranehoUciva - SAVED');
+                    //$log.info('ZapisProbiranehoUciva - SAVED');
                     navigateToRozvrh();
                     $("#rozvrhNotifier").html("Probírané učivo uloženo.").popup("open");
                 } else if (result.data.Code == "ERROR") {
@@ -208,27 +185,22 @@
         };
 
         $scope.ulozitAZadatDochazku = function() {
-            $log.info('ulozit');
-            //$.mobile.changePage('#dochazka');
+            //$log.info('ulozit');
 
             $scope.submitted = true;
 
-            //$scope.$broadcast('show-errors-check-validity');
-
             if ($scope.probiraneUcivoForm.$invalid) {
                 $("#probiraneUcivoNotifier").html("Zadání není validní.").popup("open");
-                $log.warn('nebylo uloženo');
-                $log.debug($scope.probiraneUcivoForm);
+                //$log.warn('nebylo uloženo');
+                //$log.debug($scope.probiraneUcivoForm);
                 return;
             }
 
             var status = ZapisProbiranehoUcivaService.save($scope.UdalostID, $scope.UdalostPoradi, zadaneUcivo($scope.data));
 
-            //$log.info(status);
             status.then(function(result) {
-                //$log.info(result);
                 if (result.data.Code == "OK") {
-                    $log.info('ZapisProbiranehoUciva - SAVED');
+                    //$log.info('ZapisProbiranehoUciva - SAVED');
                     navigateToDochazka();
                     $("#dochazkaNotifier").html("Probírané učivo uloženo.").popup("open");
                 } else if (result.data.Code == "ERROR") {
@@ -242,7 +214,7 @@
 
 
         $scope.zpet = function() {
-            $log.info('zpet');
+            //$log.info('zpet');
             navigateToRozvrh();
         };
 
@@ -272,11 +244,11 @@
         };
 
         $scope.setVisibilityTrida = function() {
-            $log.debug('setVisibilityTrida');
-            $log.debug($scope.zapsatVsemTridam);
+            //$log.debug('setVisibilityTrida');
+            //$log.debug($scope.zapsatVsemTridam);
 
             if ($scope.zapsatVsemTridam) {
-                $log.debug('showTextBox');
+                //$log.debug('showTextBox');
 
                 //$scope.selectedTrida = null;
                 //$scope.limitToTrida = 1;
@@ -285,7 +257,7 @@
                 $scope.hideSelecMenu($('#probiraneUcivoTrida'));
                 $scope.showTextBox($('#seznamTrid'));
             } else {
-                $log.debug('showSelecMenu');
+                //$log.debug('showSelecMenu');
 
                 //$scope.limitToTrida = 1000000;
                 $scope.selectedTrida = _.chain($scope.data.Tridy).pluck("TRIDA_ID").first().value();

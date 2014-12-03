@@ -10,14 +10,10 @@
         }
 
         me.getAuthorizationHeader = function () {
-
             var username = me.getUsername();
             var password = me.getPassword();
 
-
-            var basicAuthHash = base64.encode(username + ":" + password); // window.btoa("ada:xx");
-
-            //console.log('getAuthorizationHeader login: ' + username + " / " + password);
+            var basicAuthHash = base64.encode(username + ":" + password);
 
             return 'Basic ' + basicAuthHash;
         }
@@ -49,46 +45,38 @@
 
 
         me.setUsername = function (value) {
-            $log.info("SET USERNAME");
+            //$log.info("SET USERNAME");
             localStorage.setItem("login.username", value);
         }
 
         me.setPassword = function (value) {
-            $log.info("SET PASSWORD");
+            //$log.info("SET PASSWORD");
             localStorage.setItem("login.password", value);
         }
 
         me.setRemember = function (value) {
-            $log.info("SET REMEMBER");
+            //$log.info("SET REMEMBER");
             localStorage.setItem("login.remember", value);
         }
 
         me.logout = function () {
-            $log.info("LOGOUT");
+            //$log.info("LOGOUT");
             localStorage.removeItem("login.remember");
             localStorage.removeItem("login.username");
             localStorage.removeItem("login.password");
             $http.defaults.headers.common.Authorization = "";
         }
 
-        //me.checkAuthorizationIsValid = function (username, password) {
         me.checkAuthorizationIsValid = function () {
-            //if (username && password) {
-                var url = NastaveniService.getApiURL() + 'AuthorizationStatus';
+            var url = NastaveniService.getApiURL() + 'AuthorizationStatus';
 
-                //$log.debug(url);
-                $http.defaults.headers.common.Authorization = me.getAuthorizationHeader();
+            $http.defaults.headers.common.Authorization = me.getAuthorizationHeader();
 
-                return $http.get(url);
-            //} else {
-            //    var deferred = $q.defer();
-            //    deferred.resolve(false);
-            //    return deferred.promise;
-            //}
+            return $http.get(url);
         }
 
         me.storeLogin = function (username, password) {
-            $log.info("STORE LOGIN");
+            //$log.info("STORE LOGIN");
             localStorage.setItem("login.username", username);
             localStorage.setItem("login.password", password);
 

@@ -3,10 +3,10 @@
     var module = angular.module('sol.services');
 
     module.factory('ObdobiRokuService', ['$http', '$q', '$log', 'NastaveniService', 'AuthorizationService', function ($http, $q, $log, NastaveniService, AuthorizationService) {
-        $log.debug('ObdobiRokuService');
+        //$log.debug('ObdobiRokuService');
 
         function all() {
-            $log.debug('ObdobiRokuService - all');
+            //$log.debug('ObdobiRokuService - all');
             var url = NastaveniService.getApiURL() + 'ObdobiRoku';
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
@@ -16,16 +16,16 @@
 
         function getByDate(date) {
             var allObdobi = all();
-            $log.info("getByDate");
-            $log.info(date);
+            //$log.info("getByDate");
+            //$log.info(date);
 
             var deferred = $q.defer();
 
             allObdobi.then(
                 // {data: Object, status: 200, headers: function, config: Object, statusText: "OK"}
                 function (result) {
-                    $log.info("getByDate - success");
-                    $log.info(result.data);
+                    //$log.info("getByDate - success");
+                    //$log.info(result.data);
 
                     if (result.data.Status.Code == "OK") {
                         var seq = result.data.Data;
@@ -52,7 +52,7 @@
         return {
             all: all,
             getByDate: getByDate
-            
+
         };
     }]);
 })();

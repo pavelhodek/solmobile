@@ -10,8 +10,6 @@
                 $log.debug('PredmetyService - all');
                 var url = NastaveniService.getApiURL() + 'Predmety';
 
-                //$log.info(AuthorizationService.getAuthorizationHeader());
-
                 $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
                 return $http.get(url, { cache: true });

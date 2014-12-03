@@ -3,10 +3,10 @@
     angular.module('sol.controllers')
 
         .controller('LogoutCtrl', ['$scope', '$rootScope', '$log', 'AuthorizationService', function ($scope, $rootScope, $log, AuthorizationService) {
-            $log.debug('LogoutCtrl');
+            //$log.debug('LogoutCtrl');
 
             $scope.logout = function () {
-                $log.debug('LOGOUT');
+                //$log.debug('LOGOUT');
                 AuthorizationService.logout();
 
                 $rootScope.$broadcast('logout');

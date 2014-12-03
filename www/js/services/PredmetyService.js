@@ -3,11 +3,11 @@
     var module = angular.module('sol.services');
 
     module.factory('PredmetyService', ['$http', '$q', '$log', 'NastaveniService', 'AuthorizationService', function ($http, $q, $log, NastaveniService, AuthorizationService) {
-        $log.debug('PredmetyService');
+        //$log.debug('PredmetyService');
 
         return {
             all: function () {
-                $log.debug('PredmetyService - all');
+                //$log.debug('PredmetyService - all');
                 var url = NastaveniService.getApiURL() + 'Predmety';
 
                 $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();

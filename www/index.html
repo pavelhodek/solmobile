@@ -301,9 +301,9 @@
                             </p>
                         </div>
                     </a>
-                    <a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
+                    <!--<a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
                        class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
-                       title="Detail hodiny">Detail hodiny</a>
+                       title="Detail hodiny">Detail hodiny</a>-->
                 </li>
             </ul>
         </div>
@@ -315,7 +315,7 @@
             <nav data-role="navbar">
                 <ul>
                     <li><a ng-click="zapsatProbiraneUcivo('#probirane-ucivo', data)" data-role="button" data-theme="a">Učivo</a></li>
-                    <li><a ng-click="zapsatDochazku('#dochazka', data)" data-role="button" data-theme="a">Docházku</a></li>
+                    <li><a ng-click="zapsatDochazku('#dochazka', data)" data-role="button" data-theme="b">Docházku</a></li>
                     <li><a ng-click="zapsatHodnoceni('#hodnoceni', data)" data-role="button" data-theme="a">Hodnocení</a></li>
                 </ul>
             </nav>
@@ -728,13 +728,16 @@
                 <div class="ui-field-contain">
                     <label for="probiraneUcivoTrida">Třída</label>
 
-                    <select name="probiraneUcivoTrida" id="probiraneUcivoTrida" data-native-menu="true" ng-change="enhanceFields()"
+                    <select name="probiraneUcivoTrida" id="probiraneUcivoTrida" data-native-menu="true" ng-change="probiraneUcivoTridaChanged()"
                             ng-options="item.TRIDA_ID as item.TRIDA_NAZEV for item in data.Tridy"
                             ng-model="selectedTrida"></select>
                     <input name="seznamTrid" id="seznamTrid" type="text" ng-disabled="true" ng-model="seznamTrid"  />
                 </div>
+                
+                počet tříd: {{pocetTrid}}; počet hodin: {{pocetHodin}}
+                <!--<div ng-repeat="ucivo in data.ProbiraneUcivo | filter:{ SKUPINA_ID: selectedTrida } | limitTo:limitToTrida">-->
 
-                <div ng-repeat="ucivo in data.ProbiraneUcivo | filter:{ SKUPINA_ID: selectedTrida } | limitTo:limitToTrida">
+                <div ng-repeat="ucivo in data.ProbiraneUcivoView">
                     <!--období dne: {{ucivo.OBDOBI_DNE_ID}}; třída: {{ucivo.SKUPINA_ID}}; skupiny: {{ucivo.SKUPINY_ID}}<br />-->
                     <div class="ui-field-contain">
                         <label for="cisloHodiny">Číslo hodiny</label>
@@ -755,8 +758,9 @@
                         <textarea name="poznamka" id="poznamka" rows="2" ng-model="ucivo.POZNAMKA"></textarea>
                     </div>
                 </div>
-                <label><input type="checkbox" name="zapsatVsemTridam" id="zapsatVsemTridam" ng-model="zapsatVsemTridam" ng-change="setVisibilityTrida()" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
-            </div>
+                    <label><input type="checkbox" name="zapsatVsemTridam" id="zapsatVsemTridam" ng-model="zapsatVsemTridam" ng-change="zapsatVsemTridamChanged()" />Číslo hodiny a učivo zapsat všem třídám v úvazku</label>
+                    <label><input type="checkbox" name="zapsatHodinyZvlast" id="zapsatHodinyZvlast" ng-model="zapsatHodinyZvlast" ng-change="zapsatHodinyZvlastChanged()" />Zapsat každou hodinu zvlášť</label>
+                </div>
 
 
             <!--FOOTER-->

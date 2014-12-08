@@ -19,63 +19,73 @@
 
             $scope.selectedDate = SelectedDateService.getSelectedDate();
 
-            $scope.reset = function () {
-                $scope.data = {};
-            }
+        $scope.reset = function() {
+            $scope.data = {};
+        };
 
-            $scope.init = function () {
-                $scope.loadData();
-            }
+        $scope.init = function() {
+            $scope.loadData();
+        };
 
 
-            $scope.obdobiDneNazev = function (udalost) {
-                if (udalost.OBDOBI_DNE_OD_NAZEV == udalost.OBDOBI_DNE_DO_NAZEV)
-                    return udalost.OBDOBI_DNE_OD_NAZEV;
+        $scope.obdobiDneNazev = function(udalost) {
+            if (udalost.OBDOBI_DNE_OD_NAZEV == udalost.OBDOBI_DNE_DO_NAZEV)
+                return udalost.OBDOBI_DNE_OD_NAZEV;
+            else
+                return udalost.OBDOBI_DNE_OD_NAZEV + ' - ' + udalost.OBDOBI_DNE_DO_NAZEV;
+        };
+
+        $scope.zdrojeInfo = function(udalost) {
+            var nazvySkupin = [];
+
+            var skupiny = udalost.SKUPINY_UDALOSTI;
+
+            for (var i = 0, len = skupiny.length; i < len; i++) {
+                var skupina = skupiny[i];
+                if (skupina.PRIZNAK_DRUH_SKUPINY == 'T')
+                    nazvySkupin.push(skupina.TRIDA_NAZEV);
+                else if (skupina.PRIZNAK_DRUH_SKUPINY == 'S')
+                    nazvySkupin.push(skupina.TRIDA_NAZEV + ' ' + skupina.SKUPINA_NAZEV);
                 else
-                    return udalost.OBDOBI_DNE_OD_NAZEV + ' - ' + udalost.OBDOBI_DNE_DO_NAZEV;
-            };
-
-            $scope.zdrojeInfo = function (udalost) {
-                var nazvySkupin = [];
-
-                var skupiny = udalost.SKUPINY_UDALOSTI;
-
-                for (var i = 0, len = skupiny.length; i < len; i++) {
-                    var skupina = skupiny[i];
-                    if (skupina.PRIZNAK_DRUH_SKUPINY == 'T')
-                        nazvySkupin.push(skupina.TRIDA_NAZEV);
-                    else if (skupina.PRIZNAK_DRUH_SKUPINY == 'S')
-                        nazvySkupin.push(skupina.TRIDA_NAZEV + ' ' + skupina.SKUPINA_NAZEV);
-                    else
-                        nazvySkupin.push(skupina.TRIDA_NAZEV + ' (seminář)');
-                }
+                    nazvySkupin.push(skupina.TRIDA_NAZEV + ' (seminář)');
+            }
 
 
-                var nazvyMistnosti = [];
+            var nazvyMistnosti = [];
 
-                var mistnosti = udalost.MISTNOSTI_UDALOSTI;
+            var mistnosti = udalost.MISTNOSTI_UDALOSTI;
 
-                for (var i = 0, len = mistnosti.length; i < len; i++) {
-                    var mistnost = mistnosti[i];
-                    nazvyMistnosti.push(mistnost.NAZEV);
-                }
+            for (var i = 0, len = mistnosti.length; i < len; i++) {
+                var mistnost = mistnosti[i];
+                nazvyMistnosti.push(mistnost.NAZEV);
+            }
 
-                var result = '';
-                if (nazvySkupin.length > 0)
-                    result = nazvySkupin.join(" + ");
+            var result = '';
+            if (nazvySkupin.length > 0)
+                result = nazvySkupin.join(" + ");
 
-                if (nazvySkupin.length > 0 && nazvyMistnosti.length > 0)
-                    result += ', ';
+            if (nazvySkupin.length > 0 && nazvyMistnosti.length > 0)
+                result += ', ';
 
-                if (nazvyMistnosti.length > 0)
-                    result += nazvyMistnosti.join(" + ");
+            if (nazvyMistnosti.length > 0)
+                result += nazvyMistnosti.join(" + ");
 
-                return result;
-            };
-
+            return result;
+        };
 
 
             $scope.loadData = function () {
+
+                if (navigator.network && navigator.network.connection.type === Connection.NONE) {
+                    navigator.notification.alert(
+                          'Vaše zařízení není připojeno k Interentu. Data nemohou být přijata.',
+                          function () { },
+                          'Chybí připojení'
+                        );
+
+                    return;
+                }
+
 
                 $.mobile.loading("show", {
                     text: "načítám...",

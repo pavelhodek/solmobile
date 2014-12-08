@@ -58,7 +58,8 @@ var app = {
                                 'Device Cordova: ' + device.cordova + '<br />' +
                                 'Device Platform: ' + device.platform + '<br />' +
                                 'Device UUID: ' + device.uuid + '<br />' +
-                                'Device Version: ' + device.version + '<br />';
+                                'Device Version: ' + device.version + '<br />' + 
+                                'Internet Connection: ' + navigator.connection.type;
 
         }
 
@@ -76,6 +77,10 @@ var app = {
 
     doWhenAllFrameworksLoaded: function () {
         // READY
+
+        $(document).on('online', function () {
+            //alert("ONLINE");
+        });
     },
 
 };

@@ -15,6 +15,14 @@
                         {
                             "xml": "<feature name=\"Device\"><param name=\"wp-package\" value=\"Device\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"wp-package\" value=\"NetworkStatus\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"wp-package\" value=\"Notification\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -24,6 +32,10 @@
                     "/Deployment/App/Capabilities": [
                         {
                             "xml": "<Capability Name=\"ID_CAP_IDENTITY_DEVICE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<Capability Name=\"ID_CAP_NETWORKING\" />",
                             "count": 1
                         }
                     ]
@@ -39,6 +51,12 @@
             "PACKAGE_NAME": "{d7814b60-4ecb-11e4-b4cb-b54ca24ed320}"
         },
         "org.apache.cordova.device": {
+            "PACKAGE_NAME": "{d7814b60-4ecb-11e4-b4cb-b54ca24ed320}"
+        },
+        "org.apache.cordova.network-information": {
+            "PACKAGE_NAME": "{d7814b60-4ecb-11e4-b4cb-b54ca24ed320}"
+        },
+        "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "{d7814b60-4ecb-11e4-b4cb-b54ca24ed320}"
         }
     },

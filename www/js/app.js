@@ -50,6 +50,7 @@ var app = {
 
         app.receivedEvent('deviceready');
 
+        document.addEventListener("menubutton", app.onMenuKeyDown, false);
 
         var element = document.getElementById('deviceProperties');
         if (element) {
@@ -63,6 +64,10 @@ var app = {
 
     },
 
+    onMenuKeyDown: function () {
+        $('#solSidePanel').panel("toggle");
+    },
+
     // UPDATE DOM ON A RECEIVED EVENT
     receivedEvent: function (id) {
 
@@ -70,7 +75,7 @@ var app = {
     },
 
     doWhenAllFrameworksLoaded: function () {
-        //this.log("READY");
+        // READY
     },
 
 };

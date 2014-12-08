@@ -7,6 +7,7 @@
 
             $scope.apiURL = NastaveniService.getApiURL();
 
+
             $scope.save = function () {
                 //$log.debug('NastaveniCtrl - SAVE');
 

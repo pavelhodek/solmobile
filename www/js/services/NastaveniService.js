@@ -13,7 +13,8 @@
         // prod server: "http://172.20.2.26/SOLWebApi/api/";
         // test server: "https://sol.cca.cz/SOLWebApi/api/";
 
-        var defaultApiUrl = "https://sol.cca.cz/SOLWebApi/api/";
+        //var defaultApiUrl = "https://sol.cca.cz/SOLWebApi/api/";
+        var defaultApiUrl = "https://aplikace.skolaonline.cz/SOLWebApi/api/";
 
         me.getApiURL = function () {
             return localStorage.getItem("nastaveni.apiURL") || defaultApiUrl;

@@ -27,11 +27,11 @@
                 $scope.init();
             });
 
-            var initial = {
+            var initial = {data: {
                 username: null,
                 password: null,
-                remember: false
-            };
+                remember: true
+            }};
 
 
             $scope.resetForm = function () {
@@ -49,52 +49,100 @@
 
 
             $scope.init = function () {
-                $scope.username = AuthorizationService.getUsername();
-                $scope.password = null;
+                $scope.data = {};
 
-                $scope.remember = AuthorizationService.getRemember();
+                $scope.data.remember = true; //AuthorizationService.getRemember();
 
-                if ($scope.remember) {
-                    $scope.password = AuthorizationService.getPassword();
+                var currentUser = AuthorizationService.getCurrentUser();
+
+                if (currentUser) {
+                    $scope.data.username = currentUser.username; //AuthorizationService.getUsername();
+                    $scope.data.password = null;
+
+                    if ($scope.data.remember) {
+                        $scope.data.password = currentUser.password; //AuthorizationService.getPassword();
+                    }
                 }
 
+                $scope.data.userProfiles = AuthorizationService.getUserProfiles();
+
+
                 setTimeout(function () {
+                    $("#login-userProfiles").listview("refresh");
                     $("#remember").checkboxradio("refresh");
                 }, 0);
             }
 
-            $scope.login = function () {
-                //$log.debug("LOGIN");
 
+        function loginInternal(apiUrl, username, password, remember) {
+
+            var authResult = AuthorizationService.checkAuthorizationIsValid(apiUrl, username, password);
+
+            authResult
+                .success(function (data, status, headers, config) {
+                    if (data.Data) {
+
+                        AuthorizationService.setCurrentUser(username, password, apiUrl);
+                        var currentUser = AuthorizationService.getCurrentUser();
+                        $log.info("currentUser", currentUser);
+                        $rootScope.currentUser = currentUser; // AuthorizationService.getUsername();
+
+
+                        $log.info("remember", remember);
+                        if (remember === true) {
+                            AuthorizationService.saveUserProfile(currentUser);
+                        }
+
+
+                        $.mobile.changePage('#rozvrh', 'slide', true, true);
+                    } else {
+                        $rootScope.currentUser = null;
+
+
+                        if (data.Status.Code == "ACCOUNT_LOCKED") {
+                            $("#loginNotifier").html("Účet je uzamčen.").popup("open");
+                        } else {
+                            $("#loginNotifier").html("Neplatné přihlášení.").popup("open");
+                        }
+
+                    }
+                });
+        }
+
+
+        $scope.login = function () {
+                $log.debug("LOGIN");
                 $rootScope.currentUser = null;
                 $rootScope.$broadcast('login');
 
-                AuthorizationService.setUsername($scope.username);
-                AuthorizationService.setPassword($scope.password);
-                AuthorizationService.setRemember($scope.remember);
+                var apiUrlResult = AuthorizationService.findApiUrl($scope.data.username);
 
-                var result = AuthorizationService.checkAuthorizationIsValid();
+                apiUrlResult.then(
+                    function(apiUrl) {
+                        $log.info("apiUrlResult", apiUrl);
+                        //AuthorizationService.storeLogin($scope.data.username, $scope.data.password, $scope.data.remember);
+                        loginInternal(apiUrl, $scope.data.username, $scope.data.password, $scope.data.remember);
 
-                result
-                    .success(function (data, status, headers, config) {
-
-                        if (data.Data) {
-                            $rootScope.currentUser = AuthorizationService.getUsername();
-                            $.mobile.changePage('#rozvrh', 'slide', true, true);
-                        } else {
-                            $rootScope.currentUser = null;
-
-
-                            if (data.Status.Code == "ACCOUNT_LOCKED") {
-                                $("#loginNotifier").html("Účet je uzamčen.").popup("open");
-                            } else {
-                                $("#loginNotifier").html("Neplatné přihlášení.").popup("open");
-                            }
-
-                        }
+                    },
+                    function(reason) {
+                        $("#loginNotifier").html("Neplatné přihlášení.").popup("open");
+                        //$log.error("error: ", reason);
                     });
-
             };
 
-        }]);
+        $scope.loginProfile = function (profile) {
+            $rootScope.$broadcast('login');
+            //AuthorizationService.storeLogin(profile.username, profile.password, profile.apiUrl);
+
+            loginInternal(profile.apiUrl, profile.username, profile.password);
+        };
+
+
+        $scope.deleteProfile = function(profile, index) {
+            $scope.data.userProfiles.splice(index, 1);
+            AuthorizationService.setUserProfiles($scope.data.userProfiles);
+        };
+
+
+    }]);
 })();

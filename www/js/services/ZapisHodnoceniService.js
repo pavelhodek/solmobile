@@ -18,14 +18,14 @@
                 //$log.debug('ZapisHodnoceniService - getByRozvrhovaUdalost');
 
 
-                var url = NastaveniService.getApiURL() + 'ZapisHodnoceni/' + udalostID + '/' + poradi;
+                var url = AuthorizationService.getApiUrl() + 'ZapisHodnoceni/' + udalostID + '/' + poradi;
                 $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
                 return $http.get(url);
             };
 
             me.save = function (data) {
-                var url = NastaveniService.getApiURL() + 'ZapisHodnoceni/';
+                var url = AuthorizationService.getApiUrl() + 'ZapisHodnoceni/';
                 $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
                 return $http.post(url, data);

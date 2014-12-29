@@ -2,7 +2,7 @@
     "use strict";
     var module = angular.module('sol.services');
 
-    module.factory('NastaveniService', ['$http', function ($http) {
+    module.factory('NastaveniService', ['$http', '$rootScope', function ($http, $rootScope) {
         var me = {};
 
         me.timeFormat = "H:mm";
@@ -14,18 +14,30 @@
         // test server: "https://sol.cca.cz/SOLWebApi/api/";
 
         //var defaultApiUrl = "https://sol.cca.cz/SOLWebApi/api/";
-        var defaultApiUrl = "https://aplikace.skolaonline.cz/SOLWebApi/api/";
+        //var defaultApiUrl = "https://aplikace.skolaonline.cz/SOLWebApi/api/";
 
-        me.getApiURL = function () {
-            return localStorage.getItem("nastaveni.apiURL") || defaultApiUrl;
-        }
+        me.defaultApiUrls = [];
+        //me.defaultApiUrls[0] = "https://aplikace.skolaonline.cz/SOLWebApi/api/";
+        me.defaultApiUrls[0] = "http://sol.cca.cz/SOLWebApi/api/";
+        //me.defaultApiUrls[1] = "http://localhost/SOLWebApi/api/";
 
-        me.setApiURL = function (value) {
-            if (value && value.slice(-1) != "/")
-                value = value + "/";
 
-            return localStorage.setItem("nastaveni.apiURL", value);
-        }
+
+
+        //me.getApiUrl = function () {
+        //    var currentUser = $rootScope.currentUser || {};
+
+        //    return currentUser.apiUrl;
+
+        //    //return localStorage.getItem("nastaveni.apiURL") || defaultApiUrl;
+        //}
+
+        //me.setApiUrl = function (value) {
+        //    if (value && value.slice(-1) != "/")
+        //        value = value + "/";
+
+        //    return localStorage.setItem("nastaveni.apiURL", value);
+        //}
 
         return me;
     }]);

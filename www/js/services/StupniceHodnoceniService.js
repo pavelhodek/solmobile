@@ -8,7 +8,7 @@
         return {
             all: function () {
                 //$log.debug('StupniceHodnoceniService - all');
-                var url = NastaveniService.getApiURL() + 'StupniceHodnoceni';
+                var url = AuthorizationService.getApiUrl() + 'StupniceHodnoceni';
 
                 $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

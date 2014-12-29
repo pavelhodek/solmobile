@@ -8,7 +8,7 @@
 
         me.all = function () {
             //$log.debug('TridyService - all');
-            var url = NastaveniService.getApiURL() + 'Tridy';
+            var url = AuthorizationService.getApiUrl() + 'Tridy';
 
             //$log.info(AuthorizationService.getAuthorizationHeader());
 

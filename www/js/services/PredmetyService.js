@@ -8,7 +8,7 @@
         return {
             all: function () {
                 //$log.debug('PredmetyService - all');
-                var url = NastaveniService.getApiURL() + 'Predmety';
+                var url = AuthorizationService.getApiUrl() + 'Predmety';
 
                 $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

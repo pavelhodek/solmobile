@@ -8,7 +8,7 @@
         return {
             all: function () {
                 //$log.debug('ObdobiDneService - all');
-                var url = NastaveniService.getApiURL() + 'ObdobiDne';
+                var url = AuthorizationService.getApiUrl() + 'ObdobiDne';
 
                 $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

@@ -7,7 +7,7 @@
 
         function all() {
             //$log.debug('ObdobiRokuService - all');
-            var url = NastaveniService.getApiURL() + 'ObdobiRoku';
+            var url = AuthorizationService.getApiUrl() + 'ObdobiRoku';
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

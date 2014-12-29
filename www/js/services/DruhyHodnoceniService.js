@@ -7,7 +7,7 @@
 
         function all() {
             //$log.debug('DruhyHodnoceniService - all');
-            var url = NastaveniService.getApiURL() + 'DruhyHodnoceni';
+            var url = AuthorizationService.getApiUrl() + 'DruhyHodnoceni';
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

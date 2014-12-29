@@ -96,9 +96,11 @@ var solSidePanel = '\
         <li data-role="list-divider"></li> \
         <li data-icon="user"><a href="#login" >Přihlášení</a></li> \
         <li data-icon="delete" ><a href="#logout" >Odhlášení</a></li> \
-        <li data-icon="gear"><a href="#nastaveni" >Nastavení</a></li> \
     </ul> \
 </div>';
+
+//<li data-icon="gear"><a href="#nastaveni" >Nastavení</a></li> \
+//<li data-icon="gear"><a href="#skolni-rok" >Školní roky</a></li> \
 
 
 $(document).one('pagebeforecreate', function () {

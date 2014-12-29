@@ -5,7 +5,7 @@
         .controller('NastaveniCtrl', ['$scope', '$rootScope', '$http', '$log', 'NastaveniService', function ($scope, $rootScope, $http, $log, NastaveniService) {
             //$log.debug('NastaveniCtrl');
 
-            $scope.apiURL = NastaveniService.getApiURL();
+            //$scope.apiURL = NastaveniService.getApiURL();
 
 
             $scope.save = function () {

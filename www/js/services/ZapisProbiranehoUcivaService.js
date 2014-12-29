@@ -10,7 +10,7 @@
             me.selectedUdalostID = udalostId;
             me.selectedUdalostPoradi = poradi;
 
-            var url = NastaveniService.getApiURL() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
+            var url = AuthorizationService.getApiUrl() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
             return $http.get(url);
@@ -18,7 +18,7 @@
 
 
         me.save = function (udalostId, poradi, data) {
-            var url = NastaveniService.getApiURL() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
+            var url = AuthorizationService.getApiUrl() + 'ZapisProbiranehoUciva/' + udalostId + '/' + poradi;
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
             return $http.put(url, data);

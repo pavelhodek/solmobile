@@ -13,7 +13,7 @@
 
             //$log.debug('ZapisDochazkyService - getByRozvrhovaUdalost');
 
-            var url = NastaveniService.getApiURL() + 'ZapisDochazky' + '/' + udalostId + '/' + poradi;
+            var url = AuthorizationService.getApiUrl() + 'ZapisDochazky' + '/' + udalostId + '/' + poradi;
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
@@ -22,7 +22,7 @@
 
 
         me.save = function (udalostId, poradi, data) {
-            var url = NastaveniService.getApiURL() + 'ZapisDochazky' + '/' + udalostId + '/' + poradi;
+            var url = AuthorizationService.getApiUrl() + 'ZapisDochazky' + '/' + udalostId + '/' + poradi;
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

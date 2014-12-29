@@ -9,7 +9,7 @@
 
         function all() {
             //$log.debug('ParametryService - all');
-            var url = NastaveniService.getApiURL() + 'Parametry';
+            var url = AuthorizationService.getApiUrl() + 'Parametry';
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
@@ -19,7 +19,7 @@
 
         function getStringById(parametrID) {
             //$log.debug('ParametryService - getStringById');
-            var url = NastaveniService.getApiURL() + 'Parametry/string/' + parametrID;
+            var url = AuthorizationService.getApiUrl() + 'Parametry/string/' + parametrID;
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 
@@ -29,7 +29,7 @@
 
         function getDecimalById(parametrID) {
             //$log.debug('ParametryService - getStringById');
-            var url = NastaveniService.getApiURL() + 'Parametry/decimal/' + parametrID;
+            var url = AuthorizationService.getApiUrl() + 'Parametry/decimal/' + parametrID;
 
             $http.defaults.headers.common.Authorization = AuthorizationService.getAuthorizationHeader();
 

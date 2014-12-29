@@ -191,7 +191,7 @@
             $scope.submitted = true;
 
             if ($scope.hodnoceniForm.$invalid) {
-                $("#hodnoceniNotifier").html("Zadání není validní.").popup("open");
+                //$("#hodnoceniNotifier").html("Zadání není validní.").popup("open");
                 //$log.warn('nebylo uloženo');
                 //$log.debug($scope.hodnoceniForm);
                 return;
@@ -217,7 +217,7 @@
             $scope.submitted = true;
 
             if ($scope.hodnoceniForm.$invalid) {
-                $("#hodnoceniNotifier").html("Zadání není validní.").popup("open");
+                //$("#hodnoceniNotifier").html("Zadání není validní.").popup("open");
                 //$log.warn('nebylo uloženo');
                 //$log.debug($scope.hodnoceniForm);
                 return;

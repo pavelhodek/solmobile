@@ -70,6 +70,7 @@
     <script src="js/controllers/NastaveniCtrl.js"></script>
     <script src="js/controllers/ZapisProbiranehoUcivaCtrl.js"></script>
     <script src="js/controllers/RozvrhCtrl.js"></script>
+    <script src="js/controllers/RozvrhStudentCtrl.js"></script>
     <script src="js/controllers/SkolniRokyCtrl.js"></script>
     <script src="js/controllers/ZapisDochazkyCtrl.js"></script>
     <script src="js/controllers/ZapisHodnoceniCtrl.js"></script>
@@ -202,12 +203,10 @@
 
 
 
-
-
-
-
-
-    <!--ROZVRH-->
+    
+    
+    
+    <!--ROZVRH - UCITEL -->
     <section id="rozvrh" data-role="page" ng-controller="RozvrhCtrl">
 
         <div data-role="popup" id="popupInfo" data-theme="a" style="min-width:210px; max-width: 400px">
@@ -288,6 +287,69 @@
                 </ul>
             </nav>
         </footer>
+
+    </section>
+
+
+
+
+    <!--ROZVRH - STUDENT-->
+    <section id="rozvrhStudent" data-role="page" ng-controller="RozvrhStudentCtrl">
+
+        <div data-role="popup" id="rozvrhStudentPopupInfo" data-theme="a" style="min-width:210px; max-width: 400px">
+            <p><strong>Detail hodiny</strong></p>
+            <p>Zde může být celá řada dalších informací prakticky libovolně formátovaných, včetně formulářových prvků či tabulek.</p>
+        </div>
+
+        <!--HEADER-->
+        <header id="rozvrhStudent-header" data-role="header" data-theme="a" data-position="fixed">
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <h1>Rozvrh</h1>
+
+            <nav data-role="navbar" class="ui-bar-a">
+                <ul>
+                    <li>
+                        <a href="#" ng-click="decrementSelectedDate()" class="ui-alt-icon ui-nodisc-icon" data-icon="arrow-l" data-iconpos="notext"></a>
+                    </li>
+                    <li>
+                        <div class="center-wrapper">
+                            <div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r" data-iconpos="notext"></a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <!--CONTENT-->
+        <div class="content" data-role="content">
+            <div data-role="popup" id="rozvrhStudentNotifier"></div>
+
+            <ul id="rozvrhStudent-table" data-role="listview">
+                <li ng-repeat="udalost in data">
+                    <div>
+                        <div style="display:table-cell">
+                            <div style="text-align:center">
+                                {{obdobiDneNazev(udalost)}}
+                            </div>
+                            <p>{{udalost.CAS_OD | date:timeFormat}} - {{udalost.CAS_DO | date:timeFormat}}</p>
+                        </div>
+                        <div style="display:table-cell; padding-left: 20px">
+                            {{udalost.NAZEV}}
+                            <p>
+                                {{zdrojeInfo(udalost)}}
+                            </p>
+                        </div>
+                    </div>
+                    <!--<a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
+                            class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
+                            title="Detail hodiny">Detail hodiny</a>-->
+                </li>
+            </ul>
+        </div>
 
     </section>
 

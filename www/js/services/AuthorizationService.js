@@ -122,7 +122,7 @@
                 var currentUser = me.getCurrentUser();
 
                 if ($.trim(currentUser.username) != "" && $.trim(currentUser.password) != "") {
-                    return { username: currentUser.username, password: currentUser.password };
+                    return { username: currentUser.username, password: currentUser.password, apiUrl: currentUser.apiUrl };
                 }
             }
 
@@ -163,7 +163,7 @@
             localStorage.setItem("login.remember", value);
         }
 
-        me.logout = function () {
+        me.logout = function() {
             //$log.info("LOGOUT");
             //localStorage.removeItem("login.remember");
             //localStorage.removeItem("login.username");
@@ -172,42 +172,60 @@
             localStorage.removeItem("currentUser");
 
             $http.defaults.headers.common.Authorization = "";
-        }
+        };
 
-        me.checkAuthorizationIsValid = function (apiUrl, username, password) {
+        me.checkAuthorizationIsValid = function(apiUrl, username, password) {
             //var url = NastaveniService.getApiURL() + 'AuthorizationStatus';
             var url = apiUrl + 'AuthorizationStatus';
 
             $http.defaults.headers.common.Authorization = me.getAuthorizationHeader(username, password);
 
             return $http.get(url);
-        }
+        };
+
+        me.getUserInfo = function(apiUrl, username) {
+            var url = apiUrl + 'UzivatelInfo/' + username;
+            $http.defaults.headers.common.Authorization = me.getAuthorizationHeader(username, password);
+            return $http.get(url);
+        };
+
 
         me.getUserProfiles = function() {
             var userProfiles = JSON.parse(localStorage.getItem("userProfiles")) || [];
             return userProfiles;
-        }
+        };
 
-        me.setUserProfiles = function (userProfiles) {
+        me.setUserProfiles = function(userProfiles) {
             localStorage.setItem("userProfiles", JSON.stringify(userProfiles));
-        }
+        };
 
 
-        me.setCurrentUser = function(username, password, apiUrl) {
+        //me.setCurrentUser = function(username, password, apiUrl) {
+        //    //$log.info("STORE LOGIN");
+        //    //localStorage.setItem("login.username", username);
+        //    //localStorage.setItem("login.password", password);
+
+        //    var currentUser = {
+        //        "username": username,
+        //        "password": password,
+        //        //"remember": remember || false,
+        //        "apiUrl": apiUrl
+        //    };
+
+        //    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+        //};
+
+
+        me.setCurrentUser = function (currentUser) {
             //$log.info("STORE LOGIN");
             //localStorage.setItem("login.username", username);
             //localStorage.setItem("login.password", password);
 
-            var currentUser = {
-                "username": username,
-                "password": password,
-                //"remember": remember || false,
-                "apiUrl": apiUrl
-            };
-
             localStorage.setItem("currentUser", JSON.stringify(currentUser));
-
         };
+
+
 
 
         me.saveUserProfile = function (user) {

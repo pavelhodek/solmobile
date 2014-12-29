@@ -13,9 +13,9 @@
             var isLoginRemember = AuthorizationService.getRemember();
             if (isLoginRemember) {
 
-                var credentials = AuthorizationService.getStoredCredentials();
-
-                if (credentials != null) {
+                //var credentials = AuthorizationService.getStoredCredentials();
+                var currentUser = AuthorizationService.getCurrentUser();
+                if (currentUser != null) {
                     var result = AuthorizationService.checkAuthorizationIsValid();
 
                     result.success(function (data, status, headers, config) {

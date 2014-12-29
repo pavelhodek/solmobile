@@ -82,19 +82,54 @@
                 .success(function (data, status, headers, config) {
                     if (data.Data) {
 
-                        AuthorizationService.setCurrentUser(username, password, apiUrl);
-                        var currentUser = AuthorizationService.getCurrentUser();
-                        $log.info("currentUser", currentUser);
-                        $rootScope.currentUser = currentUser; // AuthorizationService.getUsername();
+                        var userInfoResult = AuthorizationService.getUserInfo(apiUrl, username);
+                        userInfoResult.then(
+                            function (success) {
+                                $log.info(success);
+
+                                //AuthorizationService.setCurrentUser(username, password, apiUrl);
+                                // {"username":"ada","password":"welcome12","apiUrl":"http://sol.cca.cz/SOLWebApi/api/"}
+                                var kategorie = success.data.Data.KATEGORIE_ID_CSV;
+
+                                var currentUser = {
+                                    username: username,
+                                    password: password,
+                                    apiUrl: apiUrl,
+                                    kategorie: kategorie
+                                };
+                                AuthorizationService.setCurrentUser(currentUser);
+
+                                //var currentUser = AuthorizationService.getCurrentUser();
+
+                                $log.info("currentUser", currentUser);
+                                $rootScope.currentUser = currentUser; // AuthorizationService.getUsername();
 
 
-                        $log.info("remember", remember);
-                        if (remember === true) {
-                            AuthorizationService.saveUserProfile(currentUser);
-                        }
+                                $log.info("remember", remember);
+                                if (remember === true) {
+                                    AuthorizationService.saveUserProfile(currentUser);
+                                }
+
+                                var jeInterniRole = (
+                                    currentUser.kategorie.indexOf("KAT_ADMIN") > -1
+                                    || currentUser.kategorie.indexOf("KAT_UCITEL") > -1
+                                );
+
+                                $log.info("jeInterniRole", jeInterniRole);
+
+                                if (jeInterniRole) {
+                                    $.mobile.changePage('#rozvrh', 'slide', true, true);
+                                } else {
+                                    $.mobile.changePage('#rozvrhStudent', 'slide', true, true);    
+                                }
+                                
 
 
-                        $.mobile.changePage('#rozvrh', 'slide', true, true);
+                            },
+                            function (error) {
+                                $log.error(error);
+                            });
+
                     } else {
                         $rootScope.currentUser = null;
 

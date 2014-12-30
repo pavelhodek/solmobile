@@ -112,22 +112,27 @@ function getSidePanel() {
 <div data-role="panel" id="solSidePanel" data-position="left" data-display="push" data-theme="a" class="sol-sidebar" > \
     <div data-role="header"> \
         <h1>Menu</h1> \
-        <a href="#" data-role="button" data-rel="close" class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-delete  ui-corner-all" >Zavřít</a> \
+        <a href="#" data-role="button" data-rel="close" class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-delete ui-nodisc-icon ui-alt-icon" >Zavřít</a> \
     </div> \
     <ul data-role="listview" data-inset="true"> ';
 
     if (app.isUserLoggedIn) {
+        // ucitel nebo admin
         if (app.isUserRoleInternal) {
-            solSidePanel += '<li data-icon="calendar"><a href="#rozvrh" >Rozvrh</a></li>';
+            solSidePanel += '<li data-icon="calendar" class="ui-nodisc-icon ui-alt-icon" ><a href="#rozvrh" >Rozvrh</a></li>';
         }
 
+        // student nebo rodic
         if (app.isUserRoleExternal) {
-            solSidePanel += '<li data-icon="calendar"><a href="#rozvrhStudent" >Rozvrh</a></li>';
+            solSidePanel += '<li data-icon="home" class="ui-nodisc-icon ui-alt-icon"><a href="#indexStudent" >Domů</a></li>';
+            solSidePanel += '<li data-icon="calendar" class="ui-nodisc-icon ui-alt-icon"><a href="#rozvrhStudent" >Rozvrh</a></li>';
+            solSidePanel += '<li data-icon="edit" class="ui-nodisc-icon ui-alt-icon"><a href="#hodnoceniStudent" >Známky</a></li>';
+            solSidePanel += '<li data-icon="edit" class="ui-nodisc-icon ui-alt-icon"><a href="#absenceStudent" >Absence</a></li>';
         }
 
-        solSidePanel += '<li data-role="list-divider"></li> <li data-icon="delete" ><a href="#logout" >Odhlášení</a></li>';
+        solSidePanel += '<li data-role="list-divider"></li> <li data-icon="delete" class="ui-nodisc-icon ui-alt-icon"><a href="#logout" >Odhlásit</a></li>';
     } else {
-        solSidePanel += '<li data-icon="user"><a href="#login" >Přihlášení</a></li>';
+        solSidePanel += '<li data-icon="user" class="ui-nodisc-icon ui-alt-icon"><a href="#login" >Přihlásit</a></li>';
     }
 
     /*

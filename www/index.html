@@ -16,7 +16,7 @@
     <meta name="msapplication-tap-highlight" content="no" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
 
-    <title>Škola OnLine pro učitele</title>
+    <title>Škola OnLine</title>
 
     <!--JQUERY-->
     <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
@@ -65,6 +65,7 @@
 
     <!--CONTROLLERS-->
     <script src="js/controllers/IndexCtrl.js"></script>
+    <script src="js/controllers/StudentIndexCtrl.js"></script>
     <script src="js/controllers/LoginCtrl.js"></script>
     <script src="js/controllers/LogoutCtrl.js"></script>
     <script src="js/controllers/NastaveniCtrl.js"></script>
@@ -85,8 +86,8 @@
     <section id="index" data-role="page" data-fullscreen="true" ng-controller="IndexCtrl">
         <!--HEADER-->
         <header id="header" data-role="header" data-theme="a" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
-            <h1>Škola OnLine pro učitele</h1>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
+            <h1>Škola OnLine</h1>
         </header>
 
         <!--CONTENT-->
@@ -100,7 +101,26 @@
 
 
     
+    <!--INDEXSTUDENT-->
+    <section id="indexStudent" data-role="page" data-fullscreen="true" ng-controller="StudentIndexCtrl">
+        <!--HEADER-->
+        <header id="header" data-role="header" data-theme="a" data-position="fixed">
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
+            <div style="text-align: center; background-color: #00b3c8;"><img src="img/header_logo.png" alt="logo Škola OnLine" /></div>
+            <!--<div style="text-align: center">...nejrozšířenější webový školní informační systém</div>-->
+            <!--<h1>Škola OnLine</h1>-->
+        </header>
 
+        <!--CONTENT-->
+        <div class="content" data-role="content">
+            {{data.userInfo}}
+
+            <button onclick="$.mobile.changePage('#rozvrhStudent')" data-iconpos="top" data-icon="calendar" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Rozvrh</button>
+            <button onclick="$.mobile.changePage('#hodnoceniStudent')" data-iconpos="top" data-icon="edit" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Známky</button>
+            <button onclick="$.mobile.changePage('#absenceStudent')" data-iconpos="top" data-icon="forbidden" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Absence</button>
+
+        </div>
+    </section>
 
 
     <!--NASTAVENI-->
@@ -108,7 +128,7 @@
 
         <!--HEADER-->
         <header data-role="header" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>Nastavení</h1>
             <button class="ui-btn-right" data-icon="check" data-iconpos="left" data-theme="b" ng-click="save()">Uložit</button>
         </header>
@@ -133,25 +153,21 @@
 
 
 
-
-
-
     <!--LOGIN-->
     <section id="login" data-role="page" ng-controller="LoginCtrl">
 
         <!--HEADER-->
         <header data-role="header">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>Přihlášení do aplikace</h1>
-            <!--<div style="text-align: center;"><img src="img/skola-on-line-logo.png" alt="logo Škola OnLine" /></div>-->
-            <!--<a href="#index" class="ui-btn-right">Zrušit</a>-->
         </header>
 
         <!--CONTENT-->
         <div id="loginContent" class="content" data-role="content">
             <div data-role="popup" id="loginNotifier"></div>
 
-            <h4>Přihlašovací údaje do Školy OnLine:</h4>
+            <!--<h4>Přihlašovací údaje do Školy OnLine:</h4>-->
+            <div style="text-align: center; background-color: #00b3c8;"><img src="img/header_logo.png" alt="logo Škola OnLine" /></div>
 
             <input type="text" name="username" id="username" ng-model="data.username" placeholder="Uživatelské jméno" maxlength="50" data-clear-btn="true" />
             <input type="password" id="password" ng-model="data.password" placeholder="Heslo" maxlength="50" data-clear-btn="true" />
@@ -188,7 +204,7 @@
     <section id="logout" data-role="page" ng-controller="LogoutCtrl">
         <!--HEADER-->
         <header data-role="header">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <!--<h1>Odhlášení z aplikace</h1>-->
         </header>
 
@@ -227,22 +243,17 @@
 
         <!--HEADER-->
         <header id="rozvrh-header" data-role="header" data-theme="a" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>Rozvrh</h1>
 
             <nav data-role="navbar" class="ui-bar-a">
                 <ul>
+                    <li><a ng-click="decrementSelectedDate()" class=" ui-btn ui-btn-inline ui-alt-icon ui-nodisc-icon" data-icon="arrow-l"></a></li>
                     <li>
-                        <a href="#" ng-click="decrementSelectedDate()" class="ui-alt-icon ui-nodisc-icon" data-icon="arrow-l" data-iconpos="notext"></a>
+                        <!--<div class="center-wrapper"><div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div></div>-->
+                        <a ng-click="pickDate()" class="ui-btn ui-nodisc-icon ui-alt-icon" style="padding: 12px 0">{{selectedDate | date:dateFormat }}</a>
                     </li>
-                    <li>
-                        <div class="center-wrapper">
-                            <div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r" data-iconpos="notext"></a>
-                    </li>
+                    <li><a ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r"></a></li>
                 </ul>
             </nav>
         </header>
@@ -278,7 +289,7 @@
 
         <!--FOOTER-->
         <footer data-role="footer" data-theme="a" data-position="fixed">
-            <h6>K aktuálně probíhající hodině zadat:</h6>
+            <h6 style="padding: 2px">K aktuálně probíhající hodině zadat:</h6>
             <nav data-role="navbar">
                 <ul>
                     <li><a ng-click="zapsatProbiraneUcivo('#probirane-ucivo', data)" data-role="button" data-theme="a">Učivo</a></li>
@@ -303,22 +314,17 @@
 
         <!--HEADER-->
         <header id="rozvrhStudent-header" data-role="header" data-theme="a" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>Rozvrh</h1>
 
             <nav data-role="navbar" class="ui-bar-a">
                 <ul>
+                    <li><a ng-click="decrementSelectedDate()" class=" ui-btn ui-btn-inline ui-alt-icon ui-nodisc-icon" data-icon="arrow-l"></a></li>
                     <li>
-                        <a href="#" ng-click="decrementSelectedDate()" class="ui-alt-icon ui-nodisc-icon" data-icon="arrow-l" data-iconpos="notext"></a>
+                        <!--<div class="center-wrapper"><div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div></div>-->
+                        <a ng-click="pickDate()" class="ui-btn ui-nodisc-icon ui-alt-icon" style="padding: 12px 0" data-icon="false">{{selectedDate | date:dateFormat }}</a>
                     </li>
-                    <li>
-                        <div class="center-wrapper">
-                            <div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r" data-iconpos="notext"></a>
-                    </li>
+                    <li><a ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r"></a></li>
                 </ul>
             </nav>
         </header>
@@ -329,8 +335,8 @@
             <div data-role="popup" id="rozvrhStudentNotifier"></div>
 
             <ul id="rozvrhStudent-table" data-role="listview">
-                <li ng-repeat="udalost in data">
-                    <div>
+                <li ng-repeat="udalost in data" data-icon="false">
+                    <a>
                         <div style="display:table-cell">
                             <div style="text-align:center">
                                 {{obdobiDneNazev(udalost)}}
@@ -343,10 +349,66 @@
                                 {{zdrojeInfo(udalost)}}
                             </p>
                         </div>
-                    </div>
+                    </a>
                     <!--<a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
-                            class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
-                            title="Detail hodiny">Detail hodiny</a>-->
+                class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
+                title="Detail hodiny">Detail hodiny</a>-->
+                </li>
+            </ul>
+        </div>
+
+    </section>
+
+
+    <!--ROZVRH - STUDENT-->
+    <section id="hodnoceniVypisStudent" data-role="page" ng-controller="HodnoceniVypisStudentCtrl">
+
+        <div data-role="popup" id="rozvrhStudentPopupInfo" data-theme="a" style="min-width:210px; max-width: 400px">
+            <p><strong>Detail hodiny</strong></p>
+            <p>Zde může být celá řada dalších informací prakticky libovolně formátovaných, včetně formulářových prvků či tabulek.</p>
+        </div>
+
+        <!--HEADER-->
+        <header id="rozvrhStudent-header" data-role="header" data-theme="a" data-position="fixed">
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
+            <h1>Rozvrh</h1>
+
+            <nav data-role="navbar" class="ui-bar-a">
+                <ul>
+                    <li><a ng-click="decrementSelectedDate()" class=" ui-btn ui-btn-inline ui-alt-icon ui-nodisc-icon" data-icon="arrow-l"></a></li>
+                    <li>
+                        <!--<div class="center-wrapper"><div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div></div>-->
+                        <a ng-click="pickDate()" class="ui-btn ui-nodisc-icon ui-alt-icon" style="padding: 12px 0" data-icon="false">{{selectedDate | date:dateFormat }}</a>
+                    </li>
+                    <li><a ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r"></a></li>
+                </ul>
+            </nav>
+        </header>
+
+
+        <!--CONTENT-->
+        <div class="content" data-role="content">
+            <div data-role="popup" id="rozvrhStudentNotifier"></div>
+
+            <ul id="rozvrhStudent-table" data-role="listview">
+                <li ng-repeat="udalost in data" data-icon="false">
+                    <a>
+                        <div style="display:table-cell">
+                            <div style="text-align:center">
+                                {{obdobiDneNazev(udalost)}}
+                            </div>
+                            <p>{{udalost.CAS_OD | date:timeFormat}} - {{udalost.CAS_DO | date:timeFormat}}</p>
+                        </div>
+                        <div style="display:table-cell; padding-left: 20px">
+                            {{udalost.NAZEV}}
+                            <p>
+                                {{zdrojeInfo(udalost)}}
+                            </p>
+                        </div>
+                    </a>
+                    <!--<a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
+                    class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
+                    title="Detail hodiny">Detail hodiny</a>-->
                 </li>
             </ul>
         </div>
@@ -358,14 +420,12 @@
 
 
 
-
-
     <!--DOCHAZKA-->
     <section id="dochazka" data-role="page" ng-controller="ZapisDochazkyCtrl">
 
         <!--HEADER-->
         <header data-role="header" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>Evidence docházky</h1>
             <p class="sol-subheader">{{popisHodiny}}</p>
         </header>
@@ -430,7 +490,7 @@
 
             <!--HEADER-->
             <header data-role="header" data-position="fixed">
-                <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+                <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
                 <h1>Zápis hodnocení</h1>
                 <p class="sol-subheader">{{popisHodiny}}</p>
             </header>
@@ -645,7 +705,7 @@
 
             <!--HEADER-->
             <header data-role="header" data-position="fixed">
-                <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+                <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
                 <h1>Probírané učivo</h1>
                 <p class="sol-subheader">{{popisHodiny}}</p>
             </header>
@@ -721,7 +781,7 @@
 
         <!--HEADER-->
         <header data-role="header" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>Nápověda</h1>
         </header>
 
@@ -742,7 +802,7 @@
 
         <!--HEADER-->
         <header data-role="header" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>O aplikaci</h1>
         </header>
 
@@ -764,7 +824,7 @@
 
         <!--HEADER-->
         <header data-role="header" data-position="fixed">
-            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-corner-all"></a>
+            <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
             <h1>Škoní rok</h1>
             <button class="ui-btn-right" data-icon="check" data-iconpos="left" data-theme="b">Uložit</button>
         </header>

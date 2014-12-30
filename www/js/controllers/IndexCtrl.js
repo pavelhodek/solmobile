@@ -20,7 +20,20 @@
 
                     result.success(function (data, status, headers, config) {
                         if (data.Data) {
-                            setTimeout(function () { $.mobile.changePage('#rozvrh'); }, 0);
+
+                            app.isUserRoleInternal = jeInterniRole;
+                            app.isUserRoleExternal = !jeInterniRole;
+
+                            if (app.isUserRoleInternal) {
+                                //$.mobile.changePage('#rozvrh', 'slide', true, true);
+                                setTimeout(function () { $.mobile.changePage('#rozvrh'); }, 0);
+                            } else if (app.isUserRoleExternal) {
+                                //$.mobile.changePage('#rozvrhStudent', 'slide', true, true);
+                                //setTimeout(function () { $.mobile.changePage('#rozvrhStudent'); }, 0);
+                                setTimeout(function () { $.mobile.changePage('#indexStudent'); }, 0);
+                            }
+
+                            //setTimeout(function () { $.mobile.changePage('#rozvrh'); }, 0);
                         } else {
                             setTimeout(function () { $.mobile.changePage('#login'); }, 0);
                         }

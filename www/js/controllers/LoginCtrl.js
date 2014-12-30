@@ -125,7 +125,8 @@
                                 if (jeInterniRole) {
                                     $.mobile.changePage('#rozvrh', 'slide', true, true);
                                 } else {
-                                    $.mobile.changePage('#rozvrhStudent', 'slide', true, true);    
+                                    //$.mobile.changePage('#rozvrhStudent', 'slide', true, true);    
+                                    $.mobile.changePage('#indexStudent');
                                 }
                                 
 

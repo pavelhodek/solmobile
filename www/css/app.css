@@ -95,3 +95,14 @@ em { color: red; font-weight: bold; padding-right: .25em; }
     text-shadow: 0 1px 0 #ffffff ;
     border: 0;
 }*/
+
+
+
+.ui-panel-wrapper {
+  background-color: #ECECEC;
+}
+
+.ui-header {
+    background-color: #00b3c8;
+}
+

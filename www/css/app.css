@@ -84,3 +84,14 @@ em { color: red; font-weight: bold; padding-right: .25em; }
 .ng-dirty.ng-invalid { border:1px solid Red; }
 .ng-dirty.ng-invalid ~ span.ko { color:red; display:inline; }
 */
+
+
+
+/*.ui-btn-active 
+{ 
+    color: #2F3E46 !important; 
+    background: none !important; 
+    background-color: #eee !important; 
+    text-shadow: 0 1px 0 #ffffff ;
+    border: 0;
+}*/

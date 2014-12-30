@@ -117,6 +117,11 @@
 
                                 $log.info("jeInterniRole", jeInterniRole);
 
+
+                                app.isUserLoggedIn = true;
+                                app.isUserRoleInternal = jeInterniRole;
+                                app.isUserRoleExternal = !jeInterniRole;
+
                                 if (jeInterniRole) {
                                     $.mobile.changePage('#rozvrh', 'slide', true, true);
                                 } else {
@@ -132,6 +137,10 @@
 
                     } else {
                         $rootScope.currentUser = null;
+
+                        app.isUserLoggedIn = false;
+                        app.isUserRoleInternal = false;
+                        app.isUserRoleExternal = false;
 
 
                         if (data.Status.Code == "ACCOUNT_LOCKED") {

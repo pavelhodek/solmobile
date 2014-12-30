@@ -257,6 +257,11 @@
                 $scope.data = {};
 
                 $scope.loadData();
+
+                setTimeout(function () {
+                    $('.ui-btn-active').removeClass('ui-btn-active ui-focus');
+                }, 0);
+
             }
 
             $scope.incrementSelectedDate = function () {
@@ -276,6 +281,9 @@
 
                 $scope.loadData();
 
+                setTimeout(function () {
+                    $('.ui-btn-active').removeClass('ui-btn-active ui-focus');
+                }, 0);
             }
 
         });

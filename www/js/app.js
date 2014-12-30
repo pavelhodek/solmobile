@@ -83,28 +83,97 @@ var app = {
         });
     },
 
+    isUserLoggedIn: false,
+    isUserRoleInternal: false,
+    isUserRoleExternal: false
+
 };
 
-var solSidePanel = '\
+
+
+
+function getSidePanel() {
+//    var solSidePanel = '\
+//<div data-role="panel" id="solSidePanel" data-position="left" data-display="push" data-theme="a" class="sol-sidebar" > \
+//    <div data-role="header"> \
+//        <h1>Menu</h1> \
+//        <a href="#" data-role="button" data-rel="close" class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-delete  ui-corner-all" >Zavřít</a> \
+//    </div> \
+//    <ul data-role="listview" data-inset="true"> \
+//        <li data-icon="calendar"><a href="#rozvrh" >Rozvrh</a></li> \
+//        <li data-role="list-divider"></li> \
+//        <li data-icon="user"><a href="#login" >Přihlášení</a></li> \
+//        <li data-icon="delete" ><a href="#logout" >Odhlášení</a></li> \
+//    </ul> \
+//</div>';
+
+
+    var solSidePanel = '\
 <div data-role="panel" id="solSidePanel" data-position="left" data-display="push" data-theme="a" class="sol-sidebar" > \
     <div data-role="header"> \
         <h1>Menu</h1> \
         <a href="#" data-role="button" data-rel="close" class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-delete  ui-corner-all" >Zavřít</a> \
     </div> \
-    <ul data-role="listview" data-inset="true"> \
-        <li data-icon="calendar"><a href="#rozvrh" >Rozvrh</a></li> \
-        <li data-role="list-divider"></li> \
+    <ul data-role="listview" data-inset="true"> ';
+
+    if (app.isUserLoggedIn) {
+        if (app.isUserRoleInternal) {
+            solSidePanel += '<li data-icon="calendar"><a href="#rozvrh" >Rozvrh</a></li>';
+        }
+
+        if (app.isUserRoleExternal) {
+            solSidePanel += '<li data-icon="calendar"><a href="#rozvrhStudent" >Rozvrh</a></li>';
+        }
+
+        solSidePanel += '<li data-role="list-divider"></li> <li data-icon="delete" ><a href="#logout" >Odhlášení</a></li>';
+    } else {
+        solSidePanel += '<li data-icon="user"><a href="#login" >Přihlášení</a></li>';
+    }
+
+    /*
+    <li data-icon="calendar"><a href="#rozvrh" >Rozvrh</a></li> \
+        
         <li data-icon="user"><a href="#login" >Přihlášení</a></li> \
         <li data-icon="delete" ><a href="#logout" >Odhlášení</a></li> \
+        */
+solSidePanel += '\
     </ul> \
 </div>';
+
+
+    /*
+    app.isUserLoggedIn = true;
+    app.isUserRoleInternal = jeInterniRole;
+    app.isUserRoleExternal = !jeInterniRole;
+    */
+
+    return solSidePanel;
+
+}
+
 
 //<li data-icon="gear"><a href="#nastaveni" >Nastavení</a></li> \
 //<li data-icon="gear"><a href="#skolni-rok" >Školní roky</a></li> \
 
 
-$(document).one('pagebeforecreate', function () {
-    $.mobile.pageContainer.prepend(solSidePanel);
+//$(document).one('pagebeforecreate', function () {
+$(document).on('pagebeforeshow', function () {
+    console.log("PAGEBEFORESHOW");
+    $("#solSidePanel").remove();
+
+    $.mobile.pageContainer.prepend(getSidePanel());
     $("#solSidePanel").panel().enhanceWithin();
 });
+
+
+// "Unclicking" all jQuery mobile buttons after onClick
+jQuery(function ($) {
+    $(document).on('click', '.ui-btn', function () {
+        setTimeout(function () {
+            $('.ui-btn-active').removeClass('ui-btn-active ui-focus');
+        }, 0);
+    });
+});
+
+
 

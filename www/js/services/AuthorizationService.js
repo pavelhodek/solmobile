@@ -172,6 +172,11 @@
             localStorage.removeItem("currentUser");
 
             $http.defaults.headers.common.Authorization = "";
+
+            app.isUserLoggedIn = false;
+            app.isUserRoleInternal = false;
+            app.isUserRoleExternal = false;
+
         };
 
         me.checkAuthorizationIsValid = function(apiUrl, username, password) {

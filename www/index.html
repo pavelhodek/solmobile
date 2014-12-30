@@ -75,6 +75,8 @@
     <script src="js/controllers/SkolniRokyCtrl.js"></script>
     <script src="js/controllers/ZapisDochazkyCtrl.js"></script>
     <script src="js/controllers/ZapisHodnoceniCtrl.js"></script>
+    <script src="js/controllers/HodnoceniVypisStudentCtrl.js"></script>
+    
 
 </head>
 <body ng-app="sol">
@@ -116,8 +118,8 @@
             {{data.userInfo}}
 
             <button onclick="$.mobile.changePage('#rozvrhStudent')" data-iconpos="top" data-icon="calendar" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Rozvrh</button>
-            <button onclick="$.mobile.changePage('#hodnoceniStudent')" data-iconpos="top" data-icon="edit" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Známky</button>
-            <button onclick="$.mobile.changePage('#absenceStudent')" data-iconpos="top" data-icon="forbidden" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Absence</button>
+            <button onclick="$.mobile.changePage('#hodnoceniVypisStudent')" data-iconpos="top" data-icon="edit" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Známky</button>
+            <button onclick="$.mobile.changePage('#absenceVypisStudent')" data-iconpos="top" data-icon="forbidden" class="ui-nodisc-icon ui-alt-icon ui-btn-inline">Absence</button>
 
         </div>
     </section>
@@ -360,37 +362,21 @@
     </section>
 
 
-    <!--ROZVRH - STUDENT-->
+    <!--HODNOCENI - STUDENT-->
     <section id="hodnoceniVypisStudent" data-role="page" ng-controller="HodnoceniVypisStudentCtrl">
 
-        <div data-role="popup" id="rozvrhStudentPopupInfo" data-theme="a" style="min-width:210px; max-width: 400px">
-            <p><strong>Detail hodiny</strong></p>
-            <p>Zde může být celá řada dalších informací prakticky libovolně formátovaných, včetně formulářových prvků či tabulek.</p>
-        </div>
-
         <!--HEADER-->
-        <header id="rozvrhStudent-header" data-role="header" data-theme="a" data-position="fixed">
+        <header id="hodnoceniVypisStudent-header" data-role="header" data-theme="a" data-position="fixed">
             <a href="#solSidePanel" class="ui-btn ui-btn-left ui-btn-icon-notext ui-icon-bars ui-nodisc-icon ui-alt-icon "></a>
-            <h1>Rozvrh</h1>
-
-            <nav data-role="navbar" class="ui-bar-a">
-                <ul>
-                    <li><a ng-click="decrementSelectedDate()" class=" ui-btn ui-btn-inline ui-alt-icon ui-nodisc-icon" data-icon="arrow-l"></a></li>
-                    <li>
-                        <!--<div class="center-wrapper"><div id="selectedDate" ng-click="pickDate()">{{selectedDate | date:dateFormat }}</div></div>-->
-                        <a ng-click="pickDate()" class="ui-btn ui-nodisc-icon ui-alt-icon" style="padding: 12px 0" data-icon="false">{{selectedDate | date:dateFormat }}</a>
-                    </li>
-                    <li><a ng-click="incrementSelectedDate()" class="ui-nodisc-icon ui-alt-icon" data-icon="arrow-r"></a></li>
-                </ul>
-            </nav>
+            <h1>Známky</h1>
         </header>
 
 
         <!--CONTENT-->
         <div class="content" data-role="content">
-            <div data-role="popup" id="rozvrhStudentNotifier"></div>
+            <div data-role="popup" id="hodnoceniVypisStudentNotifier"></div>
 
-            <ul id="rozvrhStudent-table" data-role="listview">
+            <ul id="hodnoceniVypisStudent-table" data-role="listview">
                 <li ng-repeat="udalost in data" data-icon="false">
                     <a>
                         <div style="display:table-cell">
@@ -407,11 +393,41 @@
                         </div>
                     </a>
                     <!--<a ng-click="showPopupInfo($event, udalost, udalost.showPopupInfo)"
-                    class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
-                    title="Detail hodiny">Detail hodiny</a>-->
+                   class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext"
+                   title="Detail hodiny">Detail hodiny</a>-->
                 </li>
             </ul>
+            
+            <div data-role="popup" id="hodnoceniVypisStudentObdobiPopup" class="ui-content" data-theme="a" data-overlay-theme="a">
+                Změna období výpisu
+                <hr />
+                <fieldset data-role="controlgroup" data-mini="false">
+                    <label ng-repeat="stupen in data.StupniceHodnoceni">
+                        <input type="radio"
+                               name="hodnoceni-vyber"
+                               id="hodnoceni-vyber-{{$index + 1}}"
+                               ng-model="$parent.vybranaZnamka"
+                               ng-change="nastavHodnoceni('{{stupen.HODNOTA}}')"
+                               value="{{stupen.HODNOTA}}">{{stupenHodnoceniText(stupen.HODNOTA)}}
+                    </label>
+                </fieldset>
+                <hr />
+                <label><input type="checkbox" id="hodnoceniNastavitVsem" ng-model="hodnoceniNastavitVsem" data-mini="false" />nastavit všem</label>
+            </div>            
+            
+
         </div>
+        
+        <!--FOOTER-->
+        <footer data-role="footer" data-theme="a" data-position="fixed">
+            <table style="width: 100%; text-align: center;">
+                <tr>
+                    <td><a data-role="button" ng-click="zmenitObdobiVypisu()">Změnit období výpisu</a></td>
+                </tr>
+            </table>
+        </footer>        
+        
+        
 
     </section>
 

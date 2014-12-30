@@ -126,8 +126,8 @@ function getSidePanel() {
         if (app.isUserRoleExternal) {
             solSidePanel += '<li data-icon="home" class="ui-nodisc-icon ui-alt-icon"><a href="#indexStudent" >Domů</a></li>';
             solSidePanel += '<li data-icon="calendar" class="ui-nodisc-icon ui-alt-icon"><a href="#rozvrhStudent" >Rozvrh</a></li>';
-            solSidePanel += '<li data-icon="edit" class="ui-nodisc-icon ui-alt-icon"><a href="#hodnoceniStudent" >Známky</a></li>';
-            solSidePanel += '<li data-icon="edit" class="ui-nodisc-icon ui-alt-icon"><a href="#absenceStudent" >Absence</a></li>';
+            solSidePanel += '<li data-icon="edit" class="ui-nodisc-icon ui-alt-icon"><a href="#hodnoceniVypisStudent" >Známky</a></li>';
+            solSidePanel += '<li data-icon="edit" class="ui-nodisc-icon ui-alt-icon"><a href="#absenceVypisStudent" >Absence</a></li>';
         }
 
         solSidePanel += '<li data-role="list-divider"></li> <li data-icon="delete" class="ui-nodisc-icon ui-alt-icon"><a href="#logout" >Odhlásit</a></li>';

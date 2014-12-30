@@ -24,7 +24,7 @@
             };
 
             $scope.init = function () {
-                $scope.loadData();
+                //$scope.loadData();
             };
 
 

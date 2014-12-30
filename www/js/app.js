@@ -52,16 +52,16 @@ var app = {
 
         document.addEventListener("menubutton", app.onMenuKeyDown, false);
 
-        var element = document.getElementById('deviceProperties');
-        if (element) {
-            element.innerHTML = 'Device Name: ' + device.name + '<br />' +
-                                'Device Cordova: ' + device.cordova + '<br />' +
-                                'Device Platform: ' + device.platform + '<br />' +
-                                'Device UUID: ' + device.uuid + '<br />' +
-                                'Device Version: ' + device.version + '<br />' + 
-                                'Internet Connection: ' + navigator.connection.type;
+        //var element = document.getElementById('deviceProperties');
+        //if (element) {
+        //    element.innerHTML = 'Device Name: ' + device.name + '<br />' +
+        //                        'Device Cordova: ' + device.cordova + '<br />' +
+        //                        'Device Platform: ' + device.platform + '<br />' +
+        //                        'Device UUID: ' + device.uuid + '<br />' +
+        //                        'Device Version: ' + device.version + '<br />' + 
+        //                        'Internet Connection: ' + navigator.connection.type;
 
-        }
+        //}
 
     },
 
